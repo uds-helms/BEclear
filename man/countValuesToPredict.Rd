@@ -1,0 +1,44 @@
+\name{countValuesToPredict}
+\alias{countValuesToPredict}
+\title{Count NA entries in a matrix}
+\description{Simple function that counts all values in a matrix which are NA}
+\usage{
+countValuesToPredict(data)
+}
+\arguments{
+    \item{data}{any kind of matrix}
+}
+\value{
+Returns a data frame with the number of NA entries per column. Since the
+function is mainly written for the usage in batch effect correction of DNA
+methylation data, the column names of the data frame are set to "sample" and
+"num_pred_values". Nevertheless, the function can be used with any other matrix
+containing anything but beta values.
+}
+\seealso{
+\code{\link{clearBEgenes}}
+\code{\link{BEclear}}
+\code{\link{correctBatchEffect}}
+}
+\examples{
+## Shortly running example. For a more realistic example that takes
+## some more time, run the same procedure with the full BEclearData
+## dataset.
+
+## Whole procedure that has to be done to use this function.
+data(BEclearData)
+ex.data <- ex.data[31:90,7:26]
+ex.samples <- ex.samples[7:26,]
+
+# Calculate median difference values and p-values
+meds <- calcMedians(data=ex.data, samples=ex.samples)
+pvals <- calcPvalues(data=ex.data, samples=ex.samples)
+
+# Summarize p-values and median differences for batch affected genes
+sum <- calcSummary(medians=meds, pvalues=pvals)
+clearedMatrix <- clearBEgenes(data=ex.data, samples=ex.samples, summary=sum)
+numberOfEntries <- countValuesToPredict(data=clearedMatrix)
+
+}
+\keyword{ NA }
+\keyword{ BEclear }

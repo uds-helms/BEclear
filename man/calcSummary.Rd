@@ -1,0 +1,57 @@
+\name{calcSummary}
+\alias{calcSummary}
+\title{Summarize median comparison and p-value calculation results}
+\description{
+Summarizes the results of the median comparison function
+\code{\link{calcMedians}} and the p-value calculation function
+\code{\link{calcPvalues}}. Should be used with the matrices originating from
+these two functions.
+}
+\usage{
+calcSummary(medians, pvalues)
+}
+\arguments{
+    \item{medians}{a matrix containing median difference values calculated by
+    the \code{\link{calcMedians}} function. For further details look at the
+    documentation of this function.}
+    \item{pvalues}{a matrix containing p-values calculated by the
+    \code{\link{calcPvalues}} function. For further details look at the
+    documentation of this function.}
+}
+\details{
+All genes with a median comparison value >= 0.05 and a p-value of <= 0.01 are
+summarized into a data.frame. These genes are assumed to contain a batch effect
+}
+\value{
+A data frame with the columns "gene" containing the gene name, "batch"
+containing the batch number from which the gene was found, "median" and
+"p-value" containing the calculated median difference values and the p-values,
+respectively.
+}
+
+\seealso{
+\code{\link{calcMedians}}
+\code{\link{calcPvalues}}
+\code{\link{correctBatchEffect}}
+}
+\examples{
+## Shortly running example. For a more realistic example that takes
+## some more time, run the same procedure with the full BEclearData
+## dataset.
+
+## Whole procedure that has to be done to use this function.
+data(BEclearData)
+ex.data <- ex.data[31:90,7:26]
+ex.samples <- ex.samples[7:26,]
+
+# Calculates median difference values and p-values from the example data
+med <- calcMedians(data=ex.data, samples=ex.samples, parallel=FALSE)
+pvals <- calcPvalues(data=ex.data, samples=ex.samples, parallel=FALSE,
+    adjusted=TRUE, method="fdr")
+
+# Summarize p-values and median differences for batch affected genes 
+sum <- calcSummary(medians=med, pvalues=pvals)
+
+}
+\keyword{ summary }
+\keyword{ batch effect }
