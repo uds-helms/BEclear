@@ -593,153 +593,175 @@ BEclear <- function(data, parallel=TRUE, cores=4, rowBlockSize=60,
         ## take one block of data (200 rows * 250 columns)
         D<-data[rowStartPosition:rowStopPosition,
             colStartPosition:colStopPosition]
-        ## set NA data to 0
-        D[is.na(D)] <- 0
-        ## set D as matrix
-        D <- as(as.matrix(D), "dgTMatrix")
+        
+        ## check if NA values are contained in the block
+        if (any(is.na(D))) {
+        
+            ## set NA data to 0
+            D[is.na(D)] <- 0
+            ## set D as matrix
+            D <- as(as.matrix(D), "dgTMatrix")
+    
+            Dsummary <- summary(D)
+            m <- nrow(D)               # number of rows
+            n <- ncol(D)               # number of columns
+            is <- Dsummary$i           # row of each revealed entry
+            js <- Dsummary$j           # column of each revealed entry
+            xs <- Dsummary$x           # value of each revealed entry
+            N <- length(is)            # number of revealed entries
 
-        Dsummary <- summary(D)
-        m <- nrow(D)               # number of rows
-        n <- ncol(D)               # number of columns
-        is <- Dsummary$i           # row of each revealed entry
-        js <- Dsummary$j           # column of each revealed entry
-        xs <- Dsummary$x           # value of each revealed entry
-        N <- length(is)            # number of revealed entries
-
-        ## counts for every index, the number of non-zero entries
-        nnz <- function(indexes, l=max(indexes)) {
-            ## array of l entries with 0
-            n <- rep(0, l)
-            ## get non-zero entries per index
-            com <- tapply(indexes, indexes, length)
-            ## save number of non-zero entries in n
-            n[as.integer(names(com))] <- com
-            return(n)
-        }
-
-        ## for each row, number of revealed entries=entries not zero
-        nnzis <- nnz(is, m)
-        ## for each column, number of revealed entries=entries not zero
-        nnzjs <- nnz(js, n)
-        ## changing values
-
-
-        ## compute the loss of factorization LR
-        loss <- function(L, R, lambda) {
-            lossResult <- 0
-            for (i in 1:N) {
-                lossResult <- lossResult + ((D[is[i], js[i]] - 
-                    (L[is[i], ]%*%R[, js[i]]))^2)
-            }
-            lossResult <- lossResult + lambda * (norm(L, type="F")^2)
-            + lambda * (norm(R, type="F")^2)
-            return(as.numeric(lossResult))
-        }
-
-        ## compute the local loss of the p-th revelead entry for
-        ## factorization LR
-        dlossp <- function(L, R, lambda, p) {
-            i <- is[p]
-            j <- js[p]
-            x <- D[i, j]
-
-            ## create two length-r vectors dLi and dRj
-            ## * dLi[k] contains the gradient of the local loss with
-            ## respect to L_ik
-            ## * dRi[k] contains the gradient of the local loss with
-            ## respect to R_kj
-            dLi <- vector(mode="numeric", length=r)
-            dRj <- vector(mode="numeric",  length=r)
-            for(k in 1:r) {
-                dLi[k] <- -2 * R[k, j] * (x - L[i, ]%*%R[, j]) + 2 * lambda * 
-                    L[i, k]/nnzis[i]
-                dRj[k] <- -2 * L[i, k] * (x - L[i, ]%*%R[, j]) + 2 * lambda * 
-                    R[k, j]/nnzjs[j]
+            ## counts for every index, the number of non-zero entries
+            nnz <- function(indexes, l=max(indexes)) {
+                ## array of l entries with 0
+                n <- rep(0, l)
+                ## get non-zero entries per index
+                com <- tapply(indexes, indexes, length)
+                ## save number of non-zero entries in n
+                n[as.integer(names(com))] <- com
+                return(n)
             }
 
-            ## return the result as a list
-            ## (elements can be accessed with x$Li or x$Ri, where x
-            ## is the returned list)
-            return(list(Li=dLi, Rj=dRj))
-        }
+            ## for each row, number of revealed entries=entries not zero
+            nnzis <- nnz(is, m)
+            ## for each column, number of revealed entries=entries not zero
+            nnzjs <- nnz(js, n)
+            ## changing values
 
-        ## Run a gradient descent epoch (L and R are starting points,
-        ## eps is stepsize)
-        gdepoch <- function(L, R, lambda, eps) {
-            ## create gradient matrices
-            dL <- matrix(0, m, r)
-            dR <- matrix(0, r, n)
 
-            ## fill the gradient matrices using repeated calls to
-            ## dlossp function
-            for (i in 1:N) {
-                dL[is[i], ] <- dL[is[i], ] + dlossp(L, R, lambda, i)$Li
-                dR[, js[i]] <- dR[, js[i]] + dlossp(L, R, lambda, i)$Rj
+            ## compute the loss of factorization LR
+            loss <- function(L, R, lambda) {
+                lossResult <- 0
+                for (i in 1:N) {
+                    lossResult <- lossResult + ((D[is[i], js[i]] -
+                        (L[is[i], ]%*%R[, js[i]]))^2)
+                }
+                lossResult <- lossResult + lambda * (norm(L, type="F")^2)
+                + lambda * (norm(R, type="F")^2)
+                return(as.numeric(lossResult))
+            }
+    
+            ## compute the local loss of the p-th revelead entry for
+            ## factorization LR
+            dlossp <- function(L, R, lambda, p) {
+                i <- is[p]
+                j <- js[p]
+                x <- D[i, j]
+    
+                ## create two length-r vectors dLi and dRj
+                ## * dLi[k] contains the gradient of the local loss with
+                ## respect to L_ik
+                ## * dRi[k] contains the gradient of the local loss with
+                ## respect to R_kj
+                dLi <- vector(mode="numeric", length=r)
+                dRj <- vector(mode="numeric",  length=r)
+                for(k in 1:r) {
+                    dLi[k] <- -2 * R[k, j] * (x - L[i, ]%*%R[, j]) + 2 * 
+                        lambda * L[i, k]/nnzis[i]
+                    dRj[k] <- -2 * L[i, k] * (x - L[i, ]%*%R[, j]) + 2 * 
+                        lambda * R[k, j]/nnzjs[j]
+                }
+
+                ## return the result as a list
+                ## (elements can be accessed with x$Li or x$Ri, where x
+                ## is the returned list)
+                return(list(Li=dLi, Rj=dRj))
             }
 
-            ## perform a gradient step on L and R with step size eps
-            ## by using the gradient matrices
-            L <- L - eps * dL
-            R <- R - eps * dR
+            ## Run a gradient descent epoch (L and R are starting points,
+            ## eps is stepsize)
+            gdepoch <- function(L, R, lambda, eps) {
+                ## create gradient matrices
+                dL <- matrix(0, m, r)
+                dR <- matrix(0, r, n)
+    
+                ## fill the gradient matrices using repeated calls to
+                ## dlossp function
+                for (i in 1:N) {
+                    dL[is[i], ] <- dL[is[i], ] + dlossp(L, R, lambda, i)$Li
+                    dR[, js[i]] <- dR[, js[i]] + dlossp(L, R, lambda, i)$Rj
+                }
+    
+                ## perform a gradient step on L and R with step size eps
+                ## by using the gradient matrices
+                L <- L - eps * dL
+                R <- R - eps * dR
+    
+                ## return result
+                return(list(L=L, R=R))
+            }
 
-            ## return result
-            return(list(L=L, R=R))
-        }
-
-        ## Runner for gradient descent (or stochastic gradient descent) for the
-        ## specified number of epoch
-        runner <- function(f, L0r10, R0r10, lambda, epochs=epochs,
-                eps=0.01) {
-            LR <- list(L=L0r10, R=R0r10)
-            curLoss <- loss(LR$L, LR$R, lambda)
-            for (epoch in 1:epochs) {
-                LR <- f(LR$L, LR$R, lambda, eps)
-
-                ## bold driver step size update
-                oldLoss <- curLoss
+            ## Runner for gradient descent (or stochastic gradient descent) for
+            ## the specified number of epoch
+            runner <- function(f, L0r10, R0r10, lambda, epochs=epochs,
+                    eps=0.01) {
+                LR <- list(L=L0r10, R=R0r10)
                 curLoss <- loss(LR$L, LR$R, lambda)
-                if (oldLoss < curLoss) { 
-                    eps <- eps/2
-                } else {
-                    eps <- eps * 1.05
+                for (epoch in 1:epochs) {
+                    LR <- f(LR$L, LR$R, lambda, eps)
+    
+                    ## bold driver step size update
+                    oldLoss <- curLoss
+                    curLoss <- loss(LR$L, LR$R, lambda)
+                    if (oldLoss < curLoss) { 
+                        eps <- eps/2
+                    } else {
+                        eps <- eps * 1.05
+                    }
                 }
+                return(LR)
             }
-            return(LR)
-        }
-
-
-        r <- 10
-        set.seed(1, kind="Mersenne-Twister")
-        L0r10 <- matrix(rnorm(m * r), m, r) / sqrt(r)
-        R0r10 <- matrix(rnorm(r * n), r, n) / sqrt(r)
-        ## run LFM 
-        resultGdr10l1 <- runner(gdepoch, L0r10, R0r10, 1, epochs=epochs,
-            eps=0.01)
-        
-        dataTemp <- data[rowStartPosition:rowStopPosition,
-            colStartPosition:colStopPosition]
-        ## Predicted matrix
-        D1 <- resultGdr10l1$L %*% resultGdr10l1$R
-        ## Replace predicted values with known, keep predicted unknown values
-        for(i1 in 1:nrow(dataTemp))
-            for(j1 in 1:ncol(dataTemp))
-            {
-                if(!is.na(dataTemp[i1, j1]))
+    
+    
+            r <- 10
+            set.seed(1, kind="Mersenne-Twister")
+            L0r10 <- matrix(rnorm(m * r), m, r) / sqrt(r)
+            R0r10 <- matrix(rnorm(r * n), r, n) / sqrt(r)
+            ## run LFM 
+            resultGdr10l1 <- runner(gdepoch, L0r10, R0r10, 1, epochs=epochs,
+                eps=0.01)
+            
+            dataTemp <- data[rowStartPosition:rowStopPosition,
+                colStartPosition:colStopPosition]
+            ## Predicted matrix
+            D1 <- resultGdr10l1$L %*% resultGdr10l1$R
+            ## Replace predicted values with known, keep predicted unknown
+            ## values
+            for(i1 in 1:nrow(dataTemp))
+                for(j1 in 1:ncol(dataTemp))
                 {
-                    D1[i1, j1] <- dataTemp[i1, j1]
+                    if(!is.na(dataTemp[i1, j1]))
+                    {
+                        D1[i1, j1] <- dataTemp[i1, j1]
+                    }
                 }
-            }
-        colnames(D1) <- colnames(dataTemp)
-        rownames(D1) <- rownames(dataTemp)
-
-        blockName <- paste("D", block, sep="")
-        filename <- paste(blockName, "row", rowStartPosition, 
-            rowStopPosition, "col", colStartPosition, colStopPosition,
-            "RData", sep=".")
-        save(D1, file=paste(dir, filename, sep="/"))
+            colnames(D1) <- colnames(dataTemp)
+            rownames(D1) <- rownames(dataTemp)
+    
+            blockName <- paste("D", block, sep="")
+            filename <- paste(blockName, "row", rowStartPosition,
+                rowStopPosition, "col", colStartPosition, colStopPosition,
+                "RData", sep=".")
+            save(D1, file=paste(dir, filename, sep="/"))
+            
+            remove(D1, D, dataTemp)
+            return(block)
+        }
         
-        remove(D1, D, dataTemp)
-        return(block)
+        ## no NA values contained in the block - keep original values
+        else {
+            D1 <- D
+            colnames(D1) <- colnames(D)
+            rownames(D1) <- rownames(D)
+            
+            blockName <- paste("D", block, sep="")
+            filename <- paste(blockName, "row", rowStartPosition, 
+                rowStopPosition, "col", colStartPosition, 
+                colStopPosition, "RData", sep=".")
+            save(D1, file=paste(dir, filename, sep="/"))
+            
+            remove(D1, D)
+            return(block)
+        }
     }
 
     ## parallel BEclear
