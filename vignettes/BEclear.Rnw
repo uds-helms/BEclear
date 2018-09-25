@@ -68,8 +68,7 @@ parallel parameter should simply be set to FALSE. The resulting p-values tell
 us if a gene from a certain batch contains a batch effect or not. Thereby,
 every gene with a p-value below 0.01 is assumed as batch affected.
 <<echo=TRUE>>=
-pvals <- calcPvalues(ex.data, ex.samples, parallel=TRUE,
-        cores=4, adjusted=TRUE, method="fdr")
+pvals <- calcPvalues(ex.data, ex.samples, adjusted=TRUE, method="fdr")
 @
 Returned is a data.frame containing p-values for all 10 batches and for every
 gene. We print out the p-values for 10 genes and 4 batches:
@@ -94,8 +93,7 @@ the overall deviation of this [0;1] interval. Returned is again a data.frame
 containing mdif values for every gene in every batch. We print out again the
 mdif values for the same genes and batches as before.
 <<echo=TRUE>>=
-mdifs <- calcMedians(ex.data, ex.samples, parallel=TRUE,
-        cores=4)
+mdifs <- calcMedians(ex.data, ex.samples)
 
 mdifs[210:220,5:8]
 @
@@ -184,9 +182,8 @@ predicted beta values for the entries formerly set to NA. The correction is
 done by performing matrix completion using Latent Factor Models based on
 matrix factorization [1,3]:
 <<echo=TRUE, eval=FALSE>>=
-corrected.data <- BEclear(cleared.data, parallel=TRUE,
-        cores=4, rowBlockSize=60, colBlockSize=60,
-        epochs=50, outputFormat="RData", dir=getwd())
+corrected.data <- BEclear(cleared.data, rowBlockSize=60, colBlockSize=60,
+                          epochs=50, outputFormat="RData", dir=getwd())
 @
 
 The result of the prediction can easily be seen when we again use the

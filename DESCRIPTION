@@ -1,8 +1,8 @@
 Package: BEclear
 Type: Package
 Title: Correct for batch effects in DNA methylation data
-Version: 1.13.0
-Date: 2014-11-03
+Version: 1.13.1
+Date: 2018-09-25
 Author: Markus Merl, Ruslan Akulenko
 Maintainer: David Rasp <david.j.rasp@gmail.com>
 Description: Provides some functions to detect and correct for batch effects in
@@ -10,5 +10,9 @@ Description: Provides some functions to detect and correct for batch effects in
     models and can also be used to predict missing values in any other matrix
     containing real numbers.
 License: GPL-2
-Depends: snowfall, Matrix
+Depends: BiocParallel
+Imports: futile.logger, stats, Rdpack, graphics, Matrix, utils, methods
 biocViews: BatchEffect, DNAMethylation, Software
+RoxygenNote: 6.1.0
+RdMacros: Rdpack
+Encoding: UTF-8
