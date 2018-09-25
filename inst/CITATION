@@ -1,0 +1,12 @@
+bibentry(bibtype = "Article",
+         title = "{BEclear: Batch} effect detection and adjustment in DNA methylation data.",
+         author = c(person("Ruslan", "Akulenko"),
+                    person("Markus", "Merl"),
+                    person("Volkhard", "Helms")),
+         year = 2016,
+         url = "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0159921",
+         doi = "10.1371/journal.pone.0159921",
+         journal = "PLoS ONE",
+         number = 8,
+         pages = "1-17",
+         volume = 11)
