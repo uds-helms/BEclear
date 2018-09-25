@@ -42,23 +42,23 @@
 #' numberOfEntries <- countValuesToPredict(data=clearedMatrix)
 
 countValuesToPredict <- function(data) {
-  amount <- sum(is.na(data)) / (nrow(data) * ncol(data))
-  flog.info(paste(sum(is.na(data)), "values (", amount * 100,
-                "% of the data) set to NA", sep=" "))
-  numberPredValues <- matrix(ncol=2, nrow=ncol(data))
-  numberPredValues <- as.data.frame(numberPredValues)
-  colnames(numberPredValues) <- c("sample", "num_pred_values")
-  numberPredValues[, 1] <- colnames(data)
-  numberPredValues[, 2] <- 0
-  for (i in seq_len(nrow(data))) {
-    for (j in seq_len(ncol(data))) {
-      if (is.na(data[i, j])) {
-        oldNumber <- numberPredValues[numberPredValues$sample == 
-                                        j, 2]
-        newNumber <- oldNumber+1
-        numberPredValues[numberPredValues$sample == j, 2] <- newNumber
-      }
+    amount <- sum(is.na(data)) / (nrow(data) * ncol(data))
+    flog.info(paste(sum(is.na(data)), "values (", amount * 100,
+                    "% of the data) set to NA", sep=" "))
+    numberPredValues <- matrix(ncol=2, nrow=ncol(data))
+    numberPredValues <- as.data.frame(numberPredValues)
+    colnames(numberPredValues) <- c("sample", "num_pred_values")
+    numberPredValues[, 1] <- colnames(data)
+    numberPredValues[, 2] <- 0
+    for (i in seq_len(nrow(data))) {
+        for (j in seq_len(ncol(data))) {
+            if (is.na(data[i, j])) {
+                oldNumber <- numberPredValues[numberPredValues$sample == 
+                                                  j, 2]
+                newNumber <- oldNumber+1
+                numberPredValues[numberPredValues$sample == j, 2] <- newNumber
+            }
+        }
     }
-  }
-  return(numberPredValues=numberPredValues)
+    return(numberPredValues=numberPredValues)
 }

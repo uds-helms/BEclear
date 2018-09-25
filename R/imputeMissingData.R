@@ -50,9 +50,9 @@
 #' matrix can be divided. if you choose e.g. the rowBlockSize = 50 and the 
 #' colBlockSize = 60 your matrix will be cut into smaller matrices of the size 
 #' approximately 50x60. Note that this splitting algorithm works with every 
-#' possible matrix size! If both size parameters do not fit to the dimensions of 
+#' possible matrix size! If both size parameters do not fit to the dimensions of
 #' the input matrix, the remaining rows and columns of the input matrix are 
-#' distributed over some blocks, so that the block sizes are roughly of the same 
+#' distributed over some blocks, so that the block sizes are roughly of the same
 #' size. All blocks are saved at the specified directory after the processing 
 #' of a block has been done within an RData file. These RData files are 
 #' continuously numbered and contain the row and column start and stop 
@@ -62,11 +62,11 @@
 #' end of this documentation. We suggest to use the block size of 60 (default) 
 #' but you can also use any other block size, as far as it is bigger than the 
 #' number of samples in the biggest batch. This avoids having an entire row of 
-#' NA values in a block which leads to a crash of the imputeMissingData method. In order 
-#' to process the complete matrix without dividing into blocks, specify 
-#' rowBlockSize = 0 and colBlockSize = 0. But if the input matrix is large 
-#' (more than 200x200), it is not recommended due to exponential increase of 
-#' computation time required.\cr
+#' NA values in a block which leads to a crash of the imputeMissingData method.
+#' In order  to process the complete matrix without dividing into blocks, 
+#' specify rowBlockSize = 0 and colBlockSize = 0. But if the input matrix is 
+#' large (more than 200x200), it is not recommended due to exponential increase
+#' of computation time required.\cr
 #' Note that the size of the blocks affect the prediction accuracy. In case of 
 #' very small blocks, the information obtained from neighbor entries is not 
 #' sufficient. Thus, the larger the size of the block is, the more accurately 
@@ -74,7 +74,7 @@
 #' prediction in a reasonable amount of time.
 #' 
 #' @return Returns a data matrix with the same dimensions as well as same row 
-#' and column names as the input matrix. According to the "outputFormat" 
+#' and column names as the input matrix. According to the "outputFormat"
 #' parameter, either a .RData file containing only the returned matrix or a 
 #' tab-delimited .txt file containing the content of the returned matrix is 
 #' saved in the specified directory.
@@ -149,126 +149,126 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
     flog.info("This might take a while.")
     D1 <- NULL
     if (epochs<= 0) {
-      stop('number of epochs has to be greater than 0')
+        stop('number of epochs has to be greater than 0')
     } 
     
     if (rowBlockSize == 0 & colBlockSize == 0) {
-      flog.info("block size is set to 0, BEclear is started in \n")
-      flog.info("non-parallel mode on the whole data matrix")
-      ## start BEclear in non-parallel mode, just with one block
-      blockFrame <- t(as.matrix(c(1, 1, nrow(data), 1,
-                                  ncol(data))))
-      blockFrame <- as.data.frame(blockFrame)
-      blocksDone <- imputeMissingDataForBlock(data=data, block = 1, blockFrame
-                                              = blockFrame, dir = dir, 
-                                              epochs = epochs)
-      ## load block
-      blockName <- paste("D", blockFrame[1], sep = "")
-      filename <- paste(
-        blockName,
-        "row",
-        blockFrame[2],
-        blockFrame[3],
-        "col",
-        blockFrame[4],
-        blockFrame[5],
-        "RData",
-        sep = "."
-      )
-      file <- paste(dir, filename, sep = "/")
-      load(file)
-      assign("predictedGenes", D1)
-      
-      ## remove stored single block file
-      blockFilenames <- c(
-        paste(
-          blockName,
-          "row",
-          blockFrame[2],
-          blockFrame[3],
-          "col",
-          blockFrame[4],
-          blockFrame[5],
-          "RData",
-          sep = "."
+        flog.info("block size is set to 0, BEclear is started in \n")
+        flog.info("non-parallel mode on the whole data matrix")
+        ## start BEclear in non-parallel mode, just with one block
+        blockFrame <- t(as.matrix(c(1, 1, nrow(data), 1,
+                                    ncol(data))))
+        blockFrame <- as.data.frame(blockFrame)
+        blocksDone <- imputeMissingDataForBlock(data=data, block = 1, blockFrame
+                                                = blockFrame, dir = dir, 
+                                                epochs = epochs)
+        ## load block
+        blockName <- paste("D", blockFrame[1], sep = "")
+        filename <- paste(
+            blockName,
+            "row",
+            blockFrame[2],
+            blockFrame[3],
+            "col",
+            blockFrame[4],
+            blockFrame[5],
+            "RData",
+            sep = "."
         )
-      )
-      filedir <- paste(dir, blockFilenames, sep = "/")
-      file.remove(filedir)
-      
-      remove(D1, blockFrame)
-      
-    } else {
-      ## run BEclear in parallel mode
-      flog.info("BEclear is startet in parallel mode:")
-      flog.info(paste("block size:", rowBlockSize, " x ", colBlockSize))
-      ## calculate start - and stop position for every block
-      if (nrow(data) < rowBlockSize) {
-        rowBlockSize <- nrow(data)
-      }
-      if (ncol(data) < colBlockSize) {
-        colBlockSize <- ncol(data)
-      }
-      rowPos <- calcPositions(nrow(data), rowBlockSize)
-      colPos <- calcPositions(ncol(data), colBlockSize)
-      blockFrame <- calcBlockFrame(rowPos, colPos, rowBlockSize, colBlockSize)
-      remove(rowBlockSize, colBlockSize)
-      
-      ## only block numbers needed to distribute the blocks onto
-      ## the worker slaves
-      blockNumbers <- blockFrame[, 1]
-      ## run BEclear in parallel mode
-      blocksDone <-
-        unlist(bplapply(blockNumbers, imputeMissingDataForBlock, data=data, 
-                        blockFrame = blockFrame, dir = dir, epochs = epochs,
-                        BPPARAM = BPPARAM))
-      
-      ## combine the blocks to the predictedGenes data.frame
-      predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)
-      colnames(predictedGenes) <- colnames(data)
-      
-      ## remove all stored single block files
-      blockFilenames <- c()
-      for (i in seq_len(nrow(blockFrame))) {
-        row <- paste(
-          "D",
-          blockFrame$number[i],
-          ".row.",
-          blockFrame$rowStartPos[i],
-          ".",
-          blockFrame$rowStopPos[i],
-          ".col.",
-          blockFrame$colStartPos[i],
-          ".",
-          blockFrame$colStopPos[i],
-          ".RData",
-          sep = ""
+        file <- paste(dir, filename, sep = "/")
+        load(file)
+        assign("predictedGenes", D1)
+        
+        ## remove stored single block file
+        blockFilenames <- c(
+            paste(
+                blockName,
+                "row",
+                blockFrame[2],
+                blockFrame[3],
+                "col",
+                blockFrame[4],
+                blockFrame[5],
+                "RData",
+                sep = "."
+            )
         )
-        blockFilenames <- c(blockFilenames, row)
-      }
-      for (i in seq_len(length(blockFilenames))) {
-        filedir <- paste(dir, blockFilenames[i], sep = "/")
+        filedir <- paste(dir, blockFilenames, sep = "/")
         file.remove(filedir)
-      }
-      
-      remove(blockFrame, blockNumbers, colPos, rowPos)
-
+        
+        remove(D1, blockFrame)
+        
+    } else {
+        ## run BEclear in parallel mode
+        flog.info("BEclear is startet in parallel mode:")
+        flog.info(paste("block size:", rowBlockSize, " x ", colBlockSize))
+        ## calculate start - and stop position for every block
+        if (nrow(data) < rowBlockSize) {
+            rowBlockSize <- nrow(data)
+        }
+        if (ncol(data) < colBlockSize) {
+            colBlockSize <- ncol(data)
+        }
+        rowPos <- calcPositions(nrow(data), rowBlockSize)
+        colPos <- calcPositions(ncol(data), colBlockSize)
+        blockFrame <- calcBlockFrame(rowPos, colPos, rowBlockSize, colBlockSize)
+        remove(rowBlockSize, colBlockSize)
+        
+        ## only block numbers needed to distribute the blocks onto
+        ## the worker slaves
+        blockNumbers <- blockFrame[, 1]
+        ## run BEclear in parallel mode
+        blocksDone <-
+            unlist(bplapply(blockNumbers, imputeMissingDataForBlock, data=data, 
+                            blockFrame = blockFrame, dir = dir, epochs = epochs,
+                            BPPARAM = BPPARAM))
+        
+        ## combine the blocks to the predictedGenes data.frame
+        predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)
+        colnames(predictedGenes) <- colnames(data)
+        
+        ## remove all stored single block files
+        blockFilenames <- c()
+        for (i in seq_len(nrow(blockFrame))) {
+            row <- paste(
+                "D",
+                blockFrame$number[i],
+                ".row.",
+                blockFrame$rowStartPos[i],
+                ".",
+                blockFrame$rowStopPos[i],
+                ".col.",
+                blockFrame$colStartPos[i],
+                ".",
+                blockFrame$colStopPos[i],
+                ".RData",
+                sep = ""
+            )
+            blockFilenames <- c(blockFilenames, row)
+        }
+        for (i in seq_len(length(blockFilenames))) {
+            filedir <- paste(dir, blockFilenames[i], sep = "/")
+            file.remove(filedir)
+        }
+        
+        remove(blockFrame, blockNumbers, colPos, rowPos)
+        
     }
     
     ## save block as predictedGenes
     predictedGenes <- as.data.frame(predictedGenes)
     if (outputFormat == "RData") {
-
-      filename = paste("predicted.genes", "RData", sep = ".")
-      save(predictedGenes, file = paste(dir, filename, sep = "/"))
-      
+        
+        filename = paste("predicted.genes", "RData", sep = ".")
+        save(predictedGenes, file = paste(dir, filename, sep = "/"))
+        
     } else if (outputFormat == "txt") {
-      
-      filename = paste("predicted.genes", "txt", sep = ".")
-      write.table(predictedGenes, file = paste(dir, filename, sep = "/"),
-                  row.names = TRUE, col.names = TRUE, sep = "\t")
-      
+        
+        filename = paste("predicted.genes", "txt", sep = ".")
+        write.table(predictedGenes, file = paste(dir, filename, sep = "/"),
+                    row.names = TRUE, col.names = TRUE, sep = "\t")
+        
     }
     return(as.matrix(predictedGenes))
     
-    }
+}

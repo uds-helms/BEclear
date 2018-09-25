@@ -70,4 +70,3 @@ calcSummary <- function(medians, pvalues) {
     }
     return(summaryTable)
 }
-

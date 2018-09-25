@@ -86,8 +86,9 @@
 #' makeBoxplot(data=ex.data, samples=ex.samples, score=score, bySamples=TRUE,
 #' main="Some box plot")
 
-makeBoxplot <- function(data, samples, score, bySamples=FALSE,
-    col="standard", main="", xlab="Batch", ylab="Beta value", scoreCol=TRUE) {
+makeBoxplot <- function(data, samples, score, bySamples=FALSE, col="standard",
+                        main="", xlab="Batch", ylab="Beta value", 
+                        scoreCol=TRUE) {
     if (bySamples == FALSE) {
         ## get batch numbers
         batches <- sort(unique(samples$batch_id))
@@ -96,7 +97,7 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
         for (i in seq_len(length(batches)))
         {
             s<-as.character(samples[samples$batch_id == batches[i], 
-                "sample_id"])
+                                    "sample_id"])
             boxplotData[[as.character(batches[i])]] <- as.vector(as.matrix(
                 data[, s]))
             remove(s)
@@ -112,8 +113,8 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
         
         ## make boxplot
         boxplot(boxplotData, col=coloring, main=main, xlab=xlab, ylab=ylab,
-            names=annotation, cex.axis=1, xaxt="n")
-
+                names=annotation, cex.axis=1, xaxt="n")
+        
         if (scoreCol == TRUE) {
             ## get scoring colors for the x-axis labels
             colors <- c()
@@ -123,7 +124,7 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
                 } else
                     if (score$BEscore[score$batch == i] >= 0.02 & 
                         score$BEscore[score$batch == i] < 1) {
-                            colors <- c(colors, "orange")
+                        colors <- c(colors, "orange")
                     } else
                         if (score$BEscore[score$batch == i] < 0.02) {
                             colors <- c(colors, "darkgreen")
@@ -133,11 +134,11 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
         else {
             colors <- rep("black", length(batches))
         }
-
+        
         ## add colored batch number to x-axis
         for (i in seq_len(length(batches))) {
             mtext(batches[i], side=1, line=1, at=i, las=2, cex=1,
-                col=colors[i])
+                  col=colors[i])
         }
     }
     else {
@@ -149,18 +150,18 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
         samplesNew <- samplesNew[order(samplesNew$batch_id), ]
         ## take sample_ids
         barcodes <- samplesNew$sample_id
-
+        
         ## prepare data
         boxplotData<-list()
         for (i in seq_len(length(barcodes)))
         {
             s <- as.character(samplesNew[samplesNew$sample_id == barcodes[i],
-                "sample_id"])
+                                         "sample_id"])
             boxplotData[[as.character(barcodes[i])]] <- as.vector(as.matrix(
                 data[, s]))
             remove(s)
         }
-
+        
         annotation <- rep("", length(barcodes))
         par(las=2)
         ## get colors for the boxes
@@ -185,7 +186,7 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
                         } else
                             if (colnum == 4) {
                                 coloring <- c(coloring, rep("green",
-                                    countings[i]))
+                                                            countings[i]))
                                 colnum=1
                             }
             }
@@ -193,11 +194,11 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
         else {
             coloring=col
         }
-
+        
         ## make the boxplot
         boxplot(boxplotData, main=main, xlab=xlab, ylab=ylab,
-            names=annotation, col=coloring, cex.axis=0.8, xaxt="n")
-
+                names=annotation, col=coloring, cex.axis=0.8, xaxt="n")
+        
         ## get scoring colors for the x-axis labels
         if (scoreCol == TRUE) {
             colors <- c()
@@ -206,7 +207,7 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
                     colors <- c(colors, "red")
                 } else
                     if (score$BEscore[score$batch == i] >= 0.02 & 
-                            score$BEscore[score$batch == i] < 1) {
+                        score$BEscore[score$batch == i] < 1) {
                         colors <- c(colors, "orange")
                     } else
                         if (score$BEscore[score$batch == i] < 0.02) {
@@ -217,7 +218,7 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
         else {
             colors <- rep("black", length(batches))
         }
-
+        
         ## calculate positions to add text for every batch
         positionsText <- c()
         positionCounter <- 0
@@ -225,18 +226,18 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
             if (countings[i] == 1) {
                 positionsText <- c(positionsText, positionCounter+1)
             } else
-            if (countings[i] == 2) {
-                positionsText <- c(positionsText, positionCounter+1)
-            } else
-            if (countings[i] == 3) {
-                positionsText <- c(positionsText, positionCounter+2)
-            } else
-            ## nearly the mid position of the batch
-            if (countings[i] >= 4) {
-                positionsText <- c(positionsText, positionCounter+
-                    ceiling(countings[i]/2))
-            }
-        positionCounter <- positionCounter + countings[i]
+                if (countings[i] == 2) {
+                    positionsText <- c(positionsText, positionCounter+1)
+                } else
+                    if (countings[i] == 3) {
+                        positionsText <- c(positionsText, positionCounter+2)
+                    } else
+                        ## nearly the mid position of the batch
+                        if (countings[i] >= 4) {
+                            positionsText <- c(positionsText, positionCounter+
+                                                   ceiling(countings[i]/2))
+                        }
+            positionCounter <- positionCounter + countings[i]
         }
         
         ## add colored batch number to x-axis
@@ -245,16 +246,16 @@ makeBoxplot <- function(data, samples, score, bySamples=FALSE,
             if (batchCounter == length(batches) + 1) {
                 break;
             } else
-            ## add number if i is on positionText of batch batchCounter
-            if (i == positionsText[batchCounter]) {
-                mtext(batches[batchCounter], side=1, line=1, at=i, las=2, 
-                    cex=1, col=colors[batchCounter])
-                batchCounter <- batchCounter + 1
-            } else
-            ## add "" if not
-            if (i != positionsText[batchCounter]) {
-                mtext("", side=1, line=1, at=i, las=2, cex=1)
-            }
+                ## add number if i is on positionText of batch batchCounter
+                if (i == positionsText[batchCounter]) {
+                    mtext(batches[batchCounter], side=1, line=1, at=i, las=2, 
+                          cex=1, col=colors[batchCounter])
+                    batchCounter <- batchCounter + 1
+                } else
+                    ## add "" if not
+                    if (i != positionsText[batchCounter]) {
+                        mtext("", side=1, line=1, at=i, las=2, cex=1)
+                    }
         }
     }
 }

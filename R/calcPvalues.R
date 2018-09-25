@@ -60,18 +60,18 @@ calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr",
     
     ## get genes
     genes <- rownames(data)
-
+    
     ## construct data.frames filled with NA, one row per gene, one column per 
     ## batch
     pvalues <- as.data.frame(matrix(NA, nrow=length(genes),
-        ncol=length(batches)))
+                                    ncol=length(batches)))
     rownames(pvalues) <- genes
     colnames(pvalues) <- batches
-
+    
     result <- bplapply(batches, calcPvalsForBatch, genes = genes, 
                        pvalues = pvalues, samples = samples, data = data,
                        BPPARAM=BPPARAM)
-
+    
     ## fill pvalue matrix from result
     result <- unlist(result)
     counter <- 1
@@ -82,17 +82,17 @@ calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr",
         }
     }
     remove(result, counter, i, j)
-
+    
     ## pvalue adjustment
     if (adjusted == TRUE) {
         pvaluesAdjusted <- pvalues
         ## p-value adjustment with false discovery rate
         for(i in seq_len(nrow(pvaluesAdjusted))) {
             pvaluesAdjusted[i, ] <- p.adjust(pvaluesAdjusted[i, ],
-                method=method)
+                                             method=method)
         }
         pvalues <- pvaluesAdjusted
     }
-
+    
     return(pvalues)
 }

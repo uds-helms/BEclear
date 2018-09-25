@@ -16,3 +16,4 @@ biocViews: BatchEffect, DNAMethylation, Software
 RoxygenNote: 6.1.0
 RdMacros: Rdpack
 Encoding: UTF-8
+BugReports: https://github.com/David-J-R/BEclear

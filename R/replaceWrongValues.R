@@ -37,7 +37,7 @@
 #' corrected <- replaceWrongValues(data=ex.corrected.data)
 
 replaceWrongValues <- function(data) {
-  flog.info("Replacing values below 0 or above 1:")
+    flog.info("Replacing values below 0 or above 1:")
     counter <- 0
     for(i in seq_len(nrow(data))) {
         for(j in seq_len(ncol(data))) {

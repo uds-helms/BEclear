@@ -69,6 +69,6 @@ clearBEgenes <- function(data, samples, summary) {
     amount <- sum(is.na(data)) / (nrow(data) * ncol(data))
     flog.info("Removing values with batch effect:")
     flog.info(paste(sum(is.na(data)), "values (", amount * 100,
-        "% of the data) set to NA", sep=" "))
+                    "% of the data) set to NA", sep=" "))
     return(data)
 }

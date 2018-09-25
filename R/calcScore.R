@@ -29,7 +29,7 @@
 #' we assume a not severe batch effect, and values beyond 0.1 certainly describe
 #' a batch effect and should definitely be corrected.\cr 
 #' The 11 columns containing the numbers of found genes count the median 
-#' difference values which are ranging from >= 0.05 to < 0.1 ; >= 0.1 to < 0.2 ; 
+#' difference values which are ranging from >= 0.05 to < 0.1 ; >= 0.1 to < 0.2;
 #' >= 0.2 to < 0.3 and so on up to a limit of 1.\cr
 #' The BEscore is calculated by the sum of the weighted number of genes divided 
 #' by the number of genes. Weightings are calculated by multiplicating the 
@@ -87,7 +87,8 @@ calcScore <- function(data, samples, summary, dir=getwd()) {
     ## table with number of found genes & score for every batch
     geneTableMedians <- as.data.frame(matrix(ncol=12))
     colnames(geneTableMedians) <- c("batch", "0.05", "0.1", "0.2", "0.3",
-        "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "BEscore")
+                                    "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", 
+                                    "BEscore")
     counter <- count005 <- count01 <- count02 <- count03 <- count04 <-
         count05 <- count06 <- count07 <- count08 <- count09 <- 0
     for (s in batches) {
@@ -96,43 +97,43 @@ calcScore <- function(data, samples, summary, dir=getwd()) {
             ## values belong to batch s
             if (summary[i, "batch"] == s) {
                 if (summary[i, "median"] >= 0.05 & summary[i, "median"] < 0.1 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count005 <- count005 + 1
                 }
                 if (summary[i, "median"] >= 0.1 & summary[i, "median"] < 0.2 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count01 <- count01 + 1
                 }
                 if (summary[i, "median"] >= 0.2 & summary[i, "median"] < 0.3 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count02 <- count02 + 1
                 }
                 if (summary[i, "median"] >= 0.3 & summary[i, "median"] < 0.4 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count03 <- count03 + 1
                 }
                 if (summary[i, "median"] >= 0.4 & summary[i, "median"] < 0.5 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count04 <- count04 + 1
                 }
                 if (summary[i, "median"] >= 0.5 & summary[i, "median"] < 0.6 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count05 <- count05 + 1
                 }
                 if (summary[i, "median"] >= 0.6 & summary[i, "median"] < 0.7 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count06 <- count06 + 1
                 }
                 if (summary[i, "median"] >= 0.7 & summary[i, "median"] < 0.8 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count07 <- count07 + 1
                 }
                 if (summary[i, "median"] >= 0.8 & summary[i, "median"] < 0.9 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count08 <- count08 + 1
                 }
                 if (summary[i, "median"] >= 0.9 & summary[i, "median"] < 1 &
-                        summary[i, "pvalue"] <= 0.01) {
+                    summary[i, "pvalue"] <= 0.01) {
                     count09 <- count09 + 1
                 }
             }
@@ -158,9 +159,9 @@ calcScore <- function(data, samples, summary, dir=getwd()) {
         count005 <- count01 <- count02 <- count03 <- count04 <- count05 <- 
             count06 <- count07 <- count08 <- count09 <- 0
     }
-
+    
     remove(counter, count005, count01, count02, count03, count04, count05, 
-        count06, count07, count08, count09, beScore, i, s)
+           count06, count07, count08, count09, beScore, i, s)
     scoreTable <- geneTableMedians
     remove(geneTableMedians)
     filename="score.table.Rdata"

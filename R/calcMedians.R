@@ -48,18 +48,18 @@ calcMedians <- function(data, samples, BPPARAM=bpparam()) {
     flog.info(paste("Calculating the medians for", length(batches), "batches"))
     ## get genes
     genes <- rownames(data)
-
+    
     ## construct data.frames filled with NA, one row per gene, one column per 
     ## batch
     medianDif <- as.data.frame(matrix(NA, nrow=length(genes),
-        ncol=length(batches)))
+                                      ncol=length(batches)))
     rownames(medianDif) <- genes
     colnames(medianDif) <- batches
-
+    
     result <- bplapply(batches, calcMediansForBatch, genes = genes, 
                        medianDif = medianDif, samples = samples,
                        data = data, BPPARAM=BPPARAM)
-      
+    
     ## fill median matrix from result
     result <- unlist(result)
     counter <- 1
@@ -70,6 +70,6 @@ calcMedians <- function(data, samples, BPPARAM=bpparam()) {
         }
     }
     remove(result, counter, i, j)
-
+    
     return(medianDif)
 }
