@@ -35,7 +35,7 @@ contained in the input matrix.
 \description{
 Compares the distribution of all beta values corresponding to 
 one batch with the distribution of all beta values corresponding to all 
-other batches and retuns a p-value which defines if the distributions are 
+other batches and returns a p-value which defines if the distributions are 
 the same or not. Standard two sided Kolmogorov-Smirnov test is used to 
 calculate the (adjusted) p-values.
 }

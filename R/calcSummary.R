@@ -14,7 +14,7 @@
 #' these two functions.
 #' 
 #' @details All genes with a median comparison value >= 0.05 and a p-value 
-#' of <= 0.01 aresummarized into a data.frame. These genes are assumed to 
+#' of <= 0.01 are summarized into a data.frame. These genes are assumed to 
 #' contain a batch effect
 #' 
 #' @param medians a matrix containing median difference values calculated by 

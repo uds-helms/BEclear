@@ -11,7 +11,7 @@ the result as a list (elements can be accessed with x$Li or x$Ri,
 where x is the returned list)
 }
 \description{
-compute the local loss of the p-th revelead entry for 
+compute the local loss of the p-th revealed entry for 
 factorization LR
 }
 \keyword{internal}

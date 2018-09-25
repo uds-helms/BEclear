@@ -22,7 +22,7 @@ information about this feature.}
 \item{colBlockSize}{the number of columns that is used in a block if the 
 function is run in parallel mode and/or not on the whole matrix. Set this, 
 and the "rowBlockSize" parameter to 0 if you want to run the function on the 
-whole input matrix. We suggest to use a block size of 60 but you canalso use
+whole input matrix. We suggest to use a block size of 60 but you can also use
 any other block size, but the size has to be bigger than the number of 
 samples in the biggest batch. Look at the details section for more 
 information about this feature.}
@@ -43,7 +43,7 @@ parallelisation of the functions will be evaluated.}
 }
 \value{
 Returns a data matrix with the same dimensions as well as same row 
-and column names as the input matrix. According to the "outputFormat" 
+and column names as the input matrix. According to the "outputFormat"
 parameter, either a .RData file containing only the returned matrix or a 
 tab-delimited .txt file containing the content of the returned matrix is 
 saved in the specified directory.
@@ -98,9 +98,9 @@ You have the possibility to change the size of the blocks in which the input
 matrix can be divided. if you choose e.g. the rowBlockSize = 50 and the 
 colBlockSize = 60 your matrix will be cut into smaller matrices of the size 
 approximately 50x60. Note that this splitting algorithm works with every 
-possible matrix size! If both size parameters do not fit to the dimensions of 
+possible matrix size! If both size parameters do not fit to the dimensions of
 the input matrix, the remaining rows and columns of the input matrix are 
-distributed over some blocks, so that the block sizes are roughly of the same 
+distributed over some blocks, so that the block sizes are roughly of the same
 size. All blocks are saved at the specified directory after the processing 
 of a block has been done within an RData file. These RData files are 
 continuously numbered and contain the row and column start and stop 
@@ -110,11 +110,11 @@ blocks are deleted. To see how this is done, simply run the example at the
 end of this documentation. We suggest to use the block size of 60 (default) 
 but you can also use any other block size, as far as it is bigger than the 
 number of samples in the biggest batch. This avoids having an entire row of 
-NA values in a block which leads to a crash of the imputeMissingData method. In order 
-to process the complete matrix without dividing into blocks, specify 
-rowBlockSize = 0 and colBlockSize = 0. But if the input matrix is large 
-(more than 200x200), it is not recommended due to exponential increase of 
-computation time required.\cr
+NA values in a block which leads to a crash of the imputeMissingData method.
+In order  to process the complete matrix without dividing into blocks, 
+specify rowBlockSize = 0 and colBlockSize = 0. But if the input matrix is 
+large (more than 200x200), it is not recommended due to exponential increase
+of computation time required.\cr
 Note that the size of the blocks affect the prediction accuracy. In case of 
 very small blocks, the information obtained from neighbor entries is not 
 sufficient. Thus, the larger the size of the block is, the more accurately 

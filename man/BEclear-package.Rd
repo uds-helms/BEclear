@@ -30,7 +30,7 @@ columns define the batch numbers, rows the gene names.\cr
 \code{\link{calcPvalues}}:
 Compares the distribution of all beta values corresponding to one batch with
 the distribution of all beta values corresponding to all other batches and
-retuns a p-value which defines if the distributions are the same or not.\cr
+returns a p-value which defines if the distributions are the same or not.\cr
 \code{\link{calcSummary}}:
 Summarizes the results of the median comparison function
 \code{\link{calcMedians}} and the p-value calculation function
@@ -104,6 +104,13 @@ corrected <- replaceWrongValues(data=predicted)
 }
 \references{
 \insertRef{Akulenko2016}{BEclear}
+}
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://github.com/David-J-R/BEclear}
+}
+
 }
 \author{
 Ruslan Akulenko, Markus Merl

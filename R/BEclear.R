@@ -29,7 +29,7 @@
 #'\code{\link{calcPvalues}}:
 #'Compares the distribution of all beta values corresponding to one batch with
 #'the distribution of all beta values corresponding to all other batches and
-#'retuns a p-value which defines if the distributions are the same or not.\cr
+#'returns a p-value which defines if the distributions are the same or not.\cr
 #'\code{\link{calcSummary}}:
 #'Summarizes the results of the median comparison function
 #'\code{\link{calcMedians}} and the p-value calculation function
@@ -123,7 +123,7 @@
 #'
 #'@format An example data matrix that is filled with beta values originally 
 #'stemming from breast cancer data from the TCGA portal [1], colnames are 
-#'sample ids, rownames are gene names. Generally, beta values are claculated by 
+#'sample ids, rownames are gene names. Generally, beta values are calculated by 
 #'dividing the methylated signal by the sum of the unmethylated and methylated 
 #'signals from a DNA methylation microrarray. The sample data used here 
 #'contains averaged beta values of probes that belong to promoter regions of 
@@ -148,7 +148,7 @@
 #'
 #'
 #'
-#'@format An example data frame containing a columnfor the sample id and a 
+#'@format An example data frame containing a column for the sample id and a 
 #'column for the corresponding batch id, stemming from breast cancer data 
 #'from the TCGA portal [1]
 #'

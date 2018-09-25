@@ -8,7 +8,7 @@
 \title{Example data set for the BEclear-package}
 \format{An example data matrix that is filled with beta values originally 
 stemming from breast cancer data from the TCGA portal [1], colnames are 
-sample ids, rownames are gene names. Generally, beta values are claculated by 
+sample ids, rownames are gene names. Generally, beta values are calculated by 
 dividing the methylated signal by the sum of the unmethylated and methylated 
 signals from a DNA methylation microrarray. The sample data used here 
 contains averaged beta values of probes that belong to promoter regions of 

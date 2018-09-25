@@ -4,7 +4,7 @@
 #' 
 #' @description counts for every index, the number of non-zero entries
 #' 
-#' @return a vector n containg the number of non-zero entries per index
+#' @return a vector n containing the number of non-zero entries per index
 nnz <- function(indexes, l=max(indexes)) {
     ## array of l entries with 0
     n <- rep(0, l)

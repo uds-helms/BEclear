@@ -7,7 +7,7 @@
 nnz(indexes, l = max(indexes))
 }
 \value{
-a vector n containg the number of non-zero entries per index
+a vector n containing the number of non-zero entries per index
 }
 \description{
 counts for every index, the number of non-zero entries

@@ -2,7 +2,7 @@
 #' 
 #' @keywords internal
 #' 
-#' @description compute the local loss of the p-th revelead entry for 
+#' @description compute the local loss of the p-th revealed entry for 
 #' factorization LR
 #' 
 #' @return  the result as a list (elements can be accessed with x$Li or x$Ri, 

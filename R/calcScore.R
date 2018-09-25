@@ -25,14 +25,14 @@
 #' the found number of genes and the more extreme the median difference is, the 
 #' more severe is the assumed batch effect supposed to be. We suggest that there
 #' is no need for a batch effect correction if the BEscore for a batch is less 
-#' than 0.02. BEscores between 0.02 and 0.1 are lying in a "grey zone" for which
+#' than 0.02. BEscores between 0.02 and 0.1 are lying in a "gray area" for which
 #' we assume a not severe batch effect, and values beyond 0.1 certainly describe
 #' a batch effect and should definitely be corrected.\cr 
 #' The 11 columns containing the numbers of found genes count the median 
 #' difference values which are ranging from >= 0.05 to < 0.1 ; >= 0.1 to < 0.2;
 #' >= 0.2 to < 0.3 and so on up to a limit of 1.\cr
 #' The BEscore is calculated by the sum of the weighted number of genes divided 
-#' by the number of genes. Weightings are calculated by multiplicating the 
+#' by the number of genes. Weightings are calculated by multiplication of the 
 #' number of found genes between 0.05 and 0.1 by 1, between 0.1 and 0.2 by 2, 
 #' between 0.2 and 0.3 by 4, between 0.3 and 0.4 by 6 and so on.
 #' 

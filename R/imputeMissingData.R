@@ -95,7 +95,7 @@
 #' @param colBlockSize the number of columns that is used in a block if the 
 #' function is run in parallel mode and/or not on the whole matrix. Set this, 
 #' and the "rowBlockSize" parameter to 0 if you want to run the function on the 
-#' whole input matrix. We suggest to use a block size of 60 but you canalso use
+#' whole input matrix. We suggest to use a block size of 60 but you can also use
 #' any other block size, but the size has to be bigger than the number of 
 #' samples in the biggest batch. Look at the details section for more 
 #' information about this feature.
