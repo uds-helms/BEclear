@@ -4,6 +4,8 @@
 #'
 #'@description  function to calculate p-values for every gene in a batch
 #'
+#'@importFrom stats ks.test
+#'
 #'@return the p-values for genes in a batch
 calcPvalsForBatch <- function(batch, genes, pvalues, samples, data) {
     pvals <- as.data.frame(matrix(NA, nrow=length(genes), ncol=1))

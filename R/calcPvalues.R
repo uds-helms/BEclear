@@ -53,7 +53,7 @@
 #' pvals <- calcPvalues(data=ex.data, samples=ex.samples,method="fdr")
 
 calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr", 
-                        BPPARAM=bpparam()) {
+                        BPPARAM=) {
     ## get batch numbers
     batches <- unique(samples$batch_id)
     flog.info(paste("Calculating the p-values for", length(batches), "batches"))

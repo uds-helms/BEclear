@@ -2,6 +2,7 @@
 #' 
 #' @import futile.logger
 #' @import Matrix
+#' @importFrom stats rnorm
 #' 
 #' @keywords internal
 #' 

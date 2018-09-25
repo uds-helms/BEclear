@@ -4,6 +4,8 @@
 #'  
 #' @description  computation of the loss of factorization LR
 #' 
+#' @import Matrix
+#' 
 #' @return The loss calculated
 loss <- function(L, R, lambda, N, is, js, D) {
     lossResult <- 0

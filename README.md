@@ -16,7 +16,7 @@ biocLite("BEclear")
 ```
 
 ```r
-# Installation of the development version from GitHub:
+# Installation of the development version from GitHub
 
 # install.packages("devtools")
 library(devtools)

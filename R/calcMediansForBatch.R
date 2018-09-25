@@ -3,6 +3,8 @@
 #' @keywords internal
 #'
 #' @description  function to calculate medians for every gene for a batch
+#' 
+#' @importFrom stats median
 #'
 #' @return the medians for genes in a batch
 calcMediansForBatch <- function(batch, genes, medianDif, samples, data) {

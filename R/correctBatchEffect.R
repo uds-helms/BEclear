@@ -127,17 +127,10 @@
 #' predicted <- result$predictedData
 #' corrected <- result$correctedPredictedData
 
-correctBatchEffect <-
-    function(data,
-             samples,
-             adjusted = TRUE,
-             method = "fdr",
-             rowBlockSize = 60,
-             colBlockSize = 60,
-             epochs = 50,
-             outputFormat = "RData",
-             dir = getwd(),
-             BPPARAM = bpparam()) {
+correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
+                               rowBlockSize = 60, colBlockSize = 60, 
+                               epochs = 50, outputFormat = "RData",
+                               dir = getwd(), BPPARAM = bpparam()) {
         med <- calcMedians(data, samples, BPPARAM = BPPARAM)
         pval <-
             calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
@@ -145,13 +138,8 @@ correctBatchEffect <-
         score <- calcScore(data, samples, sum)
         cleared <- clearBEgenes(data, samples, sum)
         predicted <-
-            imputeMissingData (cleared,
-                               rowBlockSize,
-                               colBlockSize,
-                               epochs,
-                               outputFormat,
-                               dir,
-                               BPPARAM = BPPARAM)
+            imputeMissingData (cleared, rowBlockSize, colBlockSize, epochs,
+                               outputFormat, dir, BPPARAM = BPPARAM)
         corrected <- replaceWrongValues(predicted)
         
         return(
