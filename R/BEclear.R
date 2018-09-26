@@ -1218,7 +1218,7 @@ correctBatchEffect <- function(data, samples, parallel=TRUE, cores=4,
     sum <- calcSummary(med, pval)
     score <- calcScore(data, samples, sum)
     cleared <- clearBEgenes(data, samples, sum)
-    predicted <- BEclear(data, parallel, cores, rowBlockSize, colBlockSize,
+    predicted <- BEclear(cleared, parallel, cores, rowBlockSize, colBlockSize,
         epochs, outputFormat, dir)
     corrected <- replaceWrongValues(predicted)
 
