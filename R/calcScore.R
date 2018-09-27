@@ -95,47 +95,30 @@ calcScore <- function(data, samples, summary, dir=getwd()) {
         counter <- counter + 1
         for (i in seq_len(nrow(summary))) {
             ## values belong to batch s
-            if (summary[i, "batch"] == s) {
-                if (summary[i, "median"] >= 0.05 & summary[i, "median"] < 0.1 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count005 <- count005 + 1
-                }
-                if (summary[i, "median"] >= 0.1 & summary[i, "median"] < 0.2 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count01 <- count01 + 1
-                }
-                if (summary[i, "median"] >= 0.2 & summary[i, "median"] < 0.3 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count02 <- count02 + 1
-                }
-                if (summary[i, "median"] >= 0.3 & summary[i, "median"] < 0.4 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count03 <- count03 + 1
-                }
-                if (summary[i, "median"] >= 0.4 & summary[i, "median"] < 0.5 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count04 <- count04 + 1
-                }
-                if (summary[i, "median"] >= 0.5 & summary[i, "median"] < 0.6 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count05 <- count05 + 1
-                }
-                if (summary[i, "median"] >= 0.6 & summary[i, "median"] < 0.7 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count06 <- count06 + 1
-                }
-                if (summary[i, "median"] >= 0.7 & summary[i, "median"] < 0.8 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count07 <- count07 + 1
-                }
-                if (summary[i, "median"] >= 0.8 & summary[i, "median"] < 0.9 &
-                    summary[i, "pvalue"] <= 0.01) {
-                    count08 <- count08 + 1
-                }
-                if (summary[i, "median"] >= 0.9 & summary[i, "median"] < 1 &
-                    summary[i, "pvalue"] <= 0.01) {
+            if (summary[i, "batch"] == s & summary[i, "pvalue"] <= 0.01) {
+                
+                if ((is.na(summary[i, "median"]) 
+                     | summary[i, "median"] >= 0.9)) {
                     count09 <- count09 + 1
-                }
+                }   else if (summary[i, "median"] >= 0.8) {
+                    count08 <- count08 + 1
+                }   else if (summary[i, "median"] >= 0.7) {
+                    count07 <- count07 + 1
+                }   else if (summary[i, "median"] >= 0.6) {
+                    count06 <- count06 + 1
+                }   else if (summary[i, "median"] >= 0.5) {
+                    count05 <- count05 + 1
+                }   else if (summary[i, "median"] >= 0.4 ) {
+                    count04 <- count04 + 1
+                }   else if (summary[i, "median"] >= 0.3) {
+                    count03 <- count03 + 1
+                }   else if (summary[i, "median"] >= 0.2) {
+                    count02 <- count02 + 1
+                }   else if (summary[i, "median"] >= 0.1) {
+                    count01 <- count01 + 1
+                }   else if (summary[i, "median"] >= 0.05) {
+                    count005 <- count005 + 1
+                } 
             }
         }
         geneTableMedians[counter, "batch"] <- s
