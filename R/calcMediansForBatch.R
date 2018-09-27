@@ -18,12 +18,16 @@ calcMediansForBatch <- function(batch, genes, medianDif, samples, data) {
             ## barcode ids of all samples from all other batches
             otherSamples <- samples$sample_id[samples$batch_id !=
                                                   colnames(medianDif)[j]]
+            
+            
             ## save medians for one gene in dif list
             dif[i, 1] <-
                 abs(median(as.numeric(data[rownames(medianDif)[i],
-                                           as.character(batchSamples)])) -
-                        median(as.numeric(data[rownames(medianDif)[i],
-                                               as.character(otherSamples)])))
+                                           as.character(batchSamples)]), 
+                           na.rm = TRUE) 
+                    - median(as.numeric(data[rownames(medianDif)[i],
+                                               as.character(otherSamples)]), 
+                               na.rm = TRUE))
         }
         return(dif)
     }

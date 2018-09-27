@@ -1,6 +1,10 @@
-Changes in version 1.13.1
-* BEclear uses now BiocParallel instead of snowfall for parallelisation
-* roxygen2 is now used for the generating the documentation
-* major code refactoring
-* some minor bug fixes 
-* performance improvements
+Changes in version 1.13.2 (2018-09-27)
+    * bug fixed that, where p-values couldn't be calculated for a gene with only
+    missing values in a batch (#1)
+
+Changes in version 1.13.1 (2018-09-25)
+    * BEclear uses now BiocParallel instead of snowfall for parallelisation
+    * roxygen2 is now used for the generating the documentation
+    * major code refactoring
+    * some minor bug fixes 
+    * performance improvements

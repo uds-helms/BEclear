@@ -77,6 +77,7 @@
 #'
 #' @export correctBatchEffect
 #' @import BiocParallel
+#' @import futile.logger
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 #' rowBlockSize=60, colBlockSize=60, epochs=50,  outputFormat="RData",
 #' dir=getwd(), BPPARAM=bpparam())
@@ -131,26 +132,27 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                rowBlockSize = 60, colBlockSize = 60, 
                                epochs = 50, outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam()) {
-        med <- calcMedians(data, samples, BPPARAM = BPPARAM)
-        pval <-
-            calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
-        sum <- calcSummary(med, pval)
-        score <- calcScore(data, samples, sum)
-        cleared <- clearBEgenes(data, samples, sum)
-        predicted <-
-            imputeMissingData (cleared, rowBlockSize, colBlockSize, epochs,
-                               outputFormat, dir, BPPARAM = BPPARAM)
-        corrected <- replaceWrongValues(predicted)
-        
-        return(
-            list(
-                medians = med,
-                pvals = pval,
-                summary = sum,
-                scoreTable = score,
-                clearedData = cleared,
-                predictedData = predicted,
-                correctedPredictedData = corrected
-            )
-        )
+    
+    na_ind <- apply(data, 1, function(x) all(is.na(x)))
+    if(any(ind)){
+        flog.warn("There are rows, that contain only missing values")
+        flog.warn(paste(sum(ind), "rows get dropped"))
+        data <- data[!na_ind, ]
     }
+    
+    med <- calcMedians(data, samples, BPPARAM = BPPARAM)
+    pval <-
+        calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
+    sum <- calcSummary(med, pval)
+    score <- calcScore(data, samples, sum)
+    cleared <- clearBEgenes(data, samples, sum)
+    predicted <-
+        imputeMissingData (cleared, rowBlockSize, colBlockSize, epochs,
+                           outputFormat, dir, BPPARAM = BPPARAM)
+    corrected <- replaceWrongValues(predicted)
+    
+    return(list(medians = med, pvals = pval, summary = sum, 
+                scoreTable = score, clearedData = cleared, 
+                predictedData = predicted, correctedPredictedData = 
+                    corrected))
+}

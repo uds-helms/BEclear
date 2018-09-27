@@ -59,7 +59,8 @@ calcSummary <- function(medians, pvalues) {
     counter <-1
     for(i in seq_len(nrow(medians))) {
         for(j in seq_len(ncol(medians))) {
-            if((medians[i, j] >= 0.05) & (pvalues[i, j] <= 0.01)) {
+            if((is.na(medians[i, j]) | (medians[i, j] >= 0.05)) 
+                 & (pvalues[i, j] <= 0.01)) {
                 summaryTable[counter, "gene"] <- rownames(medians)[i]
                 summaryTable[counter, "batch"] <- colnames(medians)[j]
                 summaryTable[counter, "median"] <- medians[i, j]

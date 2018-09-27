@@ -30,7 +30,8 @@ parallelisation of the functions will be evaluated.}
 \value{
 a matrix containing p-values for all genes in all batches, the 
 column names define the batch numbers, row names are the same gene names as 
-contained in the input matrix.
+contained in the input matrix. If there are only missing values present for
+a gene in a batch, a p-values of 0 is returned
 }
 \description{
 Compares the distribution of all beta values corresponding to 
