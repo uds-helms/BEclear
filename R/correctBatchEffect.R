@@ -134,7 +134,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                dir = getwd(), BPPARAM = bpparam()) {
     
     na_ind <- apply(data, 1, function(x) all(is.na(x)))
-    if(any(ind)){
+    if(any(na_ind)){
         flog.warn("There are rows, that contain only missing values")
         flog.warn(paste(sum(ind), "rows get dropped"))
         data <- data[!na_ind, ]
