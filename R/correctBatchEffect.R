@@ -78,6 +78,7 @@
 #' @export correctBatchEffect
 #' @import BiocParallel
 #' @import futile.logger
+#' @import data.table
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 #' rowBlockSize=60, colBlockSize=60, epochs=50,  outputFormat="RData",
 #' dir=getwd(), BPPARAM=bpparam())
@@ -139,6 +140,12 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
         flog.warn(paste(sum(naIndices), "rows get dropped"))
         data <- data[!naIndices, ]
     }
+    
+    flog.debug("Transforming matrix to data.table")
+    data <- data.table(feature=rownames(data), data)
+    
+    flog.debug("Transforming data.table back to matrix")
+    data <- as.matrix(data, rownames = "feature")
     
     med <- calcMedians(data, samples, BPPARAM = BPPARAM)
     pval <-
