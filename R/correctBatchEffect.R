@@ -133,11 +133,11 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                epochs = 50, outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam()) {
     
-    na_ind <- apply(data, 1, function(x) all(is.na(x)))
-    if(any(na_ind)){
+    naIndices <- apply(data, 1, function(x) all(is.na(x)))
+    if(any(naIndices)){
         flog.warn("There are rows, that contain only missing values")
-        flog.warn(paste(sum(ind), "rows get dropped"))
-        data <- data[!na_ind, ]
+        flog.warn(paste(sum(naIndices), "rows get dropped"))
+        data <- data[!naIndices, ]
     }
     
     med <- calcMedians(data, samples, BPPARAM = BPPARAM)
