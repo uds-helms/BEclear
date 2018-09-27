@@ -143,9 +143,12 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     
     flog.debug("Transforming matrix to data.table")
     data <- data.table(feature=rownames(data), data)
+    data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
+                 value.name = "beta.value")
     
     flog.debug("Transforming data.table back to matrix")
     data <- as.matrix(data, rownames = "feature")
+    data <- dcast(data, feature ~ sample)
     
     med <- calcMedians(data, samples, BPPARAM = BPPARAM)
     pval <-
