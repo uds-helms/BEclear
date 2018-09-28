@@ -141,20 +141,26 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
         data <- data[!naIndices, ]
     }
     
+    samples <- data.table(samples)
+    
     flog.debug("Transforming matrix to data.table")
     data <- data.table(feature=rownames(data), data)
     data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
                  value.name = "beta.value")
-    
-    flog.debug("Transforming data.table back to matrix")
-    data <- as.matrix(data, rownames = "feature")
-    data <- dcast(data, feature ~ sample)
+    setkey(data, "feature", "sample")
     
     med <- calcMedians(data, samples, BPPARAM = BPPARAM)
+    
+    flog.debug("Transforming data.table back to matrix")
+    data <- dcast(data, feature ~ sample, value.var = "beta.value")
+    data <- as.matrix(data, rownames = "feature")
+    
+    
     pval <-
         calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
     sum <- calcSummary(med, pval)
     score <- calcScore(data, samples, sum)
+    
     cleared <- clearBEgenes(data, samples, sum)
     predicted <-
         imputeMissingData (cleared, rowBlockSize, colBlockSize, epochs,

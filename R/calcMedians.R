@@ -25,6 +25,8 @@
 #' @export calcMedians
 #' @import BiocParallel
 #' @import futile.logger
+#' @import data.table
+#' @importFrom rlist list.cbind
 #' @usage calcMedians(data, samples, BPPARAM=bpparam())
 #' 
 #' @return a matrix containing median comparison values for all genes in all 
@@ -43,33 +45,24 @@
 #' medians <- calcMedians(data=ex.data, samples=ex.samples)
 
 calcMedians <- function(data, samples, BPPARAM=bpparam()) {
-    ## get batch numbers
-    batches <- unique(samples$batch_id)
-    flog.info(paste("Calculating the medians for", length(batches), "batches"))
-    ## get genes
-    genes <- rownames(data)
+
+    flog.info(paste("Calculating the medians for", samples[,uniqueN(batch_id)],
+                    "batches"))
     
-    ## construct data.frames filled with NA, one row per gene, one column per 
-    ## batch
-    medianDif <- as.data.frame(matrix(NA, nrow=length(genes),
-                                      ncol=length(batches)))
-    rownames(medianDif) <- genes
-    colnames(medianDif) <- batches
     
-    result <- bplapply(batches, calcMediansForBatch, genes = genes, 
-                       medianDif = medianDif, samples = samples,
-                       data = data, BPPARAM=BPPARAM)
+    result <- bplapply(samples[,unique(batch_id)], calcMediansForBatch, 
+                        samples = samples, data = data, BPPARAM=BPPARAM)
     
-    ## fill median matrix from result
-    result <- unlist(result)
-    counter <- 1
-    for(j in seq_len(ncol(medianDif))) {
-        for(i in seq_len(nrow(medianDif))) {
-            medianDif[i, j] <- result[counter]
-            counter <- counter + 1
-        }
-    }
-    remove(result, counter, i, j)
+    # ## fill median matrix from result
+    # result <- unlist(result)
+    # counter <- 1
+    # for(j in seq_len(ncol(medianDif))) {
+    #     for(i in seq_len(nrow(medianDif))) {
+    #         medianDif[i, j] <- result[counter]
+    #         counter <- counter + 1
+    #     }
+    # }
+    # remove(result, counter, i, j)
     
-    return(medianDif)
+    return(list.cbind(result))
 }
