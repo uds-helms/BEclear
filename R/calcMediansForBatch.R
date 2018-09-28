@@ -13,13 +13,13 @@ calcMediansForBatch <- function(batch, samples, data) {
     
     flog.debug(paste("Calculating the medians for batch", batch))
     
-    median_batch <- data[samples, , 
-                         on=.(sample = sample_id)][batch_id == batch, 
+    median_batch <- data[samples[batch_id == batch], , 
+                         on=.(sample = sample_id)][, 
                                                    median(beta.value, 
                                                           na.rm = TRUE),
                                                    by=.(feature)]$V1
-    median_others <- data[samples, , 
-                          on=.(sample = sample_id)][batch_id != batch, 
+    median_others <- data[samples[batch_id != batch], , 
+                          on=.(sample = sample_id)][, 
                                                     median(beta.value, 
                                                            na.rm = TRUE),
                                                     by=.(feature)]$V1
