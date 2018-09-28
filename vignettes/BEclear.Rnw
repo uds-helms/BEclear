@@ -11,9 +11,9 @@ options(width=65)
 \begin{document} 
 \SweaveOpts{concordance=TRUE}
 \title{BEclear - Correct for batch effects in DNA methylation data}
-\author{Markus Merl*\\
-*email: \texttt{beclear.package@gmail.com}}
-\date{Modified: February 18, 2015  Compiled: \today}
+\author{Markus Merl, David Rasp*\\
+*email: \texttt{Davod.j.Rasp@gmail.com}}
+\date{Modified: September 28, 2018  Compiled: \today}
 \maketitle
 This example guides to the BEclear package to correct for batch effects in DNA
 methylation data. The package provides some functions to detect and correct
@@ -68,7 +68,13 @@ parallel parameter should simply be set to FALSE. The resulting p-values tell
 us if a gene from a certain batch contains a batch effect or not. Thereby,
 every gene with a p-value below 0.01 is assumed as batch affected.
 <<echo=TRUE>>=
-pvals <- calcPvalues(ex.data, ex.samples, adjusted=TRUE, method="fdr")
+library(data.table)
+samples <- data.table(ex.samples)
+data <- data.table(feature=rownames(ex.data), ex.data)
+    data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
+                 value.name = "beta.value")
+    setkey(data, "feature", "sample")
+pvals <- calcPvalues(data, samples, adjusted=TRUE, method="fdr")
 @
 Returned is a data.frame containing p-values for all 10 batches and for every
 gene. We print out the p-values for 10 genes and 4 batches:
@@ -93,12 +99,6 @@ the overall deviation of this [0;1] interval. Returned is again a data.frame
 containing mdif values for every gene in every batch. We print out again the
 mdif values for the same genes and batches as before.
 <<echo=TRUE>>=
-library(data.table)
-samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-    data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-                 value.name = "beta.value")
-    setkey(data, "feature", "sample")
 mdifs <- calcMedians(data, samples)
 
 mdifs[210:220,5:8]

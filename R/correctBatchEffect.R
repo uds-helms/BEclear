@@ -152,14 +152,12 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     
     med <- calcMedians(data, samples, BPPARAM = BPPARAM)
     pval <- calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
+    sum <- calcSummary(med, pval)
     
     flog.info("Transforming data.table back to matrix")
     data <- dcast(data, feature ~ sample, value.var = "beta.value")
     data <- as.matrix(data, rownames = "feature")
     
-    
-    
-    sum <- calcSummary(med, pval)
     score <- calcScore(data, samples, sum)
     
     cleared <- clearBEgenes(data, samples, sum)

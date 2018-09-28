@@ -74,7 +74,7 @@
 #'             value.name = "beta.value")
 #'setkey(data, "feature", "sample")
 #'med <- calcMedians(data=data, samples=samples)
-#' pvals <- calcPvalues(data=ex.data, samples=ex.samples, adjusted=TRUE, 
+#' pvals <- calcPvalues(data=data, samples=samples, adjusted=TRUE, 
 #' method="fdr")
 #' 
 #' # Summarize p-values and median differences for batch affected genes 

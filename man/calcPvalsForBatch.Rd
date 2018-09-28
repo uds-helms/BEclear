@@ -4,7 +4,7 @@
 \alias{calcPvalsForBatch}
 \title{calcPvalsForBatch}
 \usage{
-calcPvalsForBatch(batch, genes, pvalues, samples, data)
+calcPvalsForBatch(batch, samples, data)
 }
 \value{
 the p-values for genes in a batch
