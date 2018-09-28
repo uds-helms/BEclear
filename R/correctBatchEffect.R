@@ -142,6 +142,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     }
     
     samples <- data.table(samples)
+    setkey(data, "batch_id", "sample_id")
     
     flog.info("Transforming matrix to data.table")
     data <- data.table(feature=rownames(data), data)
