@@ -142,7 +142,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     }
     
     samples <- data.table(samples)
-    setkey(data, "batch_id", "sample_id")
+    setkey(samples, "batch_id", "sample_id")
     
     flog.info("Transforming matrix to data.table")
     data <- data.table(feature=rownames(data), data)
@@ -151,14 +151,14 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     setkey(data, "feature", "sample")
     
     med <- calcMedians(data, samples, BPPARAM = BPPARAM)
+    pval <- calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
     
     flog.info("Transforming data.table back to matrix")
     data <- dcast(data, feature ~ sample, value.var = "beta.value")
     data <- as.matrix(data, rownames = "feature")
     
     
-    pval <-
-        calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
+    
     sum <- calcSummary(med, pval)
     score <- calcScore(data, samples, sum)
     

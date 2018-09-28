@@ -34,6 +34,7 @@
 #' @import BiocParallel
 #' @import futile.logger
 #' @importFrom stats p.adjust
+#' @importFrom rlist list.cbind
 #' @usage calcPvalues(data, samples, adjusted=TRUE, method="fdr", 
 #' BPPARAM=bpparam())
 #' 
@@ -55,34 +56,14 @@
 
 calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr", 
                         BPPARAM=bpparam()) {
-    ## get batch numbers
-    batches <- unique(samples$batch_id)
-    flog.info(paste("Calculating the p-values for", length(batches), "batches"))
+
+    flog.info(paste("Calculating the p-values for", samples[,unique(batch_id)]
+                    , "batches"))
     
-    ## get genes
-    genes <- rownames(data)
+    result <- bplapply(samples[,unique(batch_id)], calcPvalsForBatch,
+                       samples = samples, data = data, BPPARAM=BPPARAM)
     
-    ## construct data.frames filled with NA, one row per gene, one column per 
-    ## batch
-    pvalues <- as.data.frame(matrix(NA, nrow=length(genes),
-                                    ncol=length(batches)))
-    rownames(pvalues) <- genes
-    colnames(pvalues) <- batches
-    
-    result <- bplapply(batches, calcPvalsForBatch, genes = genes, 
-                       pvalues = pvalues, samples = samples, data = data,
-                       BPPARAM=BPPARAM)
-    
-    ## fill pvalue matrix from result
-    result <- unlist(result)
-    counter <- 1
-    for(j in seq_len(ncol(pvalues))) {
-        for(i in seq_len(nrow(pvalues))) {
-            pvalues[i, j] <- result[counter]
-            counter <- counter + 1
-        }
-    }
-    remove(result, counter, i, j)
+    pvalues <- list.cbind(result)
     
     ## pvalue adjustment
     if (adjusted == TRUE) {

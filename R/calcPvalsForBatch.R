@@ -7,31 +7,23 @@
 #'@importFrom stats ks.test
 #'
 #'@return the p-values for genes in a batch
-calcPvalsForBatch <- function(batch, genes, pvalues, samples, data) {
-    pvals <- as.data.frame(matrix(NA, nrow=length(genes), ncol=1))
-    rownames(pvals) <- genes
-    for(i in seq_len(nrow(pvalues))) {
-        j <- which(colnames(pvalues) == batch)
-        ## barcode ids of all samples from one batch
-        batchSamples <- samples$sample_id[samples$batch_id == 
-                                              colnames(pvalues)[j]]
-        ## barcode ids of all samples from all other batches
-        otherSamples <- samples$sample_id[samples$batch_id != 
-                                              colnames(pvalues)[j]]
-        
-        x <- as.numeric(data[rownames(pvalues)[i], as.character(batchSamples)])
-        if(all(is.na(x))){
-            ## if all beta values of a gene in a batch are NA, the p-value is 
-            ## set to zero
-            pvals[i, 1] <- 0.0
-        } else{
-            y <- as.numeric(data[rownames(pvalues)[i], 
-                                 as.character(otherSamples)])
-            ## save pvalue for one gene in pvalue matrix
-            ksResult <- ks.test(x, y)
-            pvals[i, 1] <- ksResult$p.value
-        }
-
-    }
-    return(pvals)
+calcPvalsForBatch <- function(batch, samples, data) {
+    
+    DT_batch <- samples[batch_id == batch][data,
+                  , on=.(sample_id = sample), 
+                  nomatch=0][, .(feature, beta.value)]
+    DT_other <- samples[batch_id == batch][data,
+                                           , on=.(sample_id = sample), 
+                                           nomatch=0][, .(feature, beta.value)]
+    
+    suppressWarnings(
+        p_values <- DT_batch[ ,if(all(is.na(beta.value))){0.0} 
+                              else{ks.test(beta.value, 
+                                           DT_other[feature==feature, 
+                                                    beta.value], 
+                                           exact = FALSE)$p.value}, 
+                              by=.(feature)])
+    DF <- data.frame(p_values$V1, row.names = p_values$feature)
+    colnames(DF) <- batch
+    return(DF)
 }
