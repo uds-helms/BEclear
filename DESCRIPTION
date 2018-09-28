@@ -11,8 +11,8 @@ Description: Provides some functions to detect and correct for batch effects in
     containing real numbers.
 License: GPL-2
 Depends: BiocParallel
-Imports: futile.logger, stats, Rdpack, graphics, Matrix, utils, methods, 
-data.table (>= 1.10.4), rlist
+Imports: futile.logger, stats, Rdpack, graphics, Matrix, utils, methods,
+    data.table (>= 1.10.4), rlist
 biocViews: BatchEffect, DNAMethylation, Software
 RoxygenNote: 6.1.0
 RdMacros: Rdpack

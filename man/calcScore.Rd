@@ -69,7 +69,13 @@ data(BEclearData)
 ex.data <- ex.data[31:90,7:26] 
 ex.samples <- ex.samples[7:26,]
 # Calculates median difference values and p-values from the example data
-med <- calcMedians(data=ex.data, samples=ex.samples)
+library(data.table)
+samples <- data.table(ex.samples)
+data <- data.table(feature=rownames(ex.data), ex.data)
+data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
+            value.name = "beta.value")
+setkey(data, "feature", "sample")
+med <- calcMedians(data=data, samples=samples)
 pvals <- calcPvalues(data=ex.data, samples=ex.samples, adjusted=TRUE, 
 method="fdr")
 

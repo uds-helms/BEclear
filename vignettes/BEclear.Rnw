@@ -93,7 +93,13 @@ the overall deviation of this [0;1] interval. Returned is again a data.frame
 containing mdif values for every gene in every batch. We print out again the
 mdif values for the same genes and batches as before.
 <<echo=TRUE>>=
-mdifs <- calcMedians(ex.data, ex.samples)
+library(data.table)
+samples <- data.table(ex.samples)
+data <- data.table(feature=rownames(ex.data), ex.data)
+    data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
+                 value.name = "beta.value")
+    setkey(data, "feature", "sample")
+mdifs <- calcMedians(data, samples)
 
 mdifs[210:220,5:8]
 @

@@ -1,3 +1,7 @@
+Changes in version 1.13.3
+    * usage of data.table for various functions for performance improvement
+    * simplification of the source code
+
 Changes in version 1.13.2 (2018-09-27)
     * bug fixed that, where p-values couldn't be calculated for a gene with only
     missing values in a batch (#1)

@@ -63,8 +63,14 @@
 #'
 #'@examples 
 #'data(BEclearData)
-#'## Calculate median comparison values in non-parallel mode
-#'med <- calcMedians(data=ex.data, samples=ex.samples)
+#'## Calculate median comparison values 
+#'library(data.table)
+#'samples <- data.table(ex.samples)
+#'data <- data.table(feature=rownames(ex.data), ex.data)
+#'data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
+#'             value.name = "beta.value")
+#'setkey(data, "feature", "sample")
+#'med <- calcMedians(data=data, samples=samples)
 #'
 #'## Calculate fdr-adjusted p-values in non-parallel mode
 #'pvals <- calcPvalues(data=ex.data, samples=ex.samples, adjusted=TRUE, 
@@ -105,6 +111,8 @@
 #' @references \insertRef{Akulenko2016}{BEclear}
 #' @import Rdpack
 "_PACKAGE"
+utils::globalVariables(c("batch_id", "beta.value", "feature", "sample_id", "."),
+                       package = "BEclear", add=FALSE)
 
 #'@name BEclear example methylation data
 #'
