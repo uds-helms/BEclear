@@ -27,7 +27,7 @@
 #' method is "false discovery rate adjustment", for other available methods 
 #' see the description of the used standard R package \code{\link{p.adjust}}.
 #' @param BPPARAM An instance of the 
-#' \code{\link[BiocParallel]{BiocParallelParam}} that determines how to
+#' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 #' parallelisation of the functions will be evaluated.
 #' 
 #' @export calcPvalues

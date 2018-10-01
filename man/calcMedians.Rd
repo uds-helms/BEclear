@@ -16,7 +16,7 @@ the sample numbers, the second column has to contain the corresponding batch
 number. Colnames have to be named as "sample_id" and "batch_id".}
 
 \item{BPPARAM}{An instance of the 
-\code{\link[BiocParallel]{BiocParallelParam}} that determines how to 
+\code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to 
 parallelisation of the functions will be evaluated.}
 }
 \value{

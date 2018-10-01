@@ -72,7 +72,7 @@
 #' @param dir set the path to a directory the predicted matrix should be stored.
 #' The current working directory is defined as default parameter.
 #' @param BPPARAM An instance of the
-#' \code{\link[BiocParallel]{BiocParallelParam}} that determines how to
+#' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 #' parallelisation of the functions will be evaluated.
 #'
 #' @export correctBatchEffect

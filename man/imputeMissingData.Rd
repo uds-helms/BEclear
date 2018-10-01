@@ -38,7 +38,7 @@ directory. Allowed values are "RData" and "txt".}
 stored. The current working directory is defined as default parameter.}
 
 \item{BPPARAM}{An instance of the 
-\code{\link[BiocParallel]{BiocParallelParam}} that determines how to 
+\code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to 
 parallelisation of the functions will be evaluated.}
 }
 \value{
