@@ -134,7 +134,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                epochs = 50, outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam()) {
     
-    ## checling if there are samples that are not present in the samples matrix
+    ## checking if there are samples that are not present in the samples matrix
     if(any(!colnames(data) %in% samples$sample_id)){
         ids <- paste(colnames(data)[!colnames(data) %in% samples$sample_id], 
                      collapse= ", ")
@@ -142,6 +142,15 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                    "in the samples matrix:", ids))
         flog.warn("Dropping those samples now")
         data <- data[,colnames(data) %in% samples$sample_id]
+    }
+    
+    if(any(!samples$sample_id %in% colnames(data))){
+        ids <- paste(samples$sample_id[!samples$sample_id %in% colnames(data)],
+                     collapse = ", ")
+        flog.warn("The following samples are annotated in the sample matrix,",
+                  "but aren't contained in data matrix:", ids)
+        flog.warn("Dropping those samples now")
+        samples <- samples[sample_id %in% colnames(data)]
     }
     
     ## checking if there are rows containing only missing values
@@ -158,8 +167,8 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     ##checking if there are duplicated sample names
     if(any(duplicated(colnames(data)))){
         flog.warn("Sample names aren't unique")
-        flog.warn("Transforming them to unique IDs. List with annotations will
-                  be added to the results")
+        flog.warn("Transforming them to unique IDs. List with annotations will",
+                  "be added to the results")
         uniqueIDsToSamples <- data.table(sample_id = colnames(data), 
                                          unique_id = seq_along(colnames(data)))
         colnames(data) <- uniqueIDsToSamples$unique_id
