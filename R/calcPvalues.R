@@ -33,7 +33,6 @@
 #' @import BiocParallel
 #' @import futile.logger
 #' @importFrom stats p.adjust
-#' @importFrom rlist list.cbind
 #' @usage calcPvalues(data, samples, adjusted=TRUE, method="fdr", 
 #' BPPARAM=bpparam())
 #' 
@@ -71,7 +70,7 @@ calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr",
                        samples = samples, data = data, BPPARAM=BPPARAM)
     
     flog.debug(paste("Binding", length(result), "rows of p-values together"))
-    pvalues <- list.cbind(pvalues)
+    pvalues <- do.call(cbind, pvalues)
     
     ## pvalue adjustment
     if (adjusted == TRUE) {

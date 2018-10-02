@@ -25,7 +25,6 @@
 #' @import BiocParallel
 #' @import futile.logger
 #' @import data.table
-#' @importFrom rlist list.cbind
 #' @usage calcMedians(data, samples, BPPARAM=bpparam())
 #' 
 #' @return a matrix containing median comparison values for all genes in all 
@@ -71,5 +70,5 @@ calcMedians <- function(data, samples, BPPARAM=bpparam()) {
     # }
     # remove(result, counter, i, j)
     
-    return(list.cbind(result))
+    return(do.call(cbind, result))
 }

@@ -12,7 +12,7 @@ Description: Provides some functions to detect and correct for batch effects in
 License: GPL-2
 Depends: BiocParallel (>= 1.15.12)
 Imports: futile.logger, stats, Rdpack, graphics, Matrix, utils, methods,
-    data.table (>= 1.11.8), rlist
+    data.table (>= 1.11.8)
 biocViews: BatchEffect, DNAMethylation, Software
 RoxygenNote: 6.1.0
 RdMacros: Rdpack
