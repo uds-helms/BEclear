@@ -12,9 +12,8 @@
 #' gene in every batch, columns define the batch numbers, rows the gene names.
 #' 
 #' 
-#' @param data any matrix filled with beta values, column names have to be 
-#' sample_ids corresponding to the ids listed in "samples", row names have to be
-#' gene names.
+#' @param data a \code{\link[data.table]{data.table}} with one column indicating
+#' the sample, one the features and a value column indicating the beta value
 #' @param samples data frame with two columns, the first column has to contain 
 #' the sample numbers, the second column has to contain the corresponding batch
 #' number. Colnames have to be named as "sample_id" and "batch_id".

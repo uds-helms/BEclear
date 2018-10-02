@@ -7,9 +7,8 @@
 calcMedians(data, samples, BPPARAM=bpparam())
 }
 \arguments{
-\item{data}{any matrix filled with beta values, column names have to be 
-sample_ids corresponding to the ids listed in "samples", row names have to be
-gene names.}
+\item{data}{a \code{\link[data.table]{data.table}} with one column indicating
+the sample, one the features and a value column indicating the beta value}
 
 \item{samples}{data frame with two columns, the first column has to contain 
 the sample numbers, the second column has to contain the corresponding batch
