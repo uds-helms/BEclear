@@ -136,10 +136,12 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     
     ## checling if there are samples that are not present in the samples matrix
     if(any(!colnames(data) %in% samples$sample_id)){
-        ids <- paste(colnames(data)[colnames(data) %in% samples$sample_id], 
+        ids <- paste(colnames(data)[!colnames(data) %in% samples$sample_id], 
                      collapse= ", ")
-        stop(paste("The following samples are in the data, but not annotated", 
+        flog.warn(paste("The following samples are in the data, but not annotated", 
                    "in the samples matrix:", ids))
+        flog.warn("Dropping those samples now")
+        data <- data[,colnames(data) %in% samples$sample_id]
     }
     
     ## checking if there are rows containing only missing values
@@ -161,30 +163,36 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
         uniqueIDsToSamples <- data.table(sample_id = colnames(data), 
                                          unique_id = seq_along(colnames(data)))
         colnames(data) <- uniqueIDsToSamples$unique_id
-        print(uniqueIDsToSamples)
         samples <- samples[uniqueIDsToSamples, ,
-                           on=.(sample_id = sample_id)][,.(sample_id = unique_id,
+                           on=.(sample_id = sample_id)][,
+                                                        .(sample_id = unique_id,
                                               batch_id = batch_id)]
     }
     setkey(samples, "batch_id", "sample_id")
     
     flog.info("Transforming matrix to data.table")
-    data <- data.table(feature=rownames(data), data)
-    data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
+    DT <- data.table(feature=rownames(data), data)
+    DT <- melt(data = DT, id.vars = "feature", variable.name = "sample", 
                  value.name = "beta.value")
-    setkey(data, "feature", "sample")
+    setkey(DT, "feature", "sample")
     
-    med <- calcMedians(data, samples, BPPARAM = BPPARAM)
-    pval <- calcPvalues(data, samples, adjusted, method, BPPARAM = BPPARAM)
+    med <- calcMedians(DT, samples, BPPARAM = BPPARAM)
+    pval <- calcPvalues(DT, samples, adjusted, method, BPPARAM = BPPARAM)
     sum <- calcSummary(med, pval)
     
-    flog.info("Transforming data.table back to matrix")
-    data <- dcast(data, feature ~ sample, value.var = "beta.value")
-    data <- as.matrix(data, rownames = "feature")
+    #flog.info("Transforming data.table back to matrix")
+    #data <- dcast(data, feature ~ sample, value.var = "beta.value")
+    #data <- as.matrix(data, rownames = "feature")
+    rm(DT)
+    if(is.null(sum)){
+        flog.info("There were no batch effects detected")
+        score <- NULL
+        cleared <- data
+    }else{
+        score <- calcScore(data, samples, sum)
+        cleared <- clearBEgenes(data, samples, sum)
+    }
     
-    score <- calcScore(data, samples, sum)
-    
-    cleared <- clearBEgenes(data, samples, sum)
     predicted <-
         imputeMissingData (cleared, rowBlockSize, colBlockSize, epochs,
                            outputFormat, dir, BPPARAM = BPPARAM)

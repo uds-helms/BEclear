@@ -16,7 +16,8 @@ documentation of this function.}
 documentation of this function.}
 }
 \value{
-A data frame with the columns "gene" containing the gene name, 
+Null if there are no batch effects detected, else
+ A data frame with the columns "gene" containing the gene name, 
 "batch" containing the batch number from which the gene was found, "median" 
 and "p-value" containing the calculated median difference values and the 
 p-values, respectively.
