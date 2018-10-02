@@ -67,20 +67,16 @@ calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr",
     flog.info(paste("Calculating the p-values for", samples[,unique(batch_id)]
                     , "batches"))
     
-    result <- bplapply(samples[,unique(batch_id)], calcPvalsForBatch,
+    pvalues <- bplapply(samples[,unique(batch_id)], calcPvalsForBatch,
                        samples = samples, data = data, BPPARAM=BPPARAM)
     
-    pvalues <- list.cbind(result)
+    flog.debug(paste("Binding", length(result), "rows of p-values together"))
+    pvalues <- list.cbind(pvalues)
     
     ## pvalue adjustment
     if (adjusted == TRUE) {
-        pvaluesAdjusted <- pvalues
-        ## p-value adjustment with false discovery rate
-        for(i in seq_len(nrow(pvaluesAdjusted))) {
-            pvaluesAdjusted[i, ] <- p.adjust(pvaluesAdjusted[i, ],
-                                             method=method)
-        }
-        pvalues <- pvaluesAdjusted
+        flog.info("Adjusting p-values")
+        pvalues <- t(apply(pvalues, 1, p.adjust, method=method))
     }
     
     return(pvalues)
