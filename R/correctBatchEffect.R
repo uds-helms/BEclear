@@ -134,6 +134,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                epochs = 50, outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam()) {
     
+    ## checking if there are rows containing only missing values
     naIndices <- apply(data, 1, function(x) all(is.na(x)))
     if(any(naIndices)){
         flog.warn("There are rows, that contain only missing values")
@@ -142,6 +143,21 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     }
     
     samples <- data.table(samples)
+    uniqueIDsToSamples <- NULL
+    
+    ##checking if there are duplicated sample names
+    if(any(duplicated(colnames(data)))){
+        flog.warn("Sample names aren't unique")
+        flog.warn("Transforming them to unique IDs. List with annotations will
+                  be added to the results")
+        uniqueIDsToSamples <- data.table(sample_id = colnames(data), 
+                                         unique_id = seq_along(colnames(data)))
+        colnames(data) <- uniqueIDsToSamples$unique_id
+        print(uniqueIDsToSamples)
+        samples <- samples[uniqueIDsToSamples, ,
+                           on=.(sample_id = sample_id)][,.(sample_id = unique_id,
+                                              batch_id = batch_id)]
+    }
     setkey(samples, "batch_id", "sample_id")
     
     flog.info("Transforming matrix to data.table")
@@ -169,5 +185,5 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     return(list(medians = med, pvals = pval, summary = sum, 
                 scoreTable = score, clearedData = cleared, 
                 predictedData = predicted, correctedPredictedData = 
-                    corrected))
+                    corrected, uniqueIDsToSamples = uniqueIDsToSamples))
 }
