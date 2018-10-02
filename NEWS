@@ -1,4 +1,7 @@
-Changes in version 1.13.3
+Changes in version 1.13.3 (2018-10-02)
+    * major performance improvement
+
+Changes in version 1.13.3 (2018-09-28)
     * usage of data.table for various functions for performance improvement
     * simplification of the source code
 

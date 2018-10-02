@@ -28,7 +28,8 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs) {
         ## set NA data to 0
         D[is.na(D)] <- 0
         ## set D as matrix
-        D <- as(as.matrix(D), "dgCMatrix")
+        dat <- as.matrix(D)
+        D <- as(as.matrix(dat), "dgCMatrix")
         
         Dsummary <- summary(D)
         m <- nrow(D)               # number of rows
@@ -52,7 +53,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs) {
         resultGdr10l1 <- runGradientDescent(L0r10, R0r10, 1, epochs=epochs,
                                             eps=0.01, block = block, N=N, 
                                             nnzis = nnzis, nnzjs = nnzjs, 
-                                            is = is, js = js, D = D, m = m, 
+                                            is = is, js = js, D = dat, m = m, 
                                             n = n, r = r)
         
         dataTemp <- data[rowStartPosition:rowStopPosition,

@@ -15,15 +15,10 @@ dlossp <- function(L, R, lambda, x, nnzis, nnzjs,i, j, r) {
     ## respect to L_ik
     ## * dRi[k] contains the gradient of the local loss with
     ## respect to R_kj
-    dLi <- vector(mode="numeric", length=r)
-    dRj <- vector(mode="numeric",  length=r)
+    tmpVal <- as.numeric(x - L[i, ] %*% R[, j])
     
-    for(k in seq_len(r)) {
-        dLi[k] <- -2 * R[k, j] * (x - L[i, ]%*%R[, j]) + 2 * 
-            lambda * L[i, k]/nnzis[i]
-        dRj[k] <- -2 * L[i, k] * (x - L[i, ]%*%R[, j]) + 2 * 
-            lambda * R[k, j]/nnzjs[j]
-    }
-    
+    dLi <- -2 * R[, j] * (tmpVal) + 2 * lambda * L[i, ]/nnzis[i]
+    dRj <- -2 * L[i,] * (tmpVal) + 2 * lambda * R[, j]/nnzjs[j]
+   
     return(list(Li=dLi, Rj=dRj))
 }
