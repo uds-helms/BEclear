@@ -134,6 +134,14 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                epochs = 50, outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam()) {
     
+    ## checling if there are samples that are not present in the samples matrix
+    if(any(!colnames(data) %in% samples$sample_id)){
+        ids <- paste(colnames(data)[colnames(data) %in% samples$sample_id], 
+                     collapse= ", ")
+        stop(paste("The following samples are in the data, but not annotated", 
+                   "in the samples matrix:", ids))
+    }
+    
     ## checking if there are rows containing only missing values
     naIndices <- apply(data, 1, function(x) all(is.na(x)))
     if(any(naIndices)){
