@@ -170,7 +170,8 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
         flog.warn("Transforming them to unique IDs. List with annotations will",
                   "be added to the results")
         uniqueIDsToSamples <- data.table(sample_id = colnames(data), 
-                                         unique_id = seq_along(colnames(data)))
+                                         unique_id = 
+                                             as.character(seq_along(colnames(data))))
         colnames(data) <- uniqueIDsToSamples$unique_id
         samples <- samples[uniqueIDsToSamples, ,
                            on=.(sample_id = sample_id)][,
@@ -180,9 +181,9 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     setkey(samples, "batch_id", "sample_id")
     
     flog.info("Transforming matrix to data.table")
-    DT <- data.table(feature=rownames(data), data)
+    DT <- data.table(feature=as.character(rownames(data)), data)
     DT <- melt(data = DT, id.vars = "feature", variable.name = "sample", 
-                 value.name = "beta.value")
+                 value.name = "beta.value", variable.factor = FALSE)
     setkey(DT, "feature", "sample")
     
     med <- calcMedians(DT, samples, BPPARAM = BPPARAM)
