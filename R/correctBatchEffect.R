@@ -134,12 +134,35 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                epochs = 50, outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam()) {
     
+    ## checking if they're are values above 1
+    if(any(data > 1)){
+        flog.warn(paste(sum(data > 1), "values are above 1"))
+        flog.warn("Replacing them with missing values")
+        data[data > 1] <- NA
+    }
+    
+    ## checking if there are columns containing only missing values
+    naIndices <- apply(data, 2, function(x) all(is.na(x)))
+    if(any(naIndices)){
+        flog.warn("There are columns, that contain only missing values")
+        flog.warn(paste(sum(naIndices), "columns get dropped"))
+        data <- data[ ,!naIndices]
+    }
+    
+    ## checking if there are rows containing only missing values
+    naIndices <- apply(data, 1, function(x) all(is.na(x)))
+    if(any(naIndices)){
+        flog.warn("There are rows, that contain only missing values")
+        flog.warn(paste(sum(naIndices), "rows get dropped"))
+        data <- data[!naIndices, ]
+    }
+    
     ## checking if there are samples that are not present in the samples matrix
     if(any(!colnames(data) %in% samples$sample_id)){
         ids <- paste(colnames(data)[!colnames(data) %in% samples$sample_id], 
                      collapse= ", ")
         flog.warn(paste("The following samples are in the data, but not annotated", 
-                   "in the samples matrix:", ids))
+                        "in the samples matrix:", ids))
         flog.warn("Dropping those samples now")
         data <- data[,colnames(data) %in% samples$sample_id]
     }
@@ -151,14 +174,6 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                   "but aren't contained in data matrix:", ids)
         flog.warn("Dropping those samples now")
         samples <- samples[sample_id %in% colnames(data)]
-    }
-    
-    ## checking if there are rows containing only missing values
-    naIndices <- apply(data, 1, function(x) all(is.na(x)))
-    if(any(naIndices)){
-        flog.warn("There are rows, that contain only missing values")
-        flog.warn(paste(sum(naIndices), "rows get dropped"))
-        data <- data[!naIndices, ]
     }
     
     samples <- data.table(samples)

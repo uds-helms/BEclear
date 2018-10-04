@@ -5,9 +5,12 @@
 #'@description  function to calculate p-values for every gene in a batch
 #'
 #'@importFrom stats ks.test
+#'@import futile.logger
 #'
 #'@return the p-values for genes in a batch
 calcPvalsForBatch <- function(batch, samples, data) {
+    
+    flog.debug(paste("Calculating the pvalues for batch", batch))
     
     DT_batch <- samples[batch_id == batch][data,
                   , on=.(sample_id = sample), 
