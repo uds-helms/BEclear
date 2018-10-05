@@ -12,9 +12,11 @@ calcPvalsForBatch <- function(batch, samples, data) {
     
     flog.debug(paste("Calculating the pvalues for batch", batch))
     
+    flog.debug("Subsetting data.table for batch")
     DT_batch <- samples[batch_id == batch][data,
                   , on=.(sample_id = sample), 
                   nomatch=0][, .(feature, beta.value)]
+    flog.debug("Subsetting data.table for others")
     DT_other <- samples[batch_id != batch][data,
                                            , on=.(sample_id = sample), 
                                            nomatch=0][, .(feature, beta.value)]
@@ -25,8 +27,14 @@ calcPvalsForBatch <- function(batch, samples, data) {
     i <- 1
     for (f in unique(data$feature)){
         flog.debug(paste("Calculating for feature", f))
-        p_values[i] <- ks.test(DT_batch[feature == f, beta.value],
-                               DT_other[feature == f, beta.value])$p.value
+        batch_betas <- DT_batch[feature == f, beta.value]
+        if(all(is.na(batch_betas))){
+            p_values[i] <- 0.0
+        }else{
+            p_values[i] <- ks.test(batch_betas,
+                                   DT_other[feature == f, beta.value])$p.value
+        }
+        
         
         i <- i + 1
     }
