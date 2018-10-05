@@ -63,7 +63,7 @@
 calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr", 
                         BPPARAM=bpparam()) {
 
-    flog.info(paste("Calculating the p-values for", samples[,unique(batch_id)]
+    flog.info(paste("Calculating the p-values for", samples[,uniqueN(batch_id)] 
                     , "batches"))
     
     pvalues <- bplapply(samples[,unique(batch_id)], calcPvalsForBatch,

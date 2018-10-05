@@ -19,6 +19,7 @@ calcPvalsForBatch <- function(batch, samples, data) {
                                            , on=.(sample_id = sample), 
                                            nomatch=0][, .(feature, beta.value)]
     
+    flog.debug("Performing a Kolmogorov-Smirnov test to obtain the p-value")
     suppressWarnings(
         p_values <- DT_batch[ ,if(all(is.na(beta.value))){0.0} 
                               else{ks.test(beta.value, 
