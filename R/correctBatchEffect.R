@@ -136,7 +136,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     
     ## checking if they're are values above 1
     if(any(data > 1)){
-        flog.warn(paste(sum(data > 1), "values are above 1"))
+        flog.warn(paste(sum(data > 1, na.rm = TRUE), "values are above 1"))
         flog.warn("Replacing them with missing values")
         data[data > 1] <- NA
     }
