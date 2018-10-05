@@ -21,32 +21,19 @@ calcPvalsForBatch <- function(batch, samples, data) {
                                            , on=.(sample_id = sample), 
                                            nomatch=0][, .(feature, beta.value)]
     
-    flog.debug("Performing a Kolmogorov-Smirnov test to obtain the p-value")
+    flog.debug("Performing a Kolmogorov-Smirnov tests to obtain the p-value")
     
-    p_values <- vector(mode = "numeric", length = length(unique(data$feature)))
-    i <- 1
-    for (f in unique(data$feature)){
-        flog.debug(paste("Calculating for feature", f))
-        batch_betas <- DT_batch[feature == f, beta.value]
-        if(all(is.na(batch_betas))){
-            p_values[i] <- 0.0
+    p_values <- vapply(X=unique(data$feature), FUN=function(f, x, y){
+        x_bat <- x[feature == f, beta.value]
+        if(all(is.na(x_bat))){
+            0.0
         }else{
-            p_values[i] <- ks.test(batch_betas,
-                                   DT_other[feature == f, beta.value])$p.value
+            ks.test(x_bat, y[feature == f, beta.value])$p.value
         }
         
-        
-        i <- i + 1
-    }
-    
-    # suppressWarnings(
-    #     p_values <- DT_batch[ ,if(all(is.na(beta.value))){0.0} 
-    #                           else{ks.test(beta.value, 
-    #                                        DT_other[feature==feature, 
-    #                                                 beta.value], 
-    #                                        exact = FALSE)$p.value}, 
-    #                           by=.(feature)])
-    #DF <- data.frame(p_values$V1, row.names = p_values$feature)
+    }, FUN.VALUE = numeric(1), x = DT_batch, y = DT_other)
+
+   
     DF <- data.frame(p_values, row.names = unique(data$feature))
     colnames(DF) <- batch
     return(DF)
