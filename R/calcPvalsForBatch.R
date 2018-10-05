@@ -21,7 +21,7 @@ calcPvalsForBatch <- function(batch, samples, data) {
                                            , on=.(sample_id = sample), 
                                            nomatch=0][, .(feature, beta.value)]
     
-    flog.debug("Performing a Kolmogorov-Smirnov tests to obtain the p-value")
+    flog.debug("Performing a Kolmogorov-Smirnov tests to obtain the p-values")
     
     p_values <- vapply(X=unique(data$feature), FUN=function(f, x, y){
         x_bat <- x[feature == f, beta.value]

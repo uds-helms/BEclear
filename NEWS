@@ -1,3 +1,6 @@
+Changes in version 1.13.6 (2018-10-05)
+    * some minor issues with the calculation of p-values are fixed
+
 Changes in version 1.13.5 (2018-10-04)
     * checks for the validity of inputs added
     * some performance improvements
