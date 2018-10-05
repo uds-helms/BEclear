@@ -151,7 +151,7 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
                               outputFormat="RData", dir=getwd(), 
                               BPPARAM=bpparam()) {
     
-    flog.info("Starting the imoutation of missing values.")
+    flog.info("Starting the imputation of missing values.")
     flog.info("This might take a while.")
     D1 <- NULL
     if (epochs<= 0) {

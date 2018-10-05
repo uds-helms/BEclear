@@ -15,7 +15,7 @@ calcPvalsForBatch <- function(batch, samples, data) {
     DT_batch <- samples[batch_id == batch][data,
                   , on=.(sample_id = sample), 
                   nomatch=0][, .(feature, beta.value)]
-    DT_other <- samples[batch_id == batch][data,
+    DT_other <- samples[batch_id != batch][data,
                                            , on=.(sample_id = sample), 
                                            nomatch=0][, .(feature, beta.value)]
     
@@ -24,9 +24,9 @@ calcPvalsForBatch <- function(batch, samples, data) {
     p_values <- vector(mode = "numeric", length = length(unique(data$feature)))
     i <- 1
     for (f in unique(data$feature)){
-        flog.debug(paste("Calculating for feature", feature))
+        flog.debug(paste("Calculating for feature", f))
         p_values[i] <- ks.test(DT_batch[feature == f, beta.value],
-                               DT_other[feature == f, beta.value])
+                               DT_other[feature == f, beta.value])$p.value
         
         i <- i + 1
     }
@@ -38,7 +38,8 @@ calcPvalsForBatch <- function(batch, samples, data) {
     #                                                 beta.value], 
     #                                        exact = FALSE)$p.value}, 
     #                           by=.(feature)])
-    DF <- data.frame(p_values$V1, row.names = p_values$feature)
+    #DF <- data.frame(p_values$V1, row.names = p_values$feature)
+    DF <- data.frame(p_values, row.names = unique(data$feature))
     colnames(DF) <- batch
     return(DF)
 }
