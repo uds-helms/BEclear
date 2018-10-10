@@ -69,7 +69,7 @@ calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr",
     pvalues <- bplapply(samples[,unique(batch_id)], calcPvalsForBatch,
                        samples = samples, data = data, BPPARAM=BPPARAM)
     
-    flog.debug(paste("Binding", length(result), "rows of p-values together"))
+    flog.debug(paste("Binding", length(pvalues), "rows of p-values together"))
     pvalues <- do.call(cbind, pvalues)
     
     ## pvalue adjustment
