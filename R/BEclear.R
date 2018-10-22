@@ -111,7 +111,8 @@
 #' @references \insertRef{Akulenko2016}{BEclear}
 #' @import Rdpack
 "_PACKAGE"
-utils::globalVariables(c("batch_id", "beta.value", "feature", "sample_id", "."),
+utils::globalVariables(c("batch_id", "beta.value", "feature", "sample_id", ".",
+                         "unique_id"),
                        package = "BEclear", add=FALSE)
 
 #'@name BEclear example methylation data
