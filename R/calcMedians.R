@@ -59,16 +59,5 @@ calcMedians <- function(data, samples, BPPARAM=bpparam()) {
     result <- bplapply(samples[,unique(batch_id)], calcMediansForBatch, 
                         samples = samples, data = data, BPPARAM=BPPARAM)
     
-    # ## fill median matrix from result
-    # result <- unlist(result)
-    # counter <- 1
-    # for(j in seq_len(ncol(medianDif))) {
-    #     for(i in seq_len(nrow(medianDif))) {
-    #         medianDif[i, j] <- result[counter]
-    #         counter <- counter + 1
-    #     }
-    # }
-    # remove(result, counter, i, j)
-    
     return(do.call(cbind, result))
 }
