@@ -4,7 +4,7 @@
 \alias{nnz}
 \title{nnz}
 \usage{
-nnz(indexes, l = max(indexes))
+nnz(indexes, l)
 }
 \value{
 a vector n containing the number of non-zero entries per index

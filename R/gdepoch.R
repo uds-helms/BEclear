@@ -15,9 +15,13 @@ gdepoch <- function(L, R, lambda, eps, nnzis , nnzjs, is, js, D, m, n, r, N) {
     ## fill the gradient matrices using repeated calls to
     ## dlossp function
     for (i in seq_len(N)) {
-        lossTmp <- dlossp(L, R, lambda, x = D[is[i], js[i]], 
-                          nnzis = nnzis, nnzjs = nnzjs, 
-                          i = is[i], j = js[i], r = r)
+        lossTmp <- dlossp(Li = L[is[i], ], 
+                          Rj = R[, js[i]], 
+                          x = D[is[i], js[i]], 
+                          nnzi = nnzis[is[i]], 
+                          nnzj = nnzjs[js[i]], 
+                          lambda = lambda)
+        
         dL[is[i], ] <- dL[is[i], ] + lossTmp$Li
         dR[, js[i]] <- dR[, js[i]] + lossTmp$Rj
     }
