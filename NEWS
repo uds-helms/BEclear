@@ -1,3 +1,7 @@
+Changes in version 1.13.8 (2018-10-22)
+    * first implementation of tests with testthat
+    * simplifications of the code
+
 Changes in version 1.13.7 (2018-10-10)
     * small bugfix
 
