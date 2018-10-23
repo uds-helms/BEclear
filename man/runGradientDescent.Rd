@@ -4,7 +4,7 @@
 \alias{runGradientDescent}
 \title{runGradientDescent}
 \usage{
-runGradientDescent(L0r10, R0r10, lambda, epochs, eps = 0.01, block, N,
+runGradientDescent(L0r10, R0r10, lambda, epochs, eps = 0.01, block,
   nnzis, nnzjs, is, js, D, m, n, r)
 }
 \value{
