@@ -20,7 +20,7 @@ runGradientDescent <- function(L0r10, R0r10, lambda, epochs, eps=0.01, block,
         
         ## bold driver step size update
         oldLoss <- curLoss
-        curLoss <- loss(LR$L, LR$R, lambda, N = N, is = is, js = js, D = D)
+        curLoss <- loss(LR$L, LR$R, lambda, is = is, js = js, D = D)
         if (oldLoss < curLoss) { 
             eps <- eps/2
         } else {
