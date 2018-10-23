@@ -7,9 +7,9 @@
 #' @importFrom Matrix norm
 #' 
 #' @return The loss calculated
-loss <- function(L, R, lambda, N, is, js, D) {
+loss <- function(L, R, lambda, is, js, D) {
     lossResult <- 0
-    for (i in seq_len(N)) {
+    for (i in seq_len(length(is))) {
         lossResult <- lossResult + ((D[is[i], js[i]] -
                                          (L[is[i], ] %*% R[, js[i]]))^2)
     }

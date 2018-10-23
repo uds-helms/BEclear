@@ -11,7 +11,7 @@ runGradientDescent <- function(L0r10, R0r10, lambda, epochs, eps=0.01, block,
                                N, nnzis, nnzjs, is, js, D, m , n, r) {
     flog.debug(paste("Calculating the gradient descent for block", block))
     LR <- list(L=L0r10, R=R0r10)
-    curLoss <- loss(LR$L, LR$R, lambda, N = N, is = is, js = js, D = D)
+    curLoss <- loss(LR$L, LR$R, lambda, is = is, js = js, D = D)
     for (epoch in seq_len(epochs)) {
         flog.debug(paste("Calculating gradient descent epoch", epoch, "of", 
                          epochs, "for block", block))
