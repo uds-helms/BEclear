@@ -13,8 +13,9 @@ loss <- function(L, R, lambda, is, js, D) {
         lossResult <- lossResult + ((D[is[i], js[i]] -
                                          (L[is[i], ] %*% R[, js[i]]))^2)
     }
-    lossResult <- lossResult + lambda * (norm(L, type="F")^2)
-    + lambda * (norm(R, type="F")^2)
+   
+    lossResult <- lossResult + lambda * (norm(L, type="F")^2) + lambda * (norm(R, type="F")^2)
+    
     
     return(as.numeric(lossResult))
 }

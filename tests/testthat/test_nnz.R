@@ -1,4 +1,4 @@
-context("Counting of non zero revealed entries")
+testthat::context("Counting of non zero revealed entries")
 
 testthat::test_that("Only existing indices",{
     testthat::expect_equal( nnz(c(3,4,5,2,1), 5), c(1,1,1,1,1))
@@ -7,7 +7,7 @@ testthat::test_that("Only existing indices",{
 }
 )
 
-testthat::test_that("existind and missing indices",{
+testthat::test_that("existing and missing indices",{
     testthat::expect_equal( nnz(c(3,4,5,2,1), 6), c(1,1,1,1,1, 0))
     testthat::expect_equal( nnz(c(2,2,2,2,2), 3), c(0, 5, 0))
 }
