@@ -4,7 +4,7 @@
 \alias{loss}
 \title{loss}
 \usage{
-loss(L, R, lambda, is, js, D)
+loss(L, R, lambda, D)
 }
 \value{
 The loss calculated
