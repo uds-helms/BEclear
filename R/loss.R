@@ -8,11 +8,13 @@
 #' 
 #' @return The loss calculated
 loss <- function(L, R, lambda, D) {
+    
+    error_matrix <- D - (L %*% R)
 
-    squared_error <- sum((D - (L %*% R))^2)
+    squared_error <- sum((error_matrix)^2)
    
     cost <- lambda * ((norm(L, type="F")^2) + (norm(R, type="F")^2))
     
     
-    return(squared_error + cost)
+    return(list(loss=squared_error + cost, error_matrix = error_matrix))
 }

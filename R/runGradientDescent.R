@@ -11,7 +11,12 @@ runGradientDescent <- function(L0r10, R0r10, lambda, epochs, eps=0.01, block,
                                nnzis, nnzjs, is, js, D, m , n, r) {
     flog.debug(paste("Calculating the gradient descent for block", block))
     LR <- list(L=L0r10, R=R0r10)
-    curLoss <- loss(LR$L, LR$R, lambda, D = D)
+    
+    loss_result <- loss(LR$L, LR$R, lambda, D = D)
+    
+    curLoss <- loss_result$loss
+    error_matrix <- loss_result$error_matrix
+    
     for (epoch in seq_len(epochs)) {
         flog.debug(paste("Calculating gradient descent epoch", epoch, "of", 
                          epochs, "for block", block))
@@ -20,7 +25,11 @@ runGradientDescent <- function(L0r10, R0r10, lambda, epochs, eps=0.01, block,
         
         ## bold driver step size update
         oldLoss <- curLoss
-        curLoss <- loss(LR$L, LR$R, lambda, D = D)
+        
+        loss_result <- loss(LR$L, LR$R, lambda, D = D)
+        
+        curLoss <- loss_result$loss
+        error_matrix <- loss_result$error_matrix
         if (oldLoss < curLoss) { 
             eps <- eps/2
         } else {
