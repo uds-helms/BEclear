@@ -7,7 +7,7 @@
 #' 
 #' @return  the result as a list (elements can be accessed with x$Li or x$Ri, 
 #' where x is the returned list)
-dlossp <- function(Li, Rj, x, nnzi, nnzj, lambda) {
+dlossp <- function(Li, Rj, nnzi, nnzj, lambda, error) {
 
     
     ## create two length-r vectors dLi and dRj
@@ -15,10 +15,9 @@ dlossp <- function(Li, Rj, x, nnzi, nnzj, lambda) {
     ## respect to L_ik
     ## * dRi[k] contains the gradient of the local loss with
     ## respect to R_kj
-    tmpVal <- as.numeric(x - Li %*% Rj)
     
-    dLi <- -2 * Rj * (tmpVal) + 2 * lambda * Li/nnzi
-    dRj <- -2 * Li * (tmpVal) + 2 * lambda * Rj/nnzj
+    dLi <- -2 * Rj * (error) + 2 * lambda * Li/nnzi
+    dRj <- -2 * Li * (error) + 2 * lambda * Rj/nnzj
    
     return(list(Li=dLi, Rj=dRj))
 }

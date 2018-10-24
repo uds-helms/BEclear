@@ -4,7 +4,7 @@
 \alias{dlossp}
 \title{dlossp}
 \usage{
-dlossp(Li, Rj, x, nnzi, nnzj, lambda)
+dlossp(Li, Rj, nnzi, nnzj, lambda, error)
 }
 \value{
 the result as a list (elements can be accessed with x$Li or x$Ri, 

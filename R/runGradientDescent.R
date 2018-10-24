@@ -21,7 +21,7 @@ runGradientDescent <- function(L0r10, R0r10, lambda, epochs, gamma=0.01, block,
         flog.debug(paste("Calculating gradient descent epoch", epoch, "of", 
                          epochs, "for block", block))
         LR <- gdepoch(LR$L, LR$R, lambda, gamma, nnzis = nnzis, nnzjs = nnzjs, 
-                      is = is, js = js, D = D)
+                      is = is, js = js, D = D, error_matrix = error_matrix)
         
         ## bold driver step size update
         oldLoss <- curLoss
