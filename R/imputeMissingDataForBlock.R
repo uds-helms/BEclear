@@ -51,7 +51,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs) {
         R0r10 <- matrix(rnorm(r * n), r, n) / sqrt(r)
         ## run LFM 
         resultGdr10l1 <- runGradientDescent(L0r10, R0r10, lambda = 1, 
-                                            epochs=epochs, eps=0.01, 
+                                            epochs=epochs, gamma=0.01, 
                                             block = block, nnzis = nnzis, 
                                             nnzjs = nnzjs, is = is, js = js, 
                                             D = dat, m = m, n = n, r = r)
