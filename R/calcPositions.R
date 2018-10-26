@@ -6,6 +6,15 @@
 #' last 2 blocks
 #' 
 calcPositions <- function(num, blockSize) {
+    
+    if(blockSize <= 0){
+        stop("blockSizes must be greater than 0")
+    }
+    
+    if(num <= 0){
+        stop("number of entries must be greater than 0")
+    }
+    
     rest <- num %% blockSize
     ## normal start and stop position if nrow can be divided by blockSize
     ## without a rest

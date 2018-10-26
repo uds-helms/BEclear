@@ -13,7 +13,7 @@ License: GPL-2
 Depends: BiocParallel (>= 1.15.12)
 Imports: futile.logger, stats, Rdpack, graphics, Matrix, utils, methods,
     data.table (>= 1.11.8)
-biocViews: BatchEffect, DNAMethylation, Software
+biocViews: BatchEffect, DNAMethylation, Software, Preprocessing
 RoxygenNote: 6.1.0
 RdMacros: Rdpack
 Encoding: UTF-8

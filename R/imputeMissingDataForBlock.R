@@ -18,7 +18,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs) {
     colStopPosition <- blockFrame[[5]][[block]]
     
     
-    ## take one block of data (200 rows * 250 columns)
+    ## take one block of data
     D<-data[rowStartPosition:rowStopPosition,
             colStartPosition:colStopPosition]
     
