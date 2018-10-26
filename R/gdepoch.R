@@ -34,13 +34,13 @@ gdepoch <- function(L, R, lambda, gamma, nnzis , nnzjs, is, js, D,
     ## perform a gradient step on L and R with step size gamma
     ## by using the gradient matrices
     
+    #print(L - gamma * t(-2.0 * as.vector(R) %*% t(error_matrix) + 2.0 * lambda * as.vector(L)/nnzis))
+    #print(as.vector(R) * t(error_matrix))
+    
+    #print(R - gamma * (-2.0 * as.vector(L) %*% (D - L %*% R) + 2.0 * lambda * as.vector(R)/nnzjs))
+    
     L <- L - gamma * dL
     R <- R - gamma * dR
-    
-    # error_matrix <- (D - L %*% R)
-    # 
-    # L <- L - gamma * t(-2.0 * R %*% t(error_matrix) + 2.0 * lambda * t(L)/nnzis)
-    # R <- R - gamma * (-2.0 * t(L) %*% (D - L %*% R) + 2.0 * lambda * R/nnzjs)
     
     ## return result
     return(list(L=L, R=R))

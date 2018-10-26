@@ -59,10 +59,9 @@ countValuesToPredict <- function(data) {
     for (i in seq_len(nrow(data))) {
         for (j in seq_len(ncol(data))) {
             if (is.na(data[i, j])) {
-                oldNumber <- numberPredValues[numberPredValues$sample == 
-                                                  j, 2]
-                newNumber <- oldNumber+1
-                numberPredValues[numberPredValues$sample == j, 2] <- newNumber
+                
+                numberPredValues[numberPredValues$sample == j, 2] <- numberPredValues[numberPredValues$sample == j, 2] + 1
+                
             }
         }
     }
