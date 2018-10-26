@@ -1,3 +1,6 @@
+Changes in version 1.13.11 (2018-10-25)
+    * implementation of further tests
+
 Changes in version 1.13.10 (2018-10-24)
     * test for the gdepoch function
     * simplification of code
