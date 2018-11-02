@@ -119,8 +119,8 @@
 #' @import BiocParallel
 #' @import futile.logger
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50, 
-#' outputFormat="RData", dir=getwd(), BPPARAM=bpparam(), lambda = 1, gamma = 0.01,
-#' r = 10)
+#' lambda = 1, gamma = 0.01, r = 10, outputFormat="RData", dir=getwd(), 
+#' BPPARAM=bpparam())
 #'
 #' @examples 
 #' ## Shortly running example. For a more realistic example that takes

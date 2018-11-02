@@ -26,11 +26,14 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
     ## check if NA values are contained in the block
     if (any(is.na(D))) {
         
-        ## set NA data to 0
-        D[is.na(D)] <- 0
+        
         ## set D as matrix
         dat <- as.matrix(D)
-        D <- as(as.matrix(dat), "dgCMatrix")
+        
+        ## set NA data to 0
+        D <- dat
+        D[is.na(D)] <- 0
+        D <- as(as.matrix(D), "dgCMatrix")
         
         Dsummary <- summary(D)
         m <- nrow(D)               # number of rows
@@ -40,21 +43,13 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
         xs <- Dsummary$x           # value of each revealed entry
         N <- length(is)            # number of revealed entries
         
-        ## for each row, number of revealed entries=entries not zero
-        nnzis <- nnz(is, m)
-        ## for each column, number of revealed entries=entries not zero
-        nnzjs <- nnz(js, n)
-        ## changing values
-        
-        
         set.seed(1, kind="Mersenne-Twister")
         L0r10 <- matrix(rnorm(m * r), m, r) / sqrt(r)
         R0r10 <- matrix(rnorm(r * n), r, n) / sqrt(r)
         ## run LFM 
         resultGdr10l1 <- runGradientDescent(L0r10, R0r10, lambda = lambda, 
                                             epochs = epochs, gamma = gamma, 
-                                            block = block, nnzis = nnzis, 
-                                            nnzjs = nnzjs, is = is, js = js, 
+                                            block = block, is = is, js = js, 
                                             D = dat, r = r)
         
         dataTemp <- data[rowStartPosition:rowStopPosition,

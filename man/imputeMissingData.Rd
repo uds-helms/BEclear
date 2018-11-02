@@ -5,8 +5,8 @@
 \title{Matrix prediction method using a Latent Factor Model}
 \usage{
 imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50, 
-outputFormat="RData", dir=getwd(), BPPARAM=bpparam(), lambda = 1, gamma = 0.01,
-r = 10)
+lambda = 1, gamma = 0.01, r = 10, outputFormat="RData", dir=getwd(), 
+BPPARAM=bpparam())
 }
 \arguments{
 \item{data}{any matrix filled e.g. with beta values. The missing entries you
