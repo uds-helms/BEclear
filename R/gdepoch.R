@@ -29,6 +29,8 @@ gdepoch <- function(L, R, lambda, gamma, is, js, D,
         dR[, js[i]] <- dR[, js[i]] + lossTmp$Rj
     }
     
+    dL <- R %*% t(error_matrix)
+    
     ## perform a gradient step on L and R with step size gamma
     ## by using the gradient matrices
     

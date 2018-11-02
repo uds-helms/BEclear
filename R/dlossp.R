@@ -16,8 +16,6 @@ dlossp <- function(Li, Rj, lambda, error) {
     ## * dRi[k] contains the gradient of the local loss with
     ## respect to R_kj
     
-    
-    
     dLi <- Rj * (error) 
     dRj <- Li * (error)
    

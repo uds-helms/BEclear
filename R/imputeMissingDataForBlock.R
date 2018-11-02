@@ -44,10 +44,10 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
         N <- length(is)            # number of revealed entries
         
         set.seed(1, kind="Mersenne-Twister")
-        L0r10 <- matrix(rnorm(m * r), m, r) / sqrt(r)
-        R0r10 <- matrix(rnorm(r * n), r, n) / sqrt(r)
+        L <- matrix(rnorm(m * r), m, r) / sqrt(r)
+        R <- matrix(rnorm(r * n), r, n) / sqrt(r)
         ## run LFM 
-        resultGdr10l1 <- runGradientDescent(L0r10, R0r10, lambda = lambda, 
+        resultGdr10l1 <- runGradientDescent(L = L, R = R, lambda = lambda, 
                                             epochs = epochs, gamma = gamma, 
                                             block = block, is = is, js = js, 
                                             D = dat, r = r)
