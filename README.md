@@ -11,8 +11,9 @@ containing real numbers.
 
 ```r
 # Installation from Bioconductor
-source("https://bioconductor.org/biocLite.R")
-biocLite("BEclear")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("BEclear")
 ```
 
 ```r
