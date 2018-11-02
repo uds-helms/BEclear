@@ -4,7 +4,8 @@
 \alias{imputeMissingDataForBlock}
 \title{imputeMissingDataForBlock}
 \usage{
-imputeMissingDataForBlock(data, block, blockFrame, dir, epochs)
+imputeMissingDataForBlock(data, block, blockFrame, dir, epochs,
+  lambda = 1, gamma = 0.01, r = 10)
 }
 \value{
 number of the block processed

@@ -5,7 +5,8 @@
 \title{Matrix prediction method using a Latent Factor Model}
 \usage{
 imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50, 
-outputFormat="RData", dir=getwd(), BPPARAM=bpparam())
+outputFormat="RData", dir=getwd(), BPPARAM=bpparam(), lambda = 1, gamma = 0.01,
+r = 10)
 }
 \arguments{
 \item{data}{any matrix filled e.g. with beta values. The missing entries you
@@ -29,6 +30,14 @@ information about this feature.}
 
 \item{epochs}{the number of iterations used in the gradient descent algorithm
 to predict the missing entries in the data matrix.}
+
+\item{lambda}{constant that controls the extent of regularization during the 
+gradient descent}
+
+\item{gamma}{constant that controls the extent of the shift of parameters 
+during the gradient descent}
+
+\item{r}{length of the second dimension of variable matrices R and L}
 
 \item{outputFormat}{you can choose if the finally returned data matrix should
 be saved as an .RData file or as a tab-delimited .txt file in the specified 

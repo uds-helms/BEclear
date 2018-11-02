@@ -64,6 +64,11 @@
 #' @param epochs the number of iterations used in the gradient descent algorithm
 #' to predict the missing entries in the data matrix. See 
 #' \code{\link{imputeMissingData}} for more information.
+#' @param lambda constant that controls the extent of regularization during the 
+#' gradient descent
+#' @param gamma constant that controls the extent of the shift of parameters 
+#' during the gradient descent
+#' @param r length of the second dimension of variable matrices R and L
 #' @param outputFormat you can choose if the finally returned data matrix should
 #' be saved as an .RData file or as a tab-delimited .txt file in the specified
 #' directory. Allowed values are "RData" and "txt".
@@ -80,8 +85,8 @@
 #' @import futile.logger
 #' @import data.table
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
-#' rowBlockSize=60, colBlockSize=60, epochs=50,  outputFormat="RData",
-#' dir=getwd(), BPPARAM=bpparam())
+#' rowBlockSize=60, colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
+#' outputFormat="RData", dir=getwd(), BPPARAM=bpparam())
 #'
 #' @return A list containing the following fields (for detailed information look
 #' at the documentations of the corresponding functions):
@@ -131,7 +136,8 @@
 
 correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                rowBlockSize = 60, colBlockSize = 60, 
-                               epochs = 50, outputFormat = "RData",
+                               epochs = 50, lambda = 1, gamma = 0.01, r = 10,
+                               outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam()) {
     
     ## checking if they're are values above 1
@@ -219,8 +225,10 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     }
     
     predicted <-
-        imputeMissingData (cleared, rowBlockSize, colBlockSize, epochs,
-                           outputFormat, dir, BPPARAM = BPPARAM)
+        imputeMissingData (data=cleared, rowBlockSize=rowBlockSize, 
+                           colBlockSize=colBlockSize, epochs=epochs,
+                           lambda =lambda, gamma = gamma, r = r,
+                           outputFormat = outputFormat, dir=dir, BPPARAM = BPPARAM)
     corrected <- replaceWrongValues(predicted)
     
     return(list(medians = med, pvals = pval, summary = sum, 

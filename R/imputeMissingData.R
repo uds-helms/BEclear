@@ -101,6 +101,11 @@
 #' information about this feature.
 #' @param epochs the number of iterations used in the gradient descent algorithm
 #' to predict the missing entries in the data matrix.
+#' @param lambda constant that controls the extent of regularization during the 
+#' gradient descent
+#' @param gamma constant that controls the extent of the shift of parameters 
+#' during the gradient descent
+#' @param r length of the second dimension of variable matrices R and L
 #' @param outputFormat you can choose if the finally returned data matrix should
 #' be saved as an .RData file or as a tab-delimited .txt file in the specified 
 #' directory. Allowed values are "RData" and "txt".
@@ -114,7 +119,8 @@
 #' @import BiocParallel
 #' @import futile.logger
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50, 
-#' outputFormat="RData", dir=getwd(), BPPARAM=bpparam())
+#' outputFormat="RData", dir=getwd(), BPPARAM=bpparam(), lambda = 1, gamma = 0.01,
+#' r = 10)
 #'
 #' @examples 
 #' ## Shortly running example. For a more realistic example that takes
@@ -148,6 +154,7 @@
 #' colBlockSize=10)
 
 imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
+                              lambda = 1, gamma = 0.01, r = 10,
                               outputFormat="RData", dir=getwd(), 
                               BPPARAM=bpparam()) {
     
@@ -167,7 +174,8 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
         blockFrame <- as.data.frame(blockFrame)
         blocksDone <- imputeMissingDataForBlock(data=data, block = 1, blockFrame
                                                 = blockFrame, dir = dir, 
-                                                epochs = epochs)
+                                                epochs = epochs, lambda = lambda,
+                                                gamma = gamma, r = r)
         ## load block
         blockName <- paste("D", blockFrame[1], sep = "")
         filename <- paste(
@@ -227,7 +235,8 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
         blocksDone <-
             unlist(bplapply(blockNumbers, imputeMissingDataForBlock, data=data, 
                             blockFrame = blockFrame, dir = dir, epochs = epochs,
-                            BPPARAM = BPPARAM))
+                            BPPARAM = BPPARAM, lambda = lambda, gamma = gamma,
+                            r = r))
         
         ## combine the blocks to the predictedGenes data.frame
         predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)

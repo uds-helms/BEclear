@@ -7,7 +7,8 @@
 #' @keywords internal
 #' 
 #' @return number of the block processed
-imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs) {
+imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs, 
+                                      lambda = 1, gamma = 0.01, r = 10) {
     
     flog.info(paste("Impute missind data for block", block, "of", 
                     length(blockFrame[[2]])))
@@ -45,16 +46,16 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs) {
         nnzjs <- nnz(js, n)
         ## changing values
         
-        r <- 10
+        
         set.seed(1, kind="Mersenne-Twister")
         L0r10 <- matrix(rnorm(m * r), m, r) / sqrt(r)
         R0r10 <- matrix(rnorm(r * n), r, n) / sqrt(r)
         ## run LFM 
-        resultGdr10l1 <- runGradientDescent(L0r10, R0r10, lambda = 1, 
-                                            epochs=epochs, gamma=0.01, 
+        resultGdr10l1 <- runGradientDescent(L0r10, R0r10, lambda = lambda, 
+                                            epochs = epochs, gamma = gamma, 
                                             block = block, nnzis = nnzis, 
                                             nnzjs = nnzjs, is = is, js = js, 
-                                            D = dat, m = m, n = n, r = r)
+                                            D = dat, r = r)
         
         dataTemp <- data[rowStartPosition:rowStopPosition,
                          colStartPosition:colStopPosition]
