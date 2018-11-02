@@ -21,15 +21,13 @@ gdepoch <- function(L, R, lambda, gamma, is, js, D,
     ## fill the gradient matrices using repeated calls to
     ## dlossp function
     for (i in seq_len(length(is))) {
-        lossTmp <- dlossp(Li = L[is[i], ], Rj = R[, js[i]], lambda = lambda,
-                          error = error_matrix[is[i], js[i]] )
         
-
-        dL[is[i], ] <- dL[is[i], ] + lossTmp$Li
-        dR[, js[i]] <- dR[, js[i]] + lossTmp$Rj
+        #computation of the local loss of the i-th revealed entry for factorization LR
+        x <- error_matrix[is[i], js[i]]
+        dL[is[i], ] <- dL[is[i], ] + R[, js[i]] * x
+        dR[, js[i]] <- dR[, js[i]] + L[is[i], ] * x
     }
     
-    dL <- R %*% t(error_matrix)
     
     ## perform a gradient step on L and R with step size gamma
     ## by using the gradient matrices
@@ -37,6 +35,8 @@ gdepoch <- function(L, R, lambda, gamma, is, js, D,
 
     L <- L + gamma * 2 * (dL - lambda * L)
     R <- R + gamma * 2 * (dR -  lambda * R)
+    
+
     
     ## return result
     return(list(L=L, R=R))
