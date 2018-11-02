@@ -1,3 +1,8 @@
+Changes in version 1.15.1
+    * small changes to the API
+    * simplifications of some functions
+    * performance improvements
+
 Changes in version 1.13.11 (2018-10-25)
     * implementation of further tests
 
@@ -16,10 +21,6 @@ Changes in version 1.13.8 (2018-10-22)
 
 Changes in version 1.13.7 (2018-10-10)
     * small bugfix
-
-Changes in version 1.15.1
-    * small changes to the API
-    * simplifications of some functions
 
 Changes in version 1.13.6 (2018-10-05)
     * some minor issues with the calculation of p-values are fixed
