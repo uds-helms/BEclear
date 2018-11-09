@@ -20,8 +20,7 @@ combineBlocks <- function(blockFrame, rowPos, colPos, dir) {
                 filename <- paste(blockName, "RData", sep=".")
                 file <- paste(dir, filename, sep="/")
                 load(file)
-                assign(paste(blockName, "row", rowStart, rowStop, "col",
-                             colStart, colStop, sep="."), D1)
+                assign(blockName, D1)
                 frame <- D1
                 currentRowGroup <- as.data.frame(frame)
                 blockCounter <- blockCounter + 1
@@ -31,8 +30,7 @@ combineBlocks <- function(blockFrame, rowPos, colPos, dir) {
                     filename <- paste(blockName, "RData", sep=".")
                     file <- paste(dir, filename, sep="/")
                     load(file)
-                    assign(paste(blockName, "row", rowStart, rowStop,
-                                 "col", colStart, colStop, sep="."), D1)
+                    assign(blockName, D1)
                     frame <- D1
                     currentRowGroup <- as.data.frame(frame)
                     blockCounter <- blockCounter + 1
@@ -42,8 +40,7 @@ combineBlocks <- function(blockFrame, rowPos, colPos, dir) {
                     filename <- paste(blockName, "RData", sep=".")
                     file <- paste(dir, filename, sep="/")
                     load(file)
-                    assign(paste(blockName, "row", rowStart, rowStop,
-                                 "col", colStart, colStop, sep="."), D1)
+                    assign(blockName, D1)
                     frame <- D1
                     currentRowGroup <- cbind(currentRowGroup,
                                              as.data.frame(frame))

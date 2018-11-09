@@ -114,13 +114,15 @@
 #' @param BPPARAM An instance of the 
 #' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to 
 #' parallelisation of the functions will be evaluated.
+#' @param matrixOfOnes instead of starting with a random matrix, start from a matrix
+#' of ones. For testing purposes only!
 #' 
 #' @export imputeMissingData 
 #' @import BiocParallel
 #' @import futile.logger
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50, 
 #' lambda = 1, gamma = 0.01, r = 10, outputFormat="RData", dir=getwd(), 
-#' BPPARAM=bpparam())
+#' BPPARAM=bpparam(), matrixOfOnes = FALSE)
 #'
 #' @examples 
 #' ## Shortly running example. For a more realistic example that takes
@@ -156,7 +158,7 @@
 imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
                               lambda = 1, gamma = 0.01, r = 10,
                               outputFormat="RData", dir=getwd(), 
-                              BPPARAM=bpparam()) {
+                              BPPARAM=bpparam(), matrixOfOnes = FALSE) {
     
     flog.info("Starting the imputation of missing values.")
     flog.info("This might take a while.")
@@ -175,17 +177,12 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
         blocksDone <- imputeMissingDataForBlock(data=data, block = 1, blockFrame
                                                 = blockFrame, dir = dir, 
                                                 epochs = epochs, lambda = lambda,
-                                                gamma = gamma, r = r)
+                                                gamma = gamma, r = r, 
+                                                matrixOfOnes = matrixOfOnes)
         ## load block
         blockName <- paste("D", blockFrame[1], sep = "")
         filename <- paste(
             blockName,
-            "row",
-            blockFrame[2],
-            blockFrame[3],
-            "col",
-            blockFrame[4],
-            blockFrame[5],
             "RData",
             sep = "."
         )
@@ -197,12 +194,6 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
         blockFilenames <- c(
             paste(
                 blockName,
-                "row",
-                blockFrame[2],
-                blockFrame[3],
-                "col",
-                blockFrame[4],
-                blockFrame[5],
                 "RData",
                 sep = "."
             )
@@ -236,7 +227,7 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
             unlist(bplapply(blockNumbers, imputeMissingDataForBlock, data=data, 
                             blockFrame = blockFrame, dir = dir, epochs = epochs,
                             BPPARAM = BPPARAM, lambda = lambda, gamma = gamma,
-                            r = r))
+                            r = r, matrixOfOnes = matrixOfOnes))
         
         ## combine the blocks to the predictedGenes data.frame
         predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)
@@ -261,6 +252,7 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
         remove(blockFrame, blockNumbers, colPos, rowPos)
         
     }
+    
     
     ## save block as predictedGenes
     predictedGenes <- as.data.frame(predictedGenes)

@@ -4,11 +4,15 @@
 #' @import Matrix
 #' @importFrom stats rnorm
 #' 
+#' @param matrixOfOnes instead of starting with a random matrix, start from a matrix
+#' of ones. For testing purposes only!
+#' 
 #' @keywords internal
 #' 
 #' @return number of the block processed
 imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs, 
-                                      lambda = 1, gamma = 0.01, r = 10) {
+                                      lambda = 1, gamma = 0.01, r = 10,
+                                      matrixOfOnes = FALSE) {
     
     flog.info(paste("Impute missind data for block", block, "of", 
                     length(blockFrame[[2]])))
@@ -43,9 +47,17 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
         xs <- Dsummary$x           # value of each revealed entry
         N <- length(is)            # number of revealed entries
         
-        set.seed(1, kind="Mersenne-Twister")
-        L <- matrix(rnorm(m * r), m, r) / sqrt(r)
-        R <- matrix(rnorm(r * n), r, n) / sqrt(r)
+        if(matrixOfOnes){
+            L <- matrix(rep(1, m * r), m, r)
+            R <- matrix(rep(1, r * n), r, n)
+        }else{
+            set.seed(1, kind="Mersenne-Twister")
+            L <- matrix(rnorm(m * r), m, r) / sqrt(r)
+            R <- matrix(rnorm(r * n), r, n) / sqrt(r) 
+        }
+        
+        
+        
         ## run LFM 
         resultGd<- runGradientDescent(L = L, R = R, lambda = lambda, 
                                             epochs = epochs, gamma = gamma, 
@@ -78,6 +90,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
         
     }
     
+    D1<-as.matrix(D1)
     colnames(D1) <- colnames(D)
     rownames(D1) <- rownames(D)
     
