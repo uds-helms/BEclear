@@ -9,33 +9,19 @@
 #' the current epoch
 gdepoch <- function(L, R, lambda, gamma, is, js, D, 
                     error_matrix = NULL) {
-    ## create gradient matrices
-    dL <- matrix(0, nrow = nrow(L), ncol = ncol(L))
-    dR <- matrix(0, nrow = nrow(R), ncol = ncol(R))
     
     if(is.null(error_matrix)){
         error_matrix <- (D - L %*% R)
     }
     
-    
-    ## fill the gradient matrices using repeated calls to
-    ## dlossp function
-    for (i in seq_len(length(is))) {
-
-        #computation of the local loss of the i-th revealed entry for factorization LR
-        x <- error_matrix[is[i], js[i]]
-        dL[is[i], ] <- dL[is[i], ] + R[, js[i]] * x
-        dR[, js[i]] <- dR[, js[i]] + L[is[i], ] * x
-    }
-    
-    
+    locLoss<-localLoss(L, R, is, js, error_matrix)
     
     ## perform a gradient step on L and R with step size gamma
     ## by using the gradient matrices
     
 
-    L <- L + gamma * 2 * (dL - lambda * L)
-    R <- R + gamma * 2 * (dR - lambda * R)
+    L <- L + gamma * 2 * (locLoss$dL - lambda * L)
+    R <- R + gamma * 2 * (locLoss$dR - lambda * R)
     
 
     
