@@ -47,7 +47,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
         L <- matrix(rnorm(m * r), m, r) / sqrt(r)
         R <- matrix(rnorm(r * n), r, n) / sqrt(r)
         ## run LFM 
-        resultGdr10l1 <- runGradientDescent(L = L, R = R, lambda = lambda, 
+        resultGd<- runGradientDescent(L = L, R = R, lambda = lambda, 
                                             epochs = epochs, gamma = gamma, 
                                             block = block, is = is, js = js, 
                                             D = dat, r = r)
@@ -56,7 +56,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
                          colStartPosition:colStopPosition]
         ## Predicted matrix
         
-        D1 <- resultGdr10l1$L %*% resultGdr10l1$R
+        D1 <- resultGd$L %*% resultGd$R
         ## Replace predicted values with known, keep predicted unknown
         ## values
         for(i1 in seq_len(nrow(dataTemp)))
@@ -67,18 +67,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
                     D1[i1, j1] <- dataTemp[i1, j1]
                 }
             }
-        colnames(D1) <- colnames(dataTemp)
-        rownames(D1) <- rownames(dataTemp)
         
-        blockName <- paste("D", block, sep="")
-        
-        filename <- paste(blockName, "row", rowStartPosition,
-                          rowStopPosition, "col", colStartPosition, 
-                          colStopPosition,"RData", sep=".")
-        save(D1, file=paste(dir, filename, sep="/"))
-        
-        remove(D1, D, dataTemp)
-        return(block)
     }
     
     ## no NA values contained in the block - keep original values
@@ -86,16 +75,16 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
         flog.debug(paste("Block", block, 
                          "has no missing values. Original values are kept"))
         D1 <- D
-        colnames(D1) <- colnames(D)
-        rownames(D1) <- rownames(D)
         
-        blockName <- paste("D", block, sep="")
-        filename <- paste(blockName, "row", rowStartPosition, 
-                          rowStopPosition, "col", colStartPosition, 
-                          colStopPosition, "RData", sep=".")
-        save(D1, file=paste(dir, filename, sep="/"))
-        
-        remove(D1, D)
-        return(block)
     }
+    
+    colnames(D1) <- colnames(D)
+    rownames(D1) <- rownames(D)
+    
+    filename <- paste("D", block, ".RData", sep="")
+    save(D1, file=paste(dir, filename, sep="/"))
+    
+    
+    return(D1)
+    
 }

@@ -248,14 +248,6 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
             row <- paste(
                 "D",
                 blockFrame$number[i],
-                ".row.",
-                blockFrame$rowStartPos[i],
-                ".",
-                blockFrame$rowStopPos[i],
-                ".col.",
-                blockFrame$colStartPos[i],
-                ".",
-                blockFrame$colStopPos[i],
                 ".RData",
                 sep = ""
             )

@@ -17,8 +17,7 @@ combineBlocks <- function(blockFrame, rowPos, colPos, dir) {
             ## special case, only one column block
             if (colPos[1] == 1) {
                 blockName <- paste("D", blockCounter, sep="")
-                filename <- paste(blockName, "row", rowStart, rowStop, 
-                                  "col", colStart, colStop, "RData", sep=".")
+                filename <- paste(blockName, "RData", sep=".")
                 file <- paste(dir, filename, sep="/")
                 load(file)
                 assign(paste(blockName, "row", rowStart, rowStop, "col",
@@ -29,9 +28,7 @@ combineBlocks <- function(blockFrame, rowPos, colPos, dir) {
             } else {
                 if (j == 1) {
                     blockName <- paste("D", blockCounter, sep="")
-                    filename <- paste(blockName, "row", rowStart, rowStop,
-                                      "col", colStart, colStop, "RData", 
-                                      sep=".")
+                    filename <- paste(blockName, "RData", sep=".")
                     file <- paste(dir, filename, sep="/")
                     load(file)
                     assign(paste(blockName, "row", rowStart, rowStop,
@@ -42,9 +39,7 @@ combineBlocks <- function(blockFrame, rowPos, colPos, dir) {
                 }
                 else {
                     blockName <- paste("D", blockCounter, sep="")
-                    filename <- paste(blockName, "row", rowStart, rowStop, 
-                                      "col", colStart, colStop, "RData", 
-                                      sep=".")
+                    filename <- paste(blockName, "RData", sep=".")
                     file <- paste(dir, filename, sep="/")
                     load(file)
                     assign(paste(blockName, "row", rowStart, rowStop,
