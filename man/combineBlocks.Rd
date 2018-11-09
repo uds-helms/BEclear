@@ -10,6 +10,6 @@ combineBlocks(blockFrame, rowPos, colPos, dir)
 the combined matrix consisting of the individual blocks
 }
 \description{
-load and combine packages
+load and combine blocks
 }
 \keyword{internal}

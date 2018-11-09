@@ -4,7 +4,7 @@
 \alias{calcScore}
 \title{calculate batch effect score}
 \usage{
-calcScore(data, samples, summary, dir=getwd())
+calcScore(data, samples, summary, saveAsFile=TRUE, dir=getwd())
 }
 \arguments{
 \item{data}{any matrix filled with beta values, column names have to be 
@@ -19,6 +19,8 @@ number. Colnames have to be named as "sample_id" and "batch_id".}
 "median" and "p-value" and consists of all genes which were found in the 
 median and p-value calculations, see \code{\link{calcSummary}} function for 
 more details.}
+
+\item{saveAsFile}{determining if the data.frame should also be saved as a file}
 
 \item{dir}{set the path to a directory the returned data.frame should be 
 stored. The current working directory is defined as default parameter.}

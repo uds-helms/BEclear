@@ -46,12 +46,13 @@
 #' "median" and "p-value" and consists of all genes which were found in the 
 #' median and p-value calculations, see \code{\link{calcSummary}} function for 
 #' more details.
+#' @param saveAsFile determining if the data.frame should also be saved as a file
 #' @param dir set the path to a directory the returned data.frame should be 
 #' stored. The current working directory is defined as default parameter.
 #' 
 #' @export calcScore
 #' @import futile.logger
-#' @usage calcScore(data, samples, summary, dir=getwd())
+#' @usage calcScore(data, samples, summary, saveAsFile=TRUE, dir=getwd())
 #' 
 #' @return A data.frame is returned containing the number of found genes assumed
 #' to be batch affected separated by batch and a BEscore for every batch. The 
@@ -84,7 +85,7 @@
 #' score.table <- calcScore(data=ex.data, samples=ex.samples, summary=sum,
 #' dir=getwd())
 
-calcScore <- function(data, samples, summary, dir=getwd()) {
+calcScore <- function(data, samples, summary, saveAsFile=TRUE, dir=getwd()) {
     ## take batch numbers
     batches <- unique(samples$batch_id)
     flog.info(paste("Calculating the scores for", length(batches), "batches"))
@@ -153,7 +154,9 @@ calcScore <- function(data, samples, summary, dir=getwd()) {
            count06, count07, count08, count09, beScore, i, s)
     scoreTable <- geneTableMedians
     remove(geneTableMedians)
-    filename="score.table.Rdata"
-    save(scoreTable, file=paste(dir, filename, sep="/"))
+    if(saveAsFile){
+        filename="score.table.Rdata"
+        save(scoreTable, file=paste(dir, filename, sep="/"))
+    }
     return(scoreTable)
 }

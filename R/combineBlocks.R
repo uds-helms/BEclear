@@ -2,7 +2,7 @@
 #' 
 #' @keywords internal
 #' 
-#' @description  load and combine packages
+#' @description  load and combine blocks
 #' 
 #' @return the combined matrix consisting of the individual blocks
 combineBlocks <- function(blockFrame, rowPos, colPos, dir) {
