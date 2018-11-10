@@ -1,4 +1,6 @@
 #' BEclear-package
+#' 
+#'@useDynLib BEclear
 #'
 #'@aliases BEclear-package
 #'@aliases BEclearCorrected

@@ -5,7 +5,7 @@
 #' @description Calculates the local loss
 #' 
 #' @return a list containing two matrices containing the local loss
-localLoss <- function(L, R, is, js, error_matrix) {
+localLoss2 <- function(L, R, is, js, error_matrix) {
     ## create gradient matrices
     dL <- matrix(0, nrow = nrow(L), ncol = ncol(L))
     dR <- matrix(0, nrow = nrow(R), ncol = ncol(R))
