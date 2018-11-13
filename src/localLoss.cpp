@@ -9,9 +9,9 @@ using namespace Rcpp;
 // @return a list containing two matrices containing the local loss
 //' @import Rcpp
 // [[Rcpp::export]]
-List localLoss(const NumericMatrix &L,const NumericMatrix &R, 
-               const NumericVector &is, const NumericVector &js, 
-               const NumericMatrix &error_matrix) {
+List localLoss(const NumericMatrix& L,const NumericMatrix& R, 
+               const NumericVector& is, const NumericVector& js, 
+               const NumericMatrix& error_matrix) {
     
     NumericMatrix dL(L.nrow(), L.ncol());
     NumericMatrix dR(R.nrow(), R.ncol());
