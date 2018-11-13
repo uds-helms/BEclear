@@ -12,13 +12,12 @@ Description: Provides some functions to detect and correct for batch effects in
 License: GPL-2
 Depends: BiocParallel (>= 1.15.12)
 Imports: futile.logger, stats, Rdpack, graphics, Matrix, utils, methods,
-    data.table (>= 1.11.8), Rcpp, RcppArmadillo
+    data.table (>= 1.11.8), Rcpp
+Suggests: testthat
 biocViews: BatchEffect, DNAMethylation, Software, Preprocessing
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 RdMacros: Rdpack
 Encoding: UTF-8
 URL: https://github.com/David-J-R/BEclear
 BugReports: https://github.com/David-J-R/BEclear/issues
-Suggests: testthat
 LinkingTo: Rcpp
-

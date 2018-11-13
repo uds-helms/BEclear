@@ -6,16 +6,16 @@
 using namespace Rcpp;
 
 // localLoss
-List localLoss(NumericMatrix L, NumericMatrix R, NumericVector is, NumericVector js, NumericMatrix error_matrix);
+List localLoss(const NumericMatrix& L, const NumericMatrix& R, const NumericVector& is, const NumericVector& js, const NumericMatrix& error_matrix);
 RcppExport SEXP _BEclear_localLoss(SEXP LSEXP, SEXP RSEXP, SEXP isSEXP, SEXP jsSEXP, SEXP error_matrixSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type L(LSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type R(RSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type is(isSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type js(jsSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type error_matrix(error_matrixSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type is(isSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type js(jsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type error_matrix(error_matrixSEXP);
     rcpp_result_gen = Rcpp::wrap(localLoss(L, R, is, js, error_matrix));
     return rcpp_result_gen;
 END_RCPP
