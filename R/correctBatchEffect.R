@@ -188,8 +188,8 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     ##checking if there are duplicated sample names
     if(any(duplicated(colnames(data)))){
         flog.warn("Sample names aren't unique")
-        flog.warn("Transforming them to unique IDs. List with annotations will",
-                  "be added to the results")
+        flog.warn(paste("Transforming them to unique IDs. List with annotations will",
+                  "be added to the results"))
         uniqueIDsToSamples <- data.table(sample_id = colnames(data), 
                                          unique_id = 
                                              as.character(seq_along(colnames(data))))

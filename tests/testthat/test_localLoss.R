@@ -11,6 +11,17 @@ testthat::test_that("quadratic error matrix, only integer values given",{
 }
 )
 
+testthat::test_that("quadratic error matrix, only integer values given, r =3",{
+    
+    res1<-localLoss(L = matrix(c(1,2,5,9,1,4), ncol=  3), R = t(matrix(c(3,4,9,2,6,7), ncol = 3)), 
+                    error_matrix = matrix(c(1,17,2,41), nrow = 2),
+                    is = c(1,2,1,2), js = c(1,1,2,2))
+    
+    testthat::expect_equal(res1$dL, matrix(c(11, 215, 13, 235, 20, 389), ncol = 3), tolerance = .01)
+    testthat::expect_equal(res1$dR, t(matrix(c(35, 84, 158, 379, 69, 166), ncol =3)), tolerance = .01)
+}
+)
+
 testthat::test_that("long error matrix, only integer values given",{
     
     res1<-localLoss(L = matrix(c(5,6)), R = t(matrix(c(7,4,8))), 
