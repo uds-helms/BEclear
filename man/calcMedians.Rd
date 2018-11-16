@@ -8,7 +8,8 @@ calcMedians(data, samples, BPPARAM=bpparam())
 }
 \arguments{
 \item{data}{a \code{\link[data.table]{data.table}} with one column indicating
-the sample, one the features and a value column indicating the beta value}
+the sample, one the features and a value column indicating the beta value 
+or a matrix with rows as features and columns as samples}
 
 \item{samples}{data frame with two columns, the first column has to contain 
 the sample numbers, the second column has to contain the corresponding batch
@@ -42,14 +43,8 @@ data(BEclearData)
 ex.data <- ex.data[31:90,7:26]
 ex.samples <- ex.samples[7:26,]
 
-library(data.table)
-samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-value.name = "beta.value")
-setkey(data, "feature", "sample")
 
-medians <- calcMedians(data=data, samples=samples)
+medians <- calcMedians(data=ex.data, samples=ex.samples)
 }
 \seealso{
 \code{\link{correctBatchEffect}}

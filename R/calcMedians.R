@@ -13,7 +13,8 @@
 #' 
 #' 
 #' @param data a \code{\link[data.table]{data.table}} with one column indicating
-#' the sample, one the features and a value column indicating the beta value
+#' the sample, one the features and a value column indicating the beta value 
+#' or a matrix with rows as features and columns as samples
 #' @param samples data frame with two columns, the first column has to contain 
 #' the sample numbers, the second column has to contain the corresponding batch
 #' number. Colnames have to be named as "sample_id" and "batch_id".
@@ -25,6 +26,7 @@
 #' @import BiocParallel
 #' @import futile.logger
 #' @import data.table
+#' @importFrom methods is
 #' @usage calcMedians(data, samples, BPPARAM=bpparam())
 #' 
 #' @return a matrix containing median comparison values for all genes in all 
@@ -41,16 +43,22 @@
 #' ex.data <- ex.data[31:90,7:26]
 #' ex.samples <- ex.samples[7:26,]
 #' 
-#' library(data.table)
-#' samples <- data.table(ex.samples)
-#' data <- data.table(feature=rownames(ex.data), ex.data)
-#' data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-#' value.name = "beta.value")
-#' setkey(data, "feature", "sample")
 #' 
-#' medians <- calcMedians(data=data, samples=samples)
+#' medians <- calcMedians(data=ex.data, samples=ex.samples)
 
 calcMedians <- function(data, samples, BPPARAM=bpparam()) {
+    
+    if(!is(data, "data.table")){
+        flog.info("Transforming matrix to data.table")
+        data <- data.table(feature=as.character(rownames(data)), data)
+        data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
+                     value.name = "beta.value", variable.factor = FALSE)
+        setkey(data, "feature", "sample")
+    }
+    
+    if(!is(samples, "data.table")){
+        samples <- data.table(samples)
+    }
 
     flog.info(paste("Calculating the medians for", samples[,uniqueN(batch_id)],
                     "batches"))

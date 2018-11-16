@@ -15,8 +15,7 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
     
     blockNr<-block$blockNr
     D<-block$block
-    flog.info(paste("Impute missind data for block", blockNr, "of", 
-                    block$total))
+    flog.info(paste("Impute missind data for block", blockNr, "of", block$total))
     
     
     ## check if NA values are contained in the block
