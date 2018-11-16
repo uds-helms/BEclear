@@ -31,7 +31,6 @@
 #' parallelisation of the functions will be evaluated.
 #' 
 #' @export calcPvalues
-#' @import BiocParallel
 #' @import futile.logger
 #' @import data.table
 #' @importFrom stats p.adjust
@@ -75,7 +74,7 @@ calcPvalues <- function(data, samples, adjusted=TRUE, method="fdr",
     flog.info(paste("Calculating the p-values for", samples[,uniqueN(batch_id)] 
                     , "batches"))
     
-    pvalues <- bplapply(samples[,unique(batch_id)], calcPvalsForBatch,
+    pvalues <- lapply(samples[,unique(batch_id)], calcPvalsForBatch,
                        samples = samples, data = data, BPPARAM=BPPARAM)
     
     flog.debug(paste("Binding", length(pvalues), "rows of p-values together"))
