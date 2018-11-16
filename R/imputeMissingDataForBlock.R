@@ -18,15 +18,6 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
     flog.info(paste("Impute missind data for block", blockNr, "of", 
                     block$total))
     
-    # rowStartPosition <- blockFrame[[2]][[block]]
-    # rowStopPosition <- blockFrame[[3]][[block]]
-    # colStartPosition <- blockFrame[[4]][[block]]
-    # colStopPosition <- blockFrame[[5]][[block]]
-    # 
-    # 
-    # ## take one block of data
-    # D<-data[rowStartPosition:rowStopPosition,
-    #         colStartPosition:colStopPosition]
     
     ## check if NA values are contained in the block
     if (any(is.na(D))) {
@@ -61,9 +52,9 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
         
         ## run LFM 
         resultGd<- runGradientDescent(L = L, R = R, lambda = lambda, 
-                                            epochs = epochs, gamma = gamma, 
-                                            block = block, is = is, js = js, 
-                                            D = dat, r = r)
+                                      epochs = epochs, gamma = gamma, 
+                                      blockNr = blockNr, is = is, js = js, 
+                                      D = dat, r = r)
         
         dataTemp <- block$block
         ## Predicted matrix
