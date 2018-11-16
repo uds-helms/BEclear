@@ -10,22 +10,23 @@
 #' @keywords internal
 #' 
 #' @return number of the block processed
-imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs, 
-                                      lambda = 1, gamma = 0.01, r = 10,
-                                      matrixOfOnes = FALSE) {
+imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1, 
+                                      gamma = 0.01, r = 10,matrixOfOnes = FALSE) {
     
-    flog.info(paste("Impute missind data for block", block, "of", 
-                    length(blockFrame[[2]])))
+    blockNr<-block$blockNr
+    D<-block$block
+    flog.info(paste("Impute missind data for block", blockNr, "of", 
+                    block$total))
     
-    rowStartPosition <- blockFrame[[2]][[block]]
-    rowStopPosition <- blockFrame[[3]][[block]]
-    colStartPosition <- blockFrame[[4]][[block]]
-    colStopPosition <- blockFrame[[5]][[block]]
-    
-    
-    ## take one block of data
-    D<-data[rowStartPosition:rowStopPosition,
-            colStartPosition:colStopPosition]
+    # rowStartPosition <- blockFrame[[2]][[block]]
+    # rowStopPosition <- blockFrame[[3]][[block]]
+    # colStartPosition <- blockFrame[[4]][[block]]
+    # colStopPosition <- blockFrame[[5]][[block]]
+    # 
+    # 
+    # ## take one block of data
+    # D<-data[rowStartPosition:rowStopPosition,
+    #         colStartPosition:colStopPosition]
     
     ## check if NA values are contained in the block
     if (any(is.na(D))) {
@@ -64,8 +65,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
                                             block = block, is = is, js = js, 
                                             D = dat, r = r)
         
-        dataTemp <- data[rowStartPosition:rowStopPosition,
-                         colStartPosition:colStopPosition]
+        dataTemp <- block$block
         ## Predicted matrix
         
         D1 <- resultGd$L %*% resultGd$R
@@ -84,7 +84,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
     
     ## no NA values contained in the block - keep original values
     else {
-        flog.debug(paste("Block", block, 
+        flog.debug(paste("Block", blockNr, 
                          "has no missing values. Original values are kept"))
         D1 <- D
         
@@ -94,7 +94,7 @@ imputeMissingDataForBlock <- function(data, block, blockFrame, dir, epochs,
     colnames(D1) <- colnames(D)
     rownames(D1) <- rownames(D)
     
-    filename <- paste("D", block, ".RData", sep="")
+    filename <- paste("D", blockNr, ".RData", sep="")
     save(D1, file=paste(dir, filename, sep="/"))
     
     

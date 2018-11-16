@@ -4,8 +4,8 @@
 \alias{imputeMissingDataForBlock}
 \title{imputeMissingDataForBlock}
 \usage{
-imputeMissingDataForBlock(data, block, blockFrame, dir, epochs,
-  lambda = 1, gamma = 0.01, r = 10, matrixOfOnes = FALSE)
+imputeMissingDataForBlock(block, dir, epochs, lambda = 1, gamma = 0.01,
+  r = 10, matrixOfOnes = FALSE)
 }
 \arguments{
 \item{matrixOfOnes}{instead of starting with a random matrix, start from a matrix
