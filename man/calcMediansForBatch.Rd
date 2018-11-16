@@ -4,7 +4,7 @@
 \alias{calcMediansForBatch}
 \title{calcMediansForBatch}
 \usage{
-calcMediansForBatch(batch, samples, data)
+calcMediansForBatch(batch, samples, data, BPPARAM = bpparam())
 }
 \value{
 the medians for genes in a batch

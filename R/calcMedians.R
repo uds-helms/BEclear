@@ -23,7 +23,6 @@
 #' parallelisation of the functions will be evaluated.
 #' 
 #' @export calcMedians
-#' @import BiocParallel
 #' @import futile.logger
 #' @import data.table
 #' @importFrom methods is
@@ -64,7 +63,7 @@ calcMedians <- function(data, samples, BPPARAM=bpparam()) {
                     "batches"))
     
     
-    result <- bplapply(samples[,unique(batch_id)], calcMediansForBatch, 
+    result <- lapply(samples[,unique(batch_id)], calcMediansForBatch, 
                         samples = samples, data = data, BPPARAM=BPPARAM)
     
     return(do.call(cbind, result))
