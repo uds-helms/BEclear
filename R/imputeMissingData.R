@@ -167,93 +167,53 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
         stop('number of epochs has to be greater than 0')
     } 
     
-    if (rowBlockSize == 0 & colBlockSize == 0) {
-        flog.info("block size is set to 0, BEclear is started in \n")
-        flog.info("non-parallel mode on the whole data matrix")
-        ## start BEclear in non-parallel mode, just with one block
-        blockFrame <- t(as.matrix(c(1, 1, nrow(data), 1,
-                                    ncol(data))))
-        blockFrame <- as.data.frame(blockFrame)
-        blocksDone <- imputeMissingDataForBlock(data=data, block = 1, blockFrame
-                                                = blockFrame, dir = dir, 
-                                                epochs = epochs, lambda = lambda,
-                                                gamma = gamma, r = r, 
-                                                matrixOfOnes = matrixOfOnes)
-        ## load block
-        blockName <- paste("D", blockFrame[1], sep = "")
-        filename <- paste(
-            blockName,
-            "RData",
-            sep = "."
+    ## run BEclear 
+    flog.info("BEclear is startet in parallel mode:")
+    flog.info(paste("block size:", rowBlockSize, " x ", colBlockSize))
+    ## calculate start - and stop position for every block
+    if (nrow(data) < rowBlockSize | rowBlockSize == 0) {
+        rowBlockSize <- nrow(data)
+    }
+    if (ncol(data) < colBlockSize | colBlockSize == 0) {
+        colBlockSize <- ncol(data)
+    }
+    rowPos <- calcPositions(nrow(data), rowBlockSize)
+    colPos <- calcPositions(ncol(data), colBlockSize)
+    blockFrame <- calcBlockFrame(rowPos, colPos, rowBlockSize, colBlockSize)
+    
+    
+    ## only block numbers needed to distribute the blocks onto
+    ## the worker slaves
+    blockNumbers <- blockFrame[, 1]
+    ## run BEclear in parallel mode
+    blocksDone <-
+        unlist(bplapply(blockNumbers, imputeMissingDataForBlock, data=data, 
+                        blockFrame = blockFrame, dir = dir, epochs = epochs,
+                        BPPARAM = BPPARAM, lambda = lambda, gamma = gamma,
+                        r = r, matrixOfOnes = matrixOfOnes))
+    
+    ## combine the blocks to the predictedGenes data.frame
+    predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)
+    colnames(predictedGenes) <- colnames(data)
+    
+    ## remove all stored single block files
+    blockFilenames <- c()
+    for (i in seq_len(nrow(blockFrame))) {
+        row <- paste(
+            "D",
+            blockFrame$number[i],
+            ".RData",
+            sep = ""
         )
-        file <- paste(dir, filename, sep = "/")
-        load(file)
-        assign("predictedGenes", D1)
-        
-        ## remove stored single block file
-        blockFilenames <- c(
-            paste(
-                blockName,
-                "RData",
-                sep = "."
-            )
-        )
-        filedir <- paste(dir, blockFilenames, sep = "/")
+        blockFilenames <- c(blockFilenames, row)
+    }
+    for (i in seq_len(length(blockFilenames))) {
+        filedir <- paste(dir, blockFilenames[i], sep = "/")
         file.remove(filedir)
-        
-        remove(D1, blockFrame)
-        
-    } else {
-        ## run BEclear in parallel mode
-        flog.info("BEclear is startet in parallel mode:")
-        flog.info(paste("block size:", rowBlockSize, " x ", colBlockSize))
-        ## calculate start - and stop position for every block
-        if (nrow(data) < rowBlockSize) {
-            rowBlockSize <- nrow(data)
-        }
-        if (ncol(data) < colBlockSize) {
-            colBlockSize <- ncol(data)
-        }
-        rowPos <- calcPositions(nrow(data), rowBlockSize)
-        colPos <- calcPositions(ncol(data), colBlockSize)
-        blockFrame <- calcBlockFrame(rowPos, colPos, rowBlockSize, colBlockSize)
-        remove(rowBlockSize, colBlockSize)
-        
-        ## only block numbers needed to distribute the blocks onto
-        ## the worker slaves
-        blockNumbers <- blockFrame[, 1]
-        ## run BEclear in parallel mode
-        blocksDone <-
-            unlist(bplapply(blockNumbers, imputeMissingDataForBlock, data=data, 
-                            blockFrame = blockFrame, dir = dir, epochs = epochs,
-                            BPPARAM = BPPARAM, lambda = lambda, gamma = gamma,
-                            r = r, matrixOfOnes = matrixOfOnes))
-        
-        ## combine the blocks to the predictedGenes data.frame
-        predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)
-        colnames(predictedGenes) <- colnames(data)
-        
-        ## remove all stored single block files
-        blockFilenames <- c()
-        for (i in seq_len(nrow(blockFrame))) {
-            row <- paste(
-                "D",
-                blockFrame$number[i],
-                ".RData",
-                sep = ""
-            )
-            blockFilenames <- c(blockFilenames, row)
-        }
-        for (i in seq_len(length(blockFilenames))) {
-            filedir <- paste(dir, blockFilenames[i], sep = "/")
-            file.remove(filedir)
-        }
-        
-        remove(blockFrame, blockNumbers, colPos, rowPos)
-        
     }
     
-    
+    remove(blockFrame, blockNumbers, colPos, rowPos)
+        
     ## save block as predictedGenes
     predictedGenes <- as.data.frame(predictedGenes)
     if (outputFormat == "RData") {
