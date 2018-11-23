@@ -38,19 +38,10 @@
 
 replaceWrongValues <- function(data) {
     flog.info("Replacing values below 0 or above 1:")
-    counter <- 0
-    for(i in seq_len(nrow(data))) {
-        for(j in seq_len(ncol(data))) {
-            if(data[i, j] > 1) {
-                data[i, j] <- 1
-                counter <- counter + 1
-            }
-            if(data[i, j] < 0) {
-                data[i, j] <- 0
-                counter <- counter + 1
-            }
-        }
-    }
+    counter <- sum(data > 1) + sum(data < 0)
+    
+    data[data > 1] <- 1
+    data[data < 0] <- 0
     flog.info(paste(counter, "values replaced"))
     
     return(data)
