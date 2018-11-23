@@ -25,11 +25,11 @@ calcMediansForBatch <- function(batch, samples, data, BPPARAM=bpparam()) {
                                            , on=.(sample_id = sample),
                                            nomatch=0][, .(feature, beta.value)]
 
-    features <- lapply(unique(data$feature), FUN=function(x, DT_batch, DT_other)
-    {
-        return(list(batch=DT_batch[feature==x, beta.value],
-                    others=DT_other[feature==x, beta.value]))
-    }, DT_batch = DT_batch, DT_other = DT_other)
+    features_batch <- DT_batch[, list(list(beta.value)), by=feature]$V1
+    features_other <- DT_other[, list(list(beta.value)), by=feature]$V1
+    
+    features<-mapply(function(X,Y){list(batch = X, others = Y)}, 
+                     X = features_batch, Y = features_other, SIMPLIFY = F)
 
 
 
