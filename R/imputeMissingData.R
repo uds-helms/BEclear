@@ -186,15 +186,11 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
         return(list(blockNr=x[1],block=data[x[2]:x[3], x[4]:x[5]], total=total))}, 
         data = data, total=length(blockFrame$number))
     
-    
-    ## only block numbers needed to distribute the blocks onto
-    ## the worker slaves
     blockNumbers <- blockFrame[, 1]
     ## run BEclear in parallel mode
-    blocksDone <-
-        unlist(bplapply(blocks, imputeMissingDataForBlock, dir = dir, epochs = epochs,
-                        BPPARAM = BPPARAM, lambda = lambda, gamma = gamma,
-                        r = r, matrixOfOnes = matrixOfOnes))
+    blocksDone <-unlist(bplapply(blocks, imputeMissingDataForBlock, dir = dir, 
+                        epochs = epochs, BPPARAM = BPPARAM, lambda = lambda, 
+                        gamma = gamma, r = r, matrixOfOnes = matrixOfOnes))
     
     ## combine the blocks to the predictedGenes data.frame
     predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)

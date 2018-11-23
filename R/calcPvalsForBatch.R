@@ -26,11 +26,13 @@ calcPvalsForBatch <- function(batch, samples, data, BPPARAM=bpparam()) {
     features_batch <- DT_batch[, list(list(beta.value)), by=feature]$V1
     features_other <- DT_other[, list(list(beta.value)), by=feature]$V1
     
-    features<-mapply(function(X,Y){list(batch = X, others = Y)}, 
-                     X = features_batch, Y = features_other, SIMPLIFY = F)
     
-    
-    p_values <- bplapply(features, calcPvalsForGene, BPPARAM=BPPARAM)
+    p_values <- bpmapply(function(X,Y){
+        if(all(is.na(X))){
+            return(0.0)
+            }else{
+            return(ks.test(X, Y)$p.value)
+        }}, X = features_batch, Y = features_other)
 
     
     DF <- data.frame(unlist(p_values), row.names = unique(data$feature))
