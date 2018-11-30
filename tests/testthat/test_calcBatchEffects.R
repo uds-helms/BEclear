@@ -17,8 +17,8 @@ testthat::test_that("2 batches, only available values",{
     testthat::expect_equal(unname(res1[,1]), c(0.667,1.000 ,0.667), tolerance = .001)
     testthat::expect_equal(unname(res1[,2]), c(0.667,1.000 ,0.667), tolerance = .001)
     
-    testthat::expect_equal(res2[,1], c(1.642,-0.577 ,1.811), tolerance = .001)
-    testthat::expect_equal(res2[,2], c(-1.642,0.577,-1.811), tolerance = .001)
+    testthat::expect_equal(unname(res2[,1]), c(1.642,-0.577 ,1.811), tolerance = .001)
+    testthat::expect_equal(unname(res2[,2]), c(-1.642,0.577,-1.811), tolerance = .001)
 }
 )
 
@@ -43,9 +43,9 @@ testthat::test_that("3 batches, NAs",{
     testthat::expect_equal(unname(res1[,2]), c(0.50, 1.00, 1.00), tolerance = .001)
     testthat::expect_equal(unname(res1[,3]), c(1.00, 0.00, 0.333), tolerance = .001)
     
-    testthat::expect_equal(res2[,1], c(0.821, -0.577, 1.349), tolerance = .001)
-    testthat::expect_equal(res2[,2], c(-1.578 ,0.577, 0.621), tolerance = .001)
-    testthat::expect_equal(res2[,3], c(0.564, NA, -1.039), tolerance = .001)
+    testthat::expect_equal(unname(res2[,1]), c(0.821, -0.577, 1.349), tolerance = .001)
+    testthat::expect_equal(unname(res2[,2]), c(-1.578 ,0.577, 0.621), tolerance = .001)
+    testthat::expect_equal(unname(res2[,3]), c(0.564, NA, -1.039), tolerance = .001)
 }
 )
 

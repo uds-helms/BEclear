@@ -27,20 +27,16 @@ calcBatchEffectsForBatch <- function(batch, samples, data, BPPARAM=bpparam()) {
     features_other <- DT_other[, list(list(beta.value)), by=feature]$V1
     
     flog.debug(paste("Calculating the p-values for batch", batch))
-    p_values <- bpmapply(function(X,Y){
+    result <- bpmapply(function(X,Y){
+        medianDiff<-median(X, na.rm = TRUE) - median(Y, na.rm = TRUE)
         if(all(is.na(X))){
-            return(0.0)
+            return(c(0.0, medianDiff))
         }else{
-            return(ks.test(X, Y)$p.value)
+            return(c(ks.test(X, Y)$p.value,medianDiff))
         }}, X = features_batch, Y = features_other)
     
-    flog.debug(paste("Calculating the median differences for batch", batch))
-    medians <- bpmapply(function(X,Y){
-        median(X, na.rm = TRUE) - median(Y, na.rm = TRUE)
-    }, X = features_batch, Y = features_other)
-    
-    DF <- data.frame(p_values=unlist(p_values), medians=unlist(medians), 
-                     row.names = unique(data$feature))
-    
-    return(DF)
+    result <- t(result)
+    colnames(result) <- c("p_values", "medians")
+   
+    return(data.frame(result, row.names = unique(data$feature)))
 }
