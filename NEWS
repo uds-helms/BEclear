@@ -4,6 +4,7 @@ Changes in version 1.15.1
     * performance improvements
     * usage of RCPP for further performance improvements
     * addition of tests
+    * combination of calcPvals and calcMedians methods into one
 
 Changes in version 1.13.11 (2018-10-25)
     * implementation of further tests

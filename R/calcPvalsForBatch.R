@@ -10,6 +10,7 @@
 #'
 #'@return the p-values for genes in a batch
 calcPvalsForBatch <- function(batch, samples, data, BPPARAM=bpparam()) {
+    .Deprecated("calcBatchEffects")
     
     flog.debug(paste("Calculating the pvalues for batch", batch))
     

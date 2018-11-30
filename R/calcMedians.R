@@ -46,6 +46,7 @@
 #' medians <- calcMedians(data=ex.data, samples=ex.samples)
 
 calcMedians <- function(data, samples, BPPARAM=bpparam()) {
+    .Deprecated("calcBatchEffects")
     
     if(!is(data, "data.table")){
         flog.info("Transforming matrix to data.table")

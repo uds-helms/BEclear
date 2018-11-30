@@ -11,7 +11,7 @@
 #'
 #' @return the medians for genes in a batch
 calcMediansForBatch <- function(batch, samples, data, BPPARAM=bpparam()) {
-    
+    .Deprecated("calcBatchEffects")
 
     
     flog.debug(paste("Calculating the medians for batch", batch))

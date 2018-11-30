@@ -7,7 +7,7 @@ testthat::test_that("No NAs, serial",{
     
     res<-imputeMissingData(data= data, BPPARAM = bpparam, 
                            rowBlockSize = 10, colBlockSize = 10, 
-                           matrixOfOnes = TRUE, outputFormat = "")
+                           fixedSeed = TRUE, outputFormat = "")
     colnames(res)<-NULL
     testthat::expect_equal(res, data)
 }
@@ -23,7 +23,7 @@ testthat::test_that("NAs, serial",{
     
     res<-imputeMissingData(data= data_missing, BPPARAM = bpparam, 
                            rowBlockSize = 0, colBlockSize = 0, 
-                           matrixOfOnes = TRUE, outputFormat = "")
+                           fixedSeed= TRUE, outputFormat = "")
     colnames(res)<-NULL
     data[1,3] <- 0.116
     data[9,5] <- 0.020

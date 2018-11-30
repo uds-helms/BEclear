@@ -214,8 +214,12 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                  value.name = "beta.value", variable.factor = FALSE)
     setkey(DT, "feature", "sample")
     
-    med <- calcMedians(DT, samples, BPPARAM = BPPARAM)
-    pval <- calcPvalues(DT, samples, adjusted, method, BPPARAM = BPPARAM)
+    
+    batcheffects <- calcBatchEffects(data = DT, samples = samples, adjusted = adjusted,
+                                    method = method, BPPARAM = BPPARAM)
+    med <- batcheffects$med
+    pval <- batcheffects$pval
+    
     sum <- calcSummary(med, pval)
     
     #flog.info("Transforming data.table back to matrix")
