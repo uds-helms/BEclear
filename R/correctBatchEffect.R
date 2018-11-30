@@ -141,7 +141,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                dir = getwd(), BPPARAM = bpparam()) {
     
     ## checking if they're are values above 1
-    if(any(data > 1)){
+    if(any(data > 1, na.rm=TRUE)){
         flog.warn(paste(sum(data > 1, na.rm = TRUE), "values are above 1"))
         flog.warn("Replacing them with missing values")
         data[data > 1] <- NA
@@ -149,7 +149,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     
     ## checking if there are columns containing only missing values
     naIndices <- apply(data, 2, function(x) all(is.na(x)))
-    if(any(naIndices)){
+    if(any(naIndices, na.rm=TRUE)){
         flog.warn("There are columns, that contain only missing values")
         flog.warn(paste(sum(naIndices), "columns get dropped"))
         data <- data[ ,!naIndices]
@@ -157,7 +157,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     
     ## checking if there are rows containing only missing values
     naIndices <- apply(data, 1, function(x) all(is.na(x)))
-    if(any(naIndices)){
+    if(any(naIndices, na.rm=TRUE)){
         flog.warn("There are rows, that contain only missing values")
         flog.warn(paste(sum(naIndices), "rows get dropped"))
         data <- data[!naIndices, ]
