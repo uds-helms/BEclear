@@ -69,7 +69,6 @@ clearBEgenes <- function(data, samples, summary) {
     ## set beta values in data to NA for all found genes
     for (i in seq_len(nrow(summary)))
     {
-       
         data[summary$gene[i], as.character(
             samples$sample_id[samples$batch_id == summary$batch[i]])] <- NA
     }

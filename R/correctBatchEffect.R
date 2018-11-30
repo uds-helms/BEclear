@@ -202,7 +202,11 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     setkey(samples, "batch_id", "sample_id")
     
     flog.info("Transforming matrix to data.table")
-    DT <- data.table(feature=as.character(rownames(data)), data)
+    if(is.null(rownames(data))){
+        DT <- data.table(feature=1:dim(data)[[1]], data)
+    }else{
+        DT <- data.table(feature=as.character(rownames(data)), data)
+    }
     DT <- melt(data = DT, id.vars = "feature", variable.name = "sample", 
                  value.name = "beta.value", variable.factor = FALSE)
     setkey(DT, "feature", "sample")

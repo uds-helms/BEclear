@@ -3,6 +3,7 @@ Changes in version 1.15.1
     * simplifications of some functions
     * performance improvements
     * usage of RCPP for further performance improvements
+    * addition of tests
 
 Changes in version 1.13.11 (2018-10-25)
     * implementation of further tests
