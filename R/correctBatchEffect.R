@@ -79,6 +79,8 @@
 #' @param BPPARAM An instance of the
 #' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 #' parallelisation of the functions will be evaluated.
+#' @param fixedSeed determines if they seed should be fixed, which is important 
+#' for testing
 #'
 #' @export correctBatchEffect
 #' @import BiocParallel
@@ -86,7 +88,7 @@
 #' @import data.table
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 #' rowBlockSize=60, colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
-#' outputFormat="RData", dir=getwd(), BPPARAM=bpparam())
+#' outputFormat="RData", dir=getwd(), BPPARAM=bpparam(), fixedSeed= TRUE)
 #'
 #' @return A list containing the following fields (for detailed information look
 #' at the documentations of the corresponding functions):
@@ -138,13 +140,14 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                rowBlockSize = 60, colBlockSize = 60, 
                                epochs = 50, lambda = 1, gamma = 0.01, r = 10,
                                outputFormat = "RData",
-                               dir = getwd(), BPPARAM = bpparam()) {
+                               dir = getwd(), BPPARAM = bpparam(), fixedSeed = TRUE) {
     
-    ## checking if they're are values above 1
-    if(any(data > 1, na.rm=TRUE)){
-        flog.warn(paste(sum(data > 1, na.rm = TRUE), "values are above 1"))
+    ## checking if they're are values above 1 or below 0
+    if(any(data > 1 | data < 0, na.rm=TRUE)){
+        flog.warn(paste(sum(data > 1 | data < 0, na.rm = TRUE), 
+                        "values are above 1 or below 0. Check your data"))
         flog.warn("Replacing them with missing values")
-        data[data > 1] <- NA
+        data[data > 1 | data < 0] <- NA
     }
     
     ## checking if there are columns containing only missing values
@@ -232,7 +235,8 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
         imputeMissingData (data=cleared, rowBlockSize=rowBlockSize, 
                            colBlockSize=colBlockSize, epochs=epochs,
                            lambda =lambda, gamma = gamma, r = r,
-                           outputFormat = outputFormat, dir=dir, BPPARAM = BPPARAM)
+                           outputFormat = outputFormat, dir=dir, BPPARAM = BPPARAM,
+                           fixedSeed = fixedSeed)
     corrected <- replaceWrongValues(predicted)
     
     return(list(medians = med, pvals = pval, summary = sum, 

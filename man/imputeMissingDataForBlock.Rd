@@ -5,11 +5,11 @@
 \title{imputeMissingDataForBlock}
 \usage{
 imputeMissingDataForBlock(block, dir, epochs, lambda = 1, gamma = 0.01,
-  r = 10, matrixOfOnes = FALSE)
+  r = 10, fixedSeed = TRUE)
 }
 \arguments{
-\item{matrixOfOnes}{instead of starting with a random matrix, start from a matrix
-of ones. For testing purposes only!}
+\item{fixedSeed}{determines if they seed should be fixed, which is important 
+for testing}
 }
 \value{
 number of the block processed

@@ -6,7 +6,7 @@
 \usage{
 correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 rowBlockSize=60, colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
-outputFormat="RData", dir=getwd(), BPPARAM=bpparam())
+outputFormat="RData", dir=getwd(), BPPARAM=bpparam(), fixedSeed= TRUE)
 }
 \arguments{
 \item{data}{any matrix filled with beta values, column names have to be
@@ -63,6 +63,9 @@ The current working directory is defined as default parameter.}
 \item{BPPARAM}{An instance of the
 \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 parallelisation of the functions will be evaluated.}
+
+\item{fixedSeed}{determines if they seed should be fixed, which is important 
+for testing}
 }
 \value{
 A list containing the following fields (for detailed information look

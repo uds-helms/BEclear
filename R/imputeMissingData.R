@@ -114,15 +114,15 @@
 #' @param BPPARAM An instance of the 
 #' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to 
 #' parallelisation of the functions will be evaluated.
-#' @param matrixOfOnes instead of starting with a random matrix, start from a matrix
-#' of ones. For testing purposes only!
+#' @param fixedSeed determines if they seed should be fixed, which is important 
+#' for testing
 #' 
 #' @export imputeMissingData 
 #' @import BiocParallel
 #' @import futile.logger
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50, 
 #' lambda = 1, gamma = 0.01, r = 10, outputFormat="RData", dir=getwd(), 
-#' BPPARAM=bpparam(), matrixOfOnes = FALSE)
+#' BPPARAM=bpparam(), fixedSeed = TRUE)
 #'
 #' @examples 
 #' ## Shortly running example. For a more realistic example that takes
@@ -158,7 +158,7 @@
 imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
                               lambda = 1, gamma = 0.01, r = 10,
                               outputFormat="RData", dir=getwd(), 
-                              BPPARAM=bpparam(), matrixOfOnes = FALSE) {
+                              BPPARAM=bpparam(), fixedSeed = TRUE) {
     
     flog.info("Starting the imputation of missing values.")
     flog.info("This might take a while.")
@@ -190,7 +190,7 @@ imputeMissingData <- function(data, rowBlockSize=60, colBlockSize=60, epochs=50,
     ## run BEclear in parallel mode
     blocksDone <-unlist(bplapply(blocks, imputeMissingDataForBlock, dir = dir, 
                         epochs = epochs, BPPARAM = BPPARAM, lambda = lambda, 
-                        gamma = gamma, r = r, matrixOfOnes = matrixOfOnes))
+                        gamma = gamma, r = r, fixedSeed = fixedSeed))
     
     ## combine the blocks to the predictedGenes data.frame
     predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)

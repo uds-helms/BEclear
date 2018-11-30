@@ -4,14 +4,14 @@
 #' @import Matrix
 #' @importFrom stats rnorm
 #' 
-#' @param matrixOfOnes instead of starting with a random matrix, start from a matrix
-#' of ones. For testing purposes only!
+#' @param fixedSeed determines if they seed should be fixed, which is important 
+#' for testing
 #' 
 #' @keywords internal
 #' 
 #' @return number of the block processed
 imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1, 
-                                      gamma = 0.01, r = 10,matrixOfOnes = FALSE) {
+                                      gamma = 0.01, r = 10, fixedSeed = TRUE) {
     
     blockNr<-block$blockNr
     D<-block$block
@@ -38,14 +38,14 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
         xs <- Dsummary$x           # value of each revealed entry
         N <- length(is)            # number of revealed entries
         
-        if(matrixOfOnes){
-            L <- matrix(rep(1, m * r), m, r)
-            R <- matrix(rep(1, r * n), r, n)
-        }else{
+        
+        if(fixedSeed){
             set.seed(1, kind="Mersenne-Twister")
-            L <- matrix(rnorm(m * r), m, r) / sqrt(r)
-            R <- matrix(rnorm(r * n), r, n) / sqrt(r) 
         }
+        
+        L <- matrix(rnorm(m * r), m, r) / sqrt(r)
+        R <- matrix(rnorm(r * n), r, n) / sqrt(r) 
+        
         
         
         

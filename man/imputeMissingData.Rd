@@ -6,7 +6,7 @@
 \usage{
 imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50, 
 lambda = 1, gamma = 0.01, r = 10, outputFormat="RData", dir=getwd(), 
-BPPARAM=bpparam(), matrixOfOnes = FALSE)
+BPPARAM=bpparam(), fixedSeed = TRUE)
 }
 \arguments{
 \item{data}{any matrix filled e.g. with beta values. The missing entries you
@@ -50,8 +50,8 @@ stored. The current working directory is defined as default parameter.}
 \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to 
 parallelisation of the functions will be evaluated.}
 
-\item{matrixOfOnes}{instead of starting with a random matrix, start from a matrix
-of ones. For testing purposes only!}
+\item{fixedSeed}{determines if they seed should be fixed, which is important 
+for testing}
 }
 \value{
 Returns a data matrix with the same dimensions as well as same row 
