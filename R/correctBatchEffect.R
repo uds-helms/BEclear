@@ -204,21 +204,11 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     }
     setkey(samples, "batch_id", "sample_id")
     
-    flog.info("Transforming matrix to data.table")
-    if(is.null(rownames(data))){
-        DT <- data.table(feature=1:dim(data)[[1]], data)
-    }else{
-        DT <- data.table(feature=as.character(rownames(data)), data)
-    }
-    DT <- melt(data = DT, id.vars = "feature", variable.name = "sample", 
-                 value.name = "beta.value", variable.factor = FALSE)
-    setkey(DT, "feature", "sample")
-    
-    
-    batcheffects <- calcBatchEffects(data = DT, samples = samples, adjusted = adjusted,
+    batcheffects <- calcBatchEffects(data = data, samples = samples, adjusted = adjusted,
                                     method = method, BPPARAM = BPPARAM)
     med <- batcheffects$med
     pval <- batcheffects$pval
+    rm(batcheffects)
     
     sum <- calcSummary(med, pval)
     
