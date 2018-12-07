@@ -1,0 +1,33 @@
+---
+title: "BEclear tutorial"
+author: 
+    - name: David Johann-Nepomuk Peter Rasp
+      affiliation:
+        Center for Bioinformatics, Saarland University, Saarbruecken, Germany
+package: BEclear 1.15.1
+abstract: >
+    We show in this tutorial how to use the BEclear[@Akulenko2016] package to detect and correct
+    batch effects in methylation data. package. Even though BEclear was developed for
+    the use on methylation data, it can also be used to find and correct batch 
+    effects in other kinds of data.
+    The central method of BEclear is based on Latent Factor Models[@Candes2009], which can in 
+    theory be used on every matrix containing real numbers to predict missing values.
+date: "`r Sys.Date()`"
+output: BiocStyle::html_document
+bibliography: ../inst/REFERENCES.bib
+vignette: >
+  %\VignetteIndexEntry{BEclear tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}  
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+# Prerequisites
