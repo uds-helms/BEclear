@@ -215,7 +215,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
     #flog.info("Transforming data.table back to matrix")
     #data <- dcast(data, feature ~ sample, value.var = "beta.value")
     #data <- as.matrix(data, rownames = "feature")
-    rm(DT)
+    
     if(is.null(sum)){
         flog.info("There were no batch effects detected")
         score <- NULL
