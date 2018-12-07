@@ -1,8 +1,8 @@
 Package: BEclear
 Type: Package
 Title: Correct for batch effects in DNA methylation data
-Version: 1.15.0
-Date: 2018-10-25
+Version: 1.15.1
+Date: 2018-12-07
 Author: Markus Merl, Ruslan Akulenko, David Rasp
 Maintainer: David Rasp <david.j.rasp@gmail.com>
 Description: Provides some functions to detect and correct for batch effects in
@@ -14,7 +14,8 @@ SystemRequirements: C++11
 Depends: BiocParallel (>= 1.15.12)
 Imports: futile.logger, stats, Rdpack, graphics, Matrix, utils, methods,
     data.table (>= 1.11.8), Rcpp
-Suggests: testthat
+Suggests: testthat, BiocStyle, knitr, rmarkdown
+VignetteBuilder: knitr
 biocViews: BatchEffect, DNAMethylation, Software, Preprocessing
 RoxygenNote: 6.1.1
 RdMacros: Rdpack
