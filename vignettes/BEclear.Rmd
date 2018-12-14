@@ -107,15 +107,34 @@ ex.samples[1:10,]
 
 # Detecting of batch effects
 
-```{r detection, cache=TRUE, out.width = "800px"}
+## Theoretical background
+
+## Detection
+
+```{r detection, cache=TRUE}
 batchEffect <- calcBatchEffects(
   data = ex.data, samples = ex.samples,
   adjusted = TRUE, method = "fdr"
 )
 mdifs <- batchEffect$med
 pvals <- batchEffect$pval
+```
+
+
+
+
+## Summary
+
+```{r summary, cache=TRUE}
 summary <- calcSummary(medians = mdifs, pvalues = pvals)
+head(summary)
+```
+
+## Scoring 
+
+```{r score, cache=TRUE}
 score <- calcScore(ex.data, ex.samples, summary, dir = getwd())
+score
 ```
 
 # Imputation of missing values
@@ -216,7 +235,22 @@ corrected.data <- imputeMissingData(cleared.data,
 If you set rowBlockSize and colBlockSize to 0 the matrix won't be divided into 
 block and the gradient descent will be applied to the matrix as a whole.
 
+## Replacing values outside the boundaries
 
+Note that sometimes during the prediction, it can happen that values beyond the
+boundaries of beta values are returned, that means values smaller than zero or
+greater than one. `findWrongValues` simply returns a list of these values,
+together with the position in the output matrix, `replaceWrongValues` corrects
+these by simply setting the wrong values to zero or one, respectively. Since
+we cannot guarantee that we get wrong values during the prediction with the
+example data, we forego these methods for now. Note that these methods are
+especially designed for the prediction of DNA methylation data.
+
+```{r replace, cache=TRUE}
+corrected.data.valid<-replaceWrongValues(corrected.data)
+```
+
+In this case they were no values to be replaced.
 
 
 # Overall correction
