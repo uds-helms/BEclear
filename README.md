@@ -18,9 +18,8 @@ BiocManager::install("BEclear")
 
 ```r
 # Installation of the development version from GitHub
-
-# install.packages("devtools")
-library(devtools)
+if (!requireNamespace("devtools", quietly = TRUE))
+    install.packages("devtools")
 
 devtools::install_github("David-J-R/BEclear", build_vignettes=TRUE)
 ```
