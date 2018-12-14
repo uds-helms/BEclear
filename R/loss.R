@@ -10,7 +10,7 @@
 loss <- function(L, R, lambda, D) {
   error_matrix <- D - (L %*% R)
 
-  squared_error <- sum((error_matrix)^2, na.rm = T)
+  squared_error <- sum((error_matrix)^2, na.rm = TRUE)
 
   cost <- lambda * ((norm(L, type = "F")^2) + (norm(R, type = "F")^2))
 
