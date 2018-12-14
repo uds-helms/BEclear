@@ -76,10 +76,33 @@ When done with the installation you can simply load the package by typing:
 library(BEclear)
 ```
 
-# Data sources
+# Data
+
+The beta values stored in the ex.data matrix are obtained from level 3 BRCA
+data from the TCGA portal [@TCGA]. Generally, beta values are claculated by
+dividing the methylated signal by the sum of the unmethylated and methylated
+signals from a DNA methylation microrarray. In the level 3 TCGA data, this
+calculation has already been done. The sample data used here contains averaged
+beta values of probes that belong to promoter regions of single genes. Another
+possibility would be to use beta values of single probes, whereby the probe
+names should then be used instead of the gene names as rownames of the matrix.
+
+You can load our sample data via the following command:
 
 ```{r data}
 data("BEclearData")
+```
+
+It contains one matrix with the beta values:
+
+```{r}
+ex.data[1:10,1:5]
+```
+
+And one data.frame containing the assignment of samples to batches:
+
+```{r}
+ex.samples[1:10,]
 ```
 
 # Detecting of batch effects

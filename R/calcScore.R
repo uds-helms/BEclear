@@ -4,8 +4,7 @@
 #'
 #' @title calculate batch effect score
 #'
-#' @seealso \code{\link{calcMedians}}
-#' @seealso \code{\link{calcPvalues}}
+#' @seealso \code{\link{calcBatchEffects}}
 #' @seealso \code{\link{calcSummary}}
 #' @seealso \code{\link{correctBatchEffect}}
 #'
@@ -67,20 +66,11 @@
 #' data(BEclearData)
 #' ex.data <- ex.data[31:90, 7:26]
 #' ex.samples <- ex.samples[7:26, ]
-#' # Calculates median difference values and p-values from the example data
-#' library(data.table)
-#' samples <- data.table(ex.samples)
-#' data <- data.table(feature = rownames(ex.data), ex.data)
-#' data <- melt(
-#'   data = data, id.vars = "feature", variable.name = "sample",
-#'   value.name = "beta.value"
-#' )
-#' setkey(data, "feature", "sample")
-#' med <- calcMedians(data = data, samples = samples)
-#' pvals <- calcPvalues(
-#'   data = data, samples = samples, adjusted = TRUE,
-#'   method = "fdr"
-#' )
+#' ## Calculate the batch effects
+#' batchEffects <- calcBatchEffects(data = ex.data, samples = ex.samples,
+#' adjusted = TRUE, method = "fdr")
+#' med <- batchEffects$med
+#' pvals <- batchEffects$pval
 #' 
 #' # Summarize p-values and median differences for batch affected genes
 #' sum <- calcSummary(medians = med, pvalues = pvals)

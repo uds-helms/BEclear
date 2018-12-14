@@ -70,20 +70,11 @@ between 0.2 and 0.3 by 4, between 0.3 and 0.4 by 6 and so on.
 data(BEclearData)
 ex.data <- ex.data[31:90, 7:26]
 ex.samples <- ex.samples[7:26, ]
-# Calculates median difference values and p-values from the example data
-library(data.table)
-samples <- data.table(ex.samples)
-data <- data.table(feature = rownames(ex.data), ex.data)
-data <- melt(
-  data = data, id.vars = "feature", variable.name = "sample",
-  value.name = "beta.value"
-)
-setkey(data, "feature", "sample")
-med <- calcMedians(data = data, samples = samples)
-pvals <- calcPvalues(
-  data = data, samples = samples, adjusted = TRUE,
-  method = "fdr"
-)
+## Calculate the batch effects
+batchEffects <- calcBatchEffects(data = ex.data, samples = ex.samples,
+adjusted = TRUE, method = "fdr")
+med <- batchEffects$med
+pvals <- batchEffects$pval
 
 # Summarize p-values and median differences for batch affected genes
 sum <- calcSummary(medians = med, pvalues = pvals)
@@ -95,9 +86,7 @@ score.table <- calcScore(
 )
 }
 \seealso{
-\code{\link{calcMedians}}
-
-\code{\link{calcPvalues}}
+\code{\link{calcBatchEffects}}
 
 \code{\link{calcSummary}}
 

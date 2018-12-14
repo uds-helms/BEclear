@@ -2,8 +2,7 @@
 #'
 #' @aliases correctBatchEffect
 #'
-#' @seealso \code{\link{calcMedians}}
-#' @seealso \code{\link{calcPvalues}}
+#' @seealso \code{\link{calcBatchEffects}}
 #' @seealso \code{\link{calcSummary}}
 #' @seealso \code{\link{calcScore}}
 #' @seealso \code{\link{clearBEgenes}}
@@ -22,8 +21,8 @@
 #' from DNA methylation data. Thereby, the function is running most of the
 #' functions from the \code{\link{BEclear-package}} in a logical order.\cr
 #' First, median comparison values are calculated by the
-#' \code{\link{calcMedians}} function, followed by the calculation of p-values
-#' by the \code{\link{calcPvalues}} function. With the results from the median
+#' \code{\link{calcBatchEffects}} function, followed by the calculation of p-values
+#' also by the \code{\link{calcBatchEffects}} function. With the results from the median
 #' comparison and p-value calculation, a summary data frame is build using the
 #' \code{\link{calcSummary}} function, and a scoring table is established by
 #' the \code{\link{calcScore}} function. Now, found entries from the summary are
@@ -48,7 +47,7 @@
 #' @param method adjustment method for p-value adjustment (if TRUE), default
 #' method is "false discovery rate adjustment", for other available methods see
 #'  the description of the used standard R package \code{\link{p.adjust}}. See
-#' \code{\link{calcPvalues}} for more information
+#' \code{\link{calcBatchEffects}} for more information
 #' @param rowBlockSize the number of rows that is used in a block if the
 #' function is run in parallel mode and/or not on the whole matrix. Set this,
 #' and the "colBlockSize" parameter to 0 if you want to run the function on the

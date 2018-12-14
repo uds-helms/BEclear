@@ -142,21 +142,17 @@ prediction in a reasonable amount of time.
 data(BEclearData)
 ex.data <- ex.data[31:90, 7:26]
 ex.samples <- ex.samples[7:26, ]
-# Calculate median difference values and p-values
-library(data.table)
-samples <- data.table(ex.samples)
-data <- data.table(feature = rownames(ex.data), ex.data)
-data <- melt(
-  data = data, id.vars = "feature", variable.name = "sample",
-  value.name = "beta.value"
-)
-setkey(data, "feature", "sample")
-meds <- calcMedians(data = data, samples = samples)
-pvals <- calcPvalues(data = data, samples = samples)
-# Summarize p-values and median differences for batch affected genes
+
+## Calculate the batch effects
+batchEffects <- calcBatchEffects(data = ex.data, samples = ex.samples,
+adjusted = TRUE, method = "fdr")
+meds <- batchEffects$med
+pvals <- batchEffects$pval
+
+## Summarize p-values and median differences for batch affected genes
 sum <- calcSummary(medians = meds, pvalues = pvals)
 
-# Set entries defined by the summary to NA
+## Set entries defined by the summary to NA
 clearedMatrix <- clearBEgenes(data = ex.data, samples = ex.samples, summary = sum)
 
 # Predict the missing entries with standard values, row- and block sizes are

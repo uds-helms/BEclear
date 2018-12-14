@@ -11,7 +11,7 @@ Description: Provides some functions to detect and correct for batch effects in
     containing real numbers.
 License: GPL-2
 SystemRequirements: C++11
-Depends: BiocParallel (>= 1.16.0)
+Depends: R(>= 3.6.0), BiocParallel (>= 1.16.0)
 Imports: futile.logger, Rdpack, Matrix, data.table (>= 1.11.8), Rcpp, 
          stats, graphics, utils, methods
 Suggests: testthat, BiocStyle, knitr, rmarkdown

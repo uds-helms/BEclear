@@ -18,6 +18,6 @@ to show the operating principles of some of the methods from the BEclear
 package.
 }
 \references{
-[1] \url{http://cancergenome.nih.gov/}
+\insertRef{TCGA}{BEclear}
 }
 \keyword{datasets}

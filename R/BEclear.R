@@ -23,20 +23,16 @@
 #' \code{\link{BEclear}}:
 #' This function predicts the missing entries of an input matrix (NA values)
 #' through the use of a Latent Factor Model.\cr
-#' \code{\link{calcMedians}}:
+#' \code{\link{calcBatchEffects}}:
 #' Compares the median value of all beta values belonging to one batch with the
 #' median value of all beta values belonging to all other batches. Returns a
 #' matrix containing this median difference value for every gene in every batch,
 #' columns define the batch numbers, rows the gene names.\cr
-#' \code{\link{calcPvalues}}:
-#' Compares the distribution of all beta values corresponding to one batch with
-#' the distribution of all beta values corresponding to all other batches and
+#' And compares the distribution of all beta values corresponding to one batch 
+#' with the distribution of all beta values corresponding to all other batches and
 #' returns a p-value which defines if the distributions are the same or not.\cr
 #' \code{\link{calcSummary}}:
-#' Summarizes the results of the median comparison function
-#' \code{\link{calcMedians}} and the p-value calculation function
-#' \code{\link{calcPvalues}}. Should be used with the matrices originating from
-#' these two functions.\cr
+#' Summarizes the results of the \code{\link{calcBatchEffects}} function\cr
 #' \code{\link{calcScore}}:
 #' Returns a table with the number of found genes with found p-values less or
 #' equal to 0.01 and median values greater or equal to 0.05. A score is
@@ -65,22 +61,11 @@
 #'
 #' @examples
 #' data(BEclearData)
-#' ## Calculate median comparison values
-#' library(data.table)
-#' samples <- data.table(ex.samples)
-#' data <- data.table(feature = rownames(ex.data), ex.data)
-#' data <- melt(
-#'   data = data, id.vars = "feature", variable.name = "sample",
-#'   value.name = "beta.value"
-#' )
-#' setkey(data, "feature", "sample")
-#' med <- calcMedians(data = data, samples = samples)
-#' 
-#' ## Calculate fdr-adjusted p-values in non-parallel mode
-#' pvals <- calcPvalues(
-#'   data = data, samples = samples, adjusted = TRUE,
-#'   method = "fdr"
-#' )
+#' ## Calculate the batch effects
+#' batchEffects <- calcBatchEffects(data = ex.data, samples = ex.samples,
+#' adjusted = TRUE, method = "fdr")
+#' med <- batchEffects$med
+#' pvals <- batchEffects$pval
 #' 
 #' ## Summarize p-values and median differences for batch affected genes
 #' sum <- calcSummary(medians = med, pvalues = pvals)
@@ -115,7 +100,7 @@
 #' corrected <- replaceWrongValues(data = predicted)
 #' }
 #' 
-#' @author Ruslan Akulenko, Markus Merl
+#' @author Ruslan Akulenko, Markus Merl, David Rasp
 #'
 #' @references \insertRef{Akulenko2016}{BEclear}
 #' @import Rdpack
@@ -152,7 +137,7 @@ package = "BEclear", add = FALSE
 #' probes, whereby the probe names should then be used instead of the gene names
 #' as rownames of the matrix.
 #'
-#' @references [1] \url{http://cancergenome.nih.gov/}
+#' @references \insertRef{TCGA}{BEclear}
 #'
 "ex.data"
 
@@ -173,7 +158,7 @@ package = "BEclear", add = FALSE
 #' column for the corresponding batch id, stemming from breast cancer data
 #' from the TCGA portal [1]
 #'
-#' @references [1] \url{http://cancergenome.nih.gov/}
+#' @references \insertRef{TCGA}{BEclear}
 "ex.samples"
 
 #' @name ex.corrected.data
@@ -196,5 +181,5 @@ package = "BEclear", add = FALSE
 #' the breast invasive carcinoma TCGA methylation data. The colnames denote
 #' samples, rownames denote gene names.
 #'
-#' @references [1] \url{http://cancergenome.nih.gov/}
+#' @references \insertRef{TCGA}{BEclear}
 "ex.corrected.data"

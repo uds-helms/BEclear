@@ -19,6 +19,6 @@ data(BEclearData)
 Example data set for the BEclear-package
 }
 \references{
-[1] \url{http://cancergenome.nih.gov/}
+\insertRef{TCGA}{BEclear}
 }
 \keyword{datasets}

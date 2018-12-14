@@ -36,7 +36,7 @@ clearBEgenes
 
 All entries belonging to genes stated in the summary are set to NA
 for the corresponding batches in the data matrix. Please look at the
-descriptions of \code{\link{calcMedians}} and \code{\link{calcPvalues}} for
+descriptions of \code{\link{calcBatchEffects}}  for
 more detailed information about the data which should be contained in the
 summary data.frame.
 }
@@ -50,28 +50,20 @@ data(BEclearData)
 ex.data <- ex.data[31:90, 7:26]
 ex.samples <- ex.samples[7:26, ]
 
-# Calculate median difference values and p-values
-library(data.table)
-samples <- data.table(ex.samples)
-data <- data.table(feature = rownames(ex.data), ex.data)
-data <- melt(
-  data = data, id.vars = "feature", variable.name = "sample",
-  value.name = "beta.value"
-)
-setkey(data, "feature", "sample")
-meds <- calcMedians(data = data, samples = samples)
-pvals <- calcPvalues(data = data, samples = samples)
+## Calculate the batch effects
+batchEffects <- calcBatchEffects(data = ex.data, samples = ex.samples,
+adjusted = TRUE, method = "fdr")
+meds <- batchEffects$med
+pvals <- batchEffects$pval
 
-# Summarize p-values and median differences for batch affected genes
+## Summarize p-values and median differences for batch affected genes
 sum <- calcSummary(medians = meds, pvalues = pvals)
 
-# Set values for summarized BEgenes to NA
+## Set values for summarized BEgenes to NA
 clearedMatrix <- clearBEgenes(data = ex.data, samples = ex.samples, summary = sum)
 }
 \seealso{
-\code{\link{calcMedians}}
-
-\code{\link{calcPvalues}}
+\code{\link{calcBatchEffects}}
 
 \code{\link{calcSummary}}
 

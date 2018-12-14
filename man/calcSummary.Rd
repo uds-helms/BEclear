@@ -8,11 +8,11 @@ calcSummary(medians, pvalues)
 }
 \arguments{
 \item{medians}{a matrix containing median difference values calculated by
-the \code{\link{calcMedians}} function. For further details look at the
+the \code{\link{calcBatchEffects}} function. For further details look at the
 documentation of this function.}
 
 \item{pvalues}{a matrix containing p-values calculated by the
-\code{\link{calcPvalues}} function. For further details look at the
+\code{\link{calcBatchEffects}} function. For further details look at the
 documentation of this function.}
 }
 \value{
@@ -23,10 +23,8 @@ and "p-value" containing the calculated median difference values and the
 p-values, respectively.
 }
 \description{
-Summarizes the results of the median comparison function
-\code{\link{calcMedians}} and the p-value calculation function
-\code{\link{calcPvalues}}. Should be used with the matrices originating from
-these two functions.
+Summarizes the results of the \code{\link{calcBatchEffects}} 
+function
 }
 \details{
 calcSummary
@@ -45,28 +43,17 @@ data(BEclearData)
 ex.data <- ex.data[31:90, 7:26]
 ex.samples <- ex.samples[7:26, ]
 
-# Calculates median difference values and p-values from the example data
-library(data.table)
-samples <- data.table(ex.samples)
-data <- data.table(feature = rownames(ex.data), ex.data)
-data <- melt(
-  data = data, id.vars = "feature", variable.name = "sample",
-  value.name = "beta.value"
-)
-setkey(data, "feature", "sample")
-med <- calcMedians(data = data, samples = samples)
-pvals <- calcPvalues(
-  data = data, samples = samples, adjusted = TRUE,
-  method = "fdr"
-)
+## Calculate the batch effects
+batchEffects <- calcBatchEffects(data = ex.data, samples = ex.samples,
+adjusted = TRUE, method = "fdr")
+med <- batchEffects$med
+pvals <- batchEffects$pval
 
-# Summarize p-values and median differences for batch affected genes
+## Summarize p-values and median differences for batch affected genes
 sum <- calcSummary(medians = med, pvalues = pvals)
 }
 \seealso{
-\code{\link{calcMedians}}
-
-\code{\link{calcPvalues}}
+\code{\link{calcBatchEffects}}
 
 \code{\link{correctBatchEffect}}
 }
