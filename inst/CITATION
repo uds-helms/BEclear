@@ -1,3 +1,6 @@
+citHeader("To cite BEclear in publications use:")
+
+
 bibentry(bibtype = "Article",
          title = "{BEclear: Batch} effect detection and adjustment in DNA methylation data.",
          author = c(person("Ruslan", "Akulenko"),

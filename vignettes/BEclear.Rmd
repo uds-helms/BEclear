@@ -1,5 +1,5 @@
 ---
-title: "BEclear tutorial"
+title: "Detecting and correcting batch effects with BEclear"
 author: 
     - name: David Johann-Nepomuk Peter Rasp
       affiliation:
@@ -7,11 +7,11 @@ author:
       email: David.J.Rasp@gmail.com
 package: BEclear 1.15.1
 abstract: >
-    We show in this tutorial how to use the BEclear[@Akulenko2016] package to detect and correct
+    We show in this tutorial how to use the BEclear [@Akulenko2016] package to detect and correct
     batch effects in methylation data. package. Even though BEclear was developed for
     the use on methylation data, it can also be used to find and correct batch 
     effects in other kinds of data.
-    The central method of BEclear is based on Latent Factor Models[@Candes2009], which can in 
+    The central method of BEclear is based on Latent Factor Models [@Candes2009], which can in 
     theory be used on every matrix containing real numbers to predict missing values.
 date: "`r Sys.Date()`"
 output: BiocStyle::html_document
@@ -29,11 +29,37 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Introduction
 
 
-# Prerequisites
+# Installation
 
-```{r packageSetup}
+`r BiocStyle::Biocpkg("BEclear")` is available on Bioconductor. To install it 
+you can therefore use the `r BiocStyle::Biocpkg("BiocManager")`:
+
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("BEclear")
+```
+
+Otherwise you can also install `r BiocStyle::Githubpkg("David-J-R/BEclear")` from 
+from its Github repository by the following command:
+
+```{r, eval=FALSE}
+if (!requireNamespace("devtools", quietly = TRUE))
+    install.packages("devtools")
+install_github("David-J-R/MoDentify")
+```
+
+We however recommend installing it through Bioconductor, as this takes care for you in 
+installing the dependencies for you and furthermore you can refer to the release of 
+Bioconductor, when using our package, which enables you to reproduce the exact 
+conditions of your run.
+
+When done with the installation you can simply load the package by typing:
+
+```{r}
 library(BEclear)
 ```
 
@@ -45,7 +71,7 @@ data("BEclearData")
 
 # Detecting of batch effects
 
-```{r detection}
+```{r detection, cache=TRUE}
 batchEffect <- calcBatchEffects(data = ex.data, samples = ex.samples, 
                                 adjusted = TRUE, method = "fdr")
 mdifs <- batchEffect$med
@@ -60,10 +86,48 @@ makeBoxplot(ex.data, ex.samples, score, bySamples=TRUE,
 
 # Imputation of missing values
 
-```{r imputation}
+For the imputation of missing values we use a gradient descent method developed 
+by @Koren2009. In this section we will describe you our implementation of this
+method and how to use it.
+
+## Theoretical background
+
+We assume that our complete data matrix \(D_{ij}\) can be described by the effects of
+a matrix \(L_i\), which represents the effect of the features (genes in our case)
+and a matrix \(R_j\) describing the effect of the samples in the following way:
+
+\begin{equation}
+D_{ij} = L_{i}^{T} \times R_{j}
+\end{equation}
+
+The method can either be run on the complete data set or the data set can be 
+divided into blocks on which the method is applied.
+This divison into blocks allows for parallelisation of the method, which can be 
+useful to speed up the process. We have found that a blocksize of 60x60 works 
+well.[@Akulenko2016]
+
+\begin{equation}
+  errorMatrix_{ij} = Block_{ij} - L_{i}^{T} \times R_{j}
+  (\#eq:errormatrix)
+\end{equation}
+
+We try to minimalise the following loss function through a gradient descent:
+
+\begin{equation}
+  min_{L, R}  \sum_{ij \in K}(errorMatrix_{ij}^2) + \lambda \times
+  (\left\lVert L_{i}\right\rVert_{F}^{2} + 
+  \left\lVert R_{j}\right\rVert_{F}^{2} )
+  (\#eq:loss)
+\end{equation}
+Where \(K\) is the set of tuples \((i,j)\) for which the value is present.
+
+## Usage
+
+```{r imputation, cache=TRUE}
 cleared.data <- clearBEgenes(ex.data, ex.samples, summary)
-corrected.data <- imputeMissingData(cleared.data, rowBlockSize=60, colBlockSize=60,
-                          epochs=50, outputFormat="RData", dir=getwd())
+corrected.data <- imputeMissingData(cleared.data, rowBlockSize=60, 
+                                    colBlockSize=60,epochs=50, 
+                                    outputFormat="", dir=getwd())
 
 makeBoxplot(corrected.data, ex.samples, score, bySamples=TRUE,
         col="standard", main="Corrected example data",
@@ -72,8 +136,17 @@ makeBoxplot(corrected.data, ex.samples, score, bySamples=TRUE,
 
 # Overall correction
 
-```{r correction}
+Besides the individual methods BEclear also offers an overall method, which 
+executes all the described previous step in a call. It also applies some 
+preprocessing to your data set
+
+```{r correction, cache=TRUE}
 cleared.data <- correctBatchEffect(data=ex.data, samples=ex.samples)
+```
+# sessionInfo()
+
+```{r}
+sessionInfo()
 ```
 
 # References
