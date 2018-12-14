@@ -8,26 +8,26 @@ calcMedians(data, samples, BPPARAM=bpparam())
 }
 \arguments{
 \item{data}{a \code{\link[data.table]{data.table}} with one column indicating
-the sample, one the features and a value column indicating the beta value 
+the sample, one the features and a value column indicating the beta value
 or a matrix with rows as features and columns as samples}
 
-\item{samples}{data frame with two columns, the first column has to contain 
+\item{samples}{data frame with two columns, the first column has to contain
 the sample numbers, the second column has to contain the corresponding batch
 number. Colnames have to be named as "sample_id" and "batch_id".}
 
-\item{BPPARAM}{An instance of the 
-\code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to 
+\item{BPPARAM}{An instance of the
+\code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 parallelisation of the functions will be evaluated.}
 }
 \value{
-a matrix containing median comparison values for all genes in all 
-batches, the column names define the batch numbers, row names are the same 
+a matrix containing median comparison values for all genes in all
+batches, the column names define the batch numbers, row names are the same
 gene names as contained in the input matrix.
 }
 \description{
-Compares the median value of all beta values belonging to one 
-batch with the median value of all beta values belonging to all other 
-batches. Returns a matrix containing this median difference value for every 
+Compares the median value of all beta values belonging to one
+batch with the median value of all beta values belonging to all other
+batches. Returns a matrix containing this median difference value for every
 gene in every batch, columns define the batch numbers, rows the gene names.
 }
 \details{
@@ -40,11 +40,11 @@ calcMedians
 
 ## Calculate median comparison values in non-parallel mode
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26]
-ex.samples <- ex.samples[7:26,]
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
 
 
-medians <- calcMedians(data=ex.data, samples=ex.samples)
+medians <- calcMedians(data = ex.data, samples = ex.samples)
 }
 \seealso{
 \code{\link{correctBatchEffect}}

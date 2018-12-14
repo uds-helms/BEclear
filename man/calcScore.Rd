@@ -7,86 +7,92 @@
 calcScore(data, samples, summary, saveAsFile=TRUE, dir=getwd())
 }
 \arguments{
-\item{data}{any matrix filled with beta values, column names have to be 
+\item{data}{any matrix filled with beta values, column names have to be
 sample_ids corresponding to the ids listed in "samples", row names have to
 be gene names.}
 
-\item{samples}{data frame with two columns, the first column has to contain 
+\item{samples}{data frame with two columns, the first column has to contain
 the sample numbers, the second column has to contain the corresponding batch
 number. Colnames have to be named as "sample_id" and "batch_id".}
 
-\item{summary}{a summary data.frame containing the columns "gene", "batch", 
-"median" and "p-value" and consists of all genes which were found in the 
-median and p-value calculations, see \code{\link{calcSummary}} function for 
+\item{summary}{a summary data.frame containing the columns "gene", "batch",
+"median" and "p-value" and consists of all genes which were found in the
+median and p-value calculations, see \code{\link{calcSummary}} function for
 more details.}
 
 \item{saveAsFile}{determining if the data.frame should also be saved as a file}
 
-\item{dir}{set the path to a directory the returned data.frame should be 
+\item{dir}{set the path to a directory the returned data.frame should be
 stored. The current working directory is defined as default parameter.}
 }
 \value{
 A data.frame is returned containing the number of found genes assumed
-to be batch affected separated by batch and a BEscore for every batch. The 
+to be batch affected separated by batch and a BEscore for every batch. The
 data.frame is also stored in the specified directory as .RData file.
 }
 \description{
-Returns a table with the number of found genes with found 
-p-values less or equal to 0.01 and median values greater or equal to 0.05. 
-A score is calculated depending on the number of found genes as well as the 
-magnitude of the median difference values, this score is divided by the 
-overall number of genes in the data and returned as "BEscore". See details 
-for further information and details about the score calculation. The 
+Returns a table with the number of found genes with found
+p-values less or equal to 0.01 and median values greater or equal to 0.05.
+A score is calculated depending on the number of found genes as well as the
+magnitude of the median difference values, this score is divided by the
+overall number of genes in the data and returned as "BEscore". See details
+for further information and details about the score calculation. The
 returned data.frame is also stored in the specified directory as .RData file.
 }
 \details{
 calcScore
 
-The returned data frame contains one column for the batch numbers, 
-11 columns containing the number of genes found in a certain range of the 
-median difference value and a column with the calculated BEscore. These 
-found genes are assumed to be batch affected due to their difference in 
+The returned data frame contains one column for the batch numbers,
+11 columns containing the number of genes found in a certain range of the
+median difference value and a column with the calculated BEscore. These
+found genes are assumed to be batch affected due to their difference in
 median values and their different distribution of the beta values. The higher
-the found number of genes and the more extreme the median difference is, the 
+the found number of genes and the more extreme the median difference is, the
 more severe is the assumed batch effect supposed to be. We suggest that there
-is no need for a batch effect correction if the BEscore for a batch is less 
+is no need for a batch effect correction if the BEscore for a batch is less
 than 0.02. BEscores between 0.02 and 0.1 are lying in a "gray area" for which
 we assume a not severe batch effect, and values beyond 0.1 certainly describe
-a batch effect and should definitely be corrected.\cr 
-The 11 columns containing the numbers of found genes count the median 
+a batch effect and should definitely be corrected.\cr
+The 11 columns containing the numbers of found genes count the median
 difference values which are ranging from >= 0.05 to < 0.1 ; >= 0.1 to < 0.2;
 >= 0.2 to < 0.3 and so on up to a limit of 1.\cr
-The BEscore is calculated by the sum of the weighted number of genes divided 
-by the number of genes. Weightings are calculated by multiplication of the 
-number of found genes between 0.05 and 0.1 by 1, between 0.1 and 0.2 by 2, 
+The BEscore is calculated by the sum of the weighted number of genes divided
+by the number of genes. Weightings are calculated by multiplication of the
+number of found genes between 0.05 and 0.1 by 1, between 0.1 and 0.2 by 2,
 between 0.2 and 0.3 by 4, between 0.3 and 0.4 by 6 and so on.
 }
 \examples{
-## Shortly running example. For a more realistic example that takes 
+## Shortly running example. For a more realistic example that takes
 ## some more time, run the same procedure with the full BEclearData
 ## dataset.
 
 ## Whole procedure that has to be done to use this function.
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26] 
-ex.samples <- ex.samples[7:26,]
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
 # Calculates median difference values and p-values from the example data
 library(data.table)
 samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-            value.name = "beta.value")
+data <- data.table(feature = rownames(ex.data), ex.data)
+data <- melt(
+  data = data, id.vars = "feature", variable.name = "sample",
+  value.name = "beta.value"
+)
 setkey(data, "feature", "sample")
-med <- calcMedians(data=data, samples=samples)
-pvals <- calcPvalues(data=data, samples=samples, adjusted=TRUE, 
-method="fdr")
+med <- calcMedians(data = data, samples = samples)
+pvals <- calcPvalues(
+  data = data, samples = samples, adjusted = TRUE,
+  method = "fdr"
+)
 
-# Summarize p-values and median differences for batch affected genes 
-sum <- calcSummary(medians=med, pvalues=pvals)
+# Summarize p-values and median differences for batch affected genes
+sum <- calcSummary(medians = med, pvalues = pvals)
 
 # Calculates the score table
-score.table <- calcScore(data=ex.data, samples=ex.samples, summary=sum,
-dir=getwd())
+score.table <- calcScore(
+  data = ex.data, samples = ex.samples, summary = sum,
+  dir = getwd()
+)
 }
 \seealso{
 \code{\link{calcMedians}}

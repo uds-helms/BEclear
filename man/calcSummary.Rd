@@ -7,32 +7,32 @@
 calcSummary(medians, pvalues)
 }
 \arguments{
-\item{medians}{a matrix containing median difference values calculated by 
+\item{medians}{a matrix containing median difference values calculated by
 the \code{\link{calcMedians}} function. For further details look at the
 documentation of this function.}
 
-\item{pvalues}{a matrix containing p-values calculated by the 
-\code{\link{calcPvalues}} function. For further details look at the 
+\item{pvalues}{a matrix containing p-values calculated by the
+\code{\link{calcPvalues}} function. For further details look at the
 documentation of this function.}
 }
 \value{
 Null if there are no batch effects detected, else
- A data frame with the columns "gene" containing the gene name, 
-"batch" containing the batch number from which the gene was found, "median" 
-and "p-value" containing the calculated median difference values and the 
+ A data frame with the columns "gene" containing the gene name,
+"batch" containing the batch number from which the gene was found, "median"
+and "p-value" containing the calculated median difference values and the
 p-values, respectively.
 }
 \description{
-Summarizes the results of the median comparison function 
-\code{\link{calcMedians}} and the p-value calculation function 
+Summarizes the results of the median comparison function
+\code{\link{calcMedians}} and the p-value calculation function
 \code{\link{calcPvalues}}. Should be used with the matrices originating from
 these two functions.
 }
 \details{
 calcSummary
 
-All genes with a median comparison value >= 0.05 and a p-value 
-of <= 0.01 are summarized into a data.frame. These genes are assumed to 
+All genes with a median comparison value >= 0.05 and a p-value
+of <= 0.01 are summarized into a data.frame. These genes are assumed to
 contain a batch effect
 }
 \examples{
@@ -42,22 +42,26 @@ contain a batch effect
 
 ## Whole procedure that has to be done to use this function.
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26]
-ex.samples <- ex.samples[7:26,]
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
 
 # Calculates median difference values and p-values from the example data
 library(data.table)
 samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-            value.name = "beta.value")
+data <- data.table(feature = rownames(ex.data), ex.data)
+data <- melt(
+  data = data, id.vars = "feature", variable.name = "sample",
+  value.name = "beta.value"
+)
 setkey(data, "feature", "sample")
-med <- calcMedians(data=data, samples=samples)
-pvals <- calcPvalues(data=data, samples=samples, adjusted=TRUE, 
-method="fdr")
+med <- calcMedians(data = data, samples = samples)
+pvals <- calcPvalues(
+  data = data, samples = samples, adjusted = TRUE,
+  method = "fdr"
+)
 
-# Summarize p-values and median differences for batch affected genes 
-sum <- calcSummary(medians=med, pvalues=pvals)
+# Summarize p-values and median differences for batch affected genes
+sum <- calcSummary(medians = med, pvalues = pvals)
 }
 \seealso{
 \code{\link{calcMedians}}

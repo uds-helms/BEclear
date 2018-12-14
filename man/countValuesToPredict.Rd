@@ -10,9 +10,9 @@ countValuesToPredict(data)
 \item{data}{any kind of matrix}
 }
 \value{
-Returns a data frame with the number of NA entries per column. Since 
-the function is mainly written for the usage in batch effect correction of 
-DNA methylation data, the column names of the data frame are set to "sample" 
+Returns a data frame with the number of NA entries per column. Since
+the function is mainly written for the usage in batch effect correction of
+DNA methylation data, the column names of the data frame are set to "sample"
 and "num_pred_values". Nevertheless, the function can be used with any other
 matrix containing anything but beta values.
 }
@@ -29,23 +29,25 @@ countValuesToPredict
 
 ## Whole procedure that has to be done to use this function.
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26]
-ex.samples <- ex.samples[7:26,]
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
 
 # Calculate median difference values and p-values
 library(data.table)
 samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-            value.name = "beta.value")
+data <- data.table(feature = rownames(ex.data), ex.data)
+data <- melt(
+  data = data, id.vars = "feature", variable.name = "sample",
+  value.name = "beta.value"
+)
 setkey(data, "feature", "sample")
-meds <- calcMedians(data=data, samples=samples)
-pvals <- calcPvalues(data=data, samples=samples)
+meds <- calcMedians(data = data, samples = samples)
+pvals <- calcPvalues(data = data, samples = samples)
 
 # Summarize p-values and median differences for batch affected genes
-sum <- calcSummary(medians=meds, pvalues=pvals)
-clearedMatrix <- clearBEgenes(data=ex.data, samples=ex.samples, summary=sum)
-numberOfEntries <- countValuesToPredict(data=clearedMatrix)
+sum <- calcSummary(medians = meds, pvalues = pvals)
+clearedMatrix <- clearBEgenes(data = ex.data, samples = ex.samples, summary = sum)
+numberOfEntries <- countValuesToPredict(data = clearedMatrix)
 }
 \seealso{
 \code{\link{clearBEgenes}}

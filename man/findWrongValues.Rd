@@ -7,13 +7,13 @@
 findWrongValues(data)
 }
 \arguments{
-\item{data}{any matrix filled with values that normally should be bounded 
+\item{data}{any matrix filled with values that normally should be bounded
 between 0 and 1.}
 }
 \value{
 A data frame containing the columns "level", "row", "col" and "value"
 defining if the wrong value is below 0 or beyond 1 (level = 0 or level = 1),
-the row position and the column position in the input matrix and the wrong 
+the row position and the column position in the input matrix and the wrong
 value itself, respectively.
 }
 \description{
@@ -26,17 +26,17 @@ especially designed for DNA methylation data.
 findWrongValues
 
 Note that this method is especially designed to run after the batch
-effect correction of DNA methylation data, e.g. with the 
-\code{\link{BEclear}} method. It can happen, that the predicted values are 
-lying slightly below the lower bound of 0 or beyond the upper bound of 1. 
+effect correction of DNA methylation data, e.g. with the
+\code{\link{BEclear}} method. It can happen, that the predicted values are
+lying slightly below the lower bound of 0 or beyond the upper bound of 1.
 This method finds these inaccurately predicted entries. Another method called
-\code{\link{replaceWrongValues}} replaces these values either by 0 or 1, 
+\code{\link{replaceWrongValues}} replaces these values either by 0 or 1,
 respectively.
 }
 \examples{
 data(BEclearCorrected)
 # Find wrongly predicted values
-wrongEntries <- findWrongValues(data=ex.corrected.data)
+wrongEntries <- findWrongValues(data = ex.corrected.data)
 }
 \seealso{
 \code{\link{replaceWrongValues}}

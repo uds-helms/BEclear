@@ -6,9 +6,9 @@
 \alias{_PACKAGE}
 \title{Correction of batch effects in DNA methylation data}
 \description{
-Provides some functions to detect and correct for batch effects 
-in DNA methylation data. The core function \code{\link{BEclear}} is based on 
-Latent Factor Models and can also be used to predict missing values in any 
+Provides some functions to detect and correct for batch effects
+in DNA methylation data. The core function \code{\link{BEclear}} is based on
+Latent Factor Models and can also be used to predict missing values in any
 other matrix containing real numbers.
 }
 \details{
@@ -24,7 +24,7 @@ This function predicts the missing entries of an input matrix (NA values)
 through the use of a Latent Factor Model.\cr
 \code{\link{calcMedians}}:
 Compares the median value of all beta values belonging to one batch with the
-median value of all beta values belonging to all other batches. Returns a 
+median value of all beta values belonging to all other batches. Returns a
 matrix containing this median difference value for every gene in every batch,
 columns define the batch numbers, rows the gene names.\cr
 \code{\link{calcPvalues}}:
@@ -38,10 +38,10 @@ Summarizes the results of the median comparison function
 these two functions.\cr
 \code{\link{calcScore}}:
 Returns a table with the number of found genes with found p-values less or
-equal to 0.01 and median values greater or equal to 0.05. A score is 
+equal to 0.01 and median values greater or equal to 0.05. A score is
 calculated depending on the number of found genes as well as the magnitude of
-the median difference values, this score is divided by the overall number of 
-genes in the data and returned as "BEscore". See the methods details for 
+the median difference values, this score is divided by the overall number of
+genes in the data and returned as "BEscore". See the methods details for
 further information and details about the score calculation.\cr
 \code{\link{makeBoxplot}}:
 A simple \code{\link{boxplot}} is done with boxes either separated by batches
@@ -64,47 +64,54 @@ matrix. These wrong entries are replaced by 0 or 1, respectively.
 }
 \examples{
 data(BEclearData)
-## Calculate median comparison values 
+## Calculate median comparison values
 library(data.table)
 samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-            value.name = "beta.value")
+data <- data.table(feature = rownames(ex.data), ex.data)
+data <- melt(
+  data = data, id.vars = "feature", variable.name = "sample",
+  value.name = "beta.value"
+)
 setkey(data, "feature", "sample")
-med <- calcMedians(data=data, samples=samples)
+med <- calcMedians(data = data, samples = samples)
 
 ## Calculate fdr-adjusted p-values in non-parallel mode
-pvals <- calcPvalues(data=data, samples=samples, adjusted=TRUE, 
-method="fdr")
+pvals <- calcPvalues(
+  data = data, samples = samples, adjusted = TRUE,
+  method = "fdr"
+)
 
 ## Summarize p-values and median differences for batch affected genes
-sum <- calcSummary(medians=med, pvalues=pvals)
+sum <- calcSummary(medians = med, pvalues = pvals)
 
 ## Calculates the score table
-score.table <- calcScore(data=ex.data, samples=ex.samples, summary=sum)
+score.table <- calcScore(data = ex.data, samples = ex.samples, summary = sum)
 
 ## Simple boxplot for the example data separated by batch
-makeBoxplot(data=ex.data, samples=ex.samples, score=score.table,
-bySamples=FALSE, main="Some box plot")
+makeBoxplot(
+  data = ex.data, samples = ex.samples, score = score.table,
+  bySamples = FALSE, main = "Some box plot"
+)
 
 ## Simple boxplot for the example data separated by samples
-makeBoxplot(data=ex.data, samples=ex.samples, score=score.table,
-bySamples=TRUE, main="Some box plot")
+makeBoxplot(
+  data = ex.data, samples = ex.samples, score = score.table,
+  bySamples = TRUE, main = "Some box plot"
+)
 
 ## Sets assumed batch affected entries to NA
-cleared <- clearBEgenes(data=ex.data, samples=ex.samples, summary=sum)
+cleared <- clearBEgenes(data = ex.data, samples = ex.samples, summary = sum)
 ## Counts and stores number of entries to predict
-numberOfEntries <- countValuesToPredict(data=cleared)
-
+numberOfEntries <- countValuesToPredict(data = cleared)
 \dontrun{
 ## Predicts the missing entries
-predicted <- imputeMissingData(data=cleared)
+predicted <- imputeMissingData(data = cleared)
 
 ## Find wrongly predicted entries
-wrongEntries <- findWrongValues(data=predicted)
+wrongEntries <- findWrongValues(data = predicted)
 
 ## Replace wrongly predicted entries
-corrected <- replaceWrongValues(data=predicted)
+corrected <- replaceWrongValues(data = predicted)
 }
 
 }

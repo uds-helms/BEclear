@@ -62,11 +62,11 @@
 #' details section of See \code{\link{imputeMissingData}} for more information
 #' about this feature.
 #' @param epochs the number of iterations used in the gradient descent algorithm
-#' to predict the missing entries in the data matrix. See 
+#' to predict the missing entries in the data matrix. See
 #' \code{\link{imputeMissingData}} for more information.
-#' @param lambda constant that controls the extent of regularization during the 
+#' @param lambda constant that controls the extent of regularization during the
 #' gradient descent
-#' @param gamma constant that controls the extent of the shift of parameters 
+#' @param gamma constant that controls the extent of the shift of parameters
 #' during the gradient descent
 #' @param r length of the second dimension of variable matrices R and L
 #' @param outputFormat you can choose if the finally returned data matrix should
@@ -79,7 +79,7 @@
 #' @param BPPARAM An instance of the
 #' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 #' parallelisation of the functions will be evaluated.
-#' @param fixedSeed determines if they seed should be fixed, which is important 
+#' @param fixedSeed determines if they seed should be fixed, which is important
 #' for testing
 #'
 #' @export correctBatchEffect
@@ -113,20 +113,22 @@
 #' ## Shortly running example. For a more realistic example that takes
 #' ## some more time, run the same procedure with the full BEclearData
 #' ## dataset.
-#'
+#' 
 #' ## Whole procedure that has to be done to use this function.
 #' ## Correct the example data for a batch effect
 #' data(BEclearData)
-#' ex.data <- ex.data[31:90,7:26]
-#' ex.samples <- ex.samples[7:26,]
-#'
+#' ex.data <- ex.data[31:90, 7:26]
+#' ex.samples <- ex.samples[7:26, ]
+#' 
 #' # Note that row- and block sizes are just set to 10 to get a short runtime.
 #' # To use these parameters, either use the default values or please note the
 #' # description in the details section of \code{\link{imputeMissingData}}
-#' result <- correctBatchEffect(data=ex.data, samples=ex.samples,
-#' adjusted=TRUE, method="fdr", rowBlockSize=10, colBlockSize=10,
-#' epochs=50, outputFormat="RData", dir=getwd())
-#'
+#' result <- correctBatchEffect(
+#'   data = ex.data, samples = ex.samples,
+#'   adjusted = TRUE, method = "fdr", rowBlockSize = 10, colBlockSize = 10,
+#'   epochs = 50, outputFormat = "RData", dir = getwd()
+#' )
+#' 
 #' # Unlist variables
 #' medians <- result$medians
 #' pvals <- result$pvals
@@ -135,106 +137,128 @@
 #' cleared <- result$clearedData
 #' predicted <- result$predictedData
 #' corrected <- result$correctedPredictedData
-
 correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
-                               rowBlockSize = 60, colBlockSize = 60, 
+                               rowBlockSize = 60, colBlockSize = 60,
                                epochs = 50, lambda = 1, gamma = 0.01, r = 10,
                                outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam(), fixedSeed = TRUE) {
-    
-    ## checking if they're are values above 1 or below 0
-    if(any(data > 1 | data < 0, na.rm=TRUE)){
-        flog.warn(paste(sum(data > 1 | data < 0, na.rm = TRUE), 
-                        "values are above 1 or below 0. Check your data"))
-        flog.warn("Replacing them with missing values")
-        data[data > 1 | data < 0] <- NA
-    }
-    
-    ## checking if there are columns containing only missing values
-    naIndices <- apply(data, 2, function(x) all(is.na(x)))
-    if(any(naIndices, na.rm=TRUE)){
-        flog.warn("There are columns, that contain only missing values")
-        flog.warn(paste(sum(naIndices), "columns get dropped"))
-        data <- data[ ,!naIndices]
-    }
-    
-    ## checking if there are rows containing only missing values
-    naIndices <- apply(data, 1, function(x) all(is.na(x)))
-    if(any(naIndices, na.rm=TRUE)){
-        flog.warn("There are rows, that contain only missing values")
-        flog.warn(paste(sum(naIndices), "rows get dropped"))
-        data <- data[!naIndices, ]
-    }
-    
-    ## checking if there are samples that are not present in the samples matrix
-    if(any(!colnames(data) %in% samples$sample_id)){
-        ids <- paste(colnames(data)[!colnames(data) %in% samples$sample_id], 
-                     collapse= ", ")
-        flog.warn(paste("The following samples are in the data, but not annotated", 
-                        "in the samples matrix:", ids))
-        flog.warn("Dropping those samples now")
-        data <- data[,colnames(data) %in% samples$sample_id]
-    }
-    
-    if(any(!samples$sample_id %in% colnames(data))){
-        ids <- paste(samples$sample_id[!samples$sample_id %in% colnames(data)],
-                     collapse = ", ")
-        flog.warn("The following samples are annotated in the sample matrix,",
-                  "but aren't contained in data matrix:", ids)
-        flog.warn("Dropping those samples now")
-        samples <- samples[sample_id %in% colnames(data)]
-    }
-    
-    samples <- data.table(samples)
-    uniqueIDsToSamples <- NULL
-    
-    ##checking if there are duplicated sample names
-    if(any(duplicated(colnames(data)))){
-        flog.warn("Sample names aren't unique")
-        flog.warn(paste("Transforming them to unique IDs. List with annotations will",
-                  "be added to the results"))
-        uniqueIDsToSamples <- data.table(sample_id = colnames(data), 
-                                         unique_id = 
-                                             as.character(seq_along(colnames(data))))
-        colnames(data) <- uniqueIDsToSamples$unique_id
-        samples <- samples[uniqueIDsToSamples, ,
-                           on=.(sample_id = sample_id)][,
-                                                        .(sample_id = unique_id,
-                                              batch_id = batch_id)]
-    }
-    setkey(samples, "batch_id", "sample_id")
-    
-    batcheffects <- calcBatchEffects(data = data, samples = samples, adjusted = adjusted,
-                                    method = method, BPPARAM = BPPARAM)
-    med <- batcheffects$med
-    pval <- batcheffects$pval
-    rm(batcheffects)
-    
-    sum <- calcSummary(med, pval)
-    
-    #flog.info("Transforming data.table back to matrix")
-    #data <- dcast(data, feature ~ sample, value.var = "beta.value")
-    #data <- as.matrix(data, rownames = "feature")
-    
-    if(is.null(sum)){
-        flog.info("There were no batch effects detected")
-        score <- NULL
-        cleared <- data
-    }else{
-        score <- calcScore(data, samples, sum)
-        cleared <- clearBEgenes(data, samples, sum)
-    }
-    
-    predicted <-
-        imputeMissingData (data=cleared, rowBlockSize=rowBlockSize, 
-                           colBlockSize=colBlockSize, epochs=epochs,
-                           lambda =lambda, gamma = gamma, r = r,
-                           outputFormat = outputFormat, dir=dir, BPPARAM = BPPARAM,
-                           fixedSeed = fixedSeed)
-    corrected <- replaceWrongValues(predicted)
-    
-    return(list(medians = med, pvals = pval, summary = sum, 
-                scoreTable = score, clearedData = cleared, 
-                predictedData = predicted, correctedPredictedData = 
-                    corrected, uniqueIDsToSamples = uniqueIDsToSamples))
+
+  ## checking if they're are values above 1 or below 0
+  if (any(data > 1 | data < 0, na.rm = TRUE)) {
+    flog.warn(paste(
+      sum(data > 1 | data < 0, na.rm = TRUE),
+      "values are above 1 or below 0. Check your data"
+    ))
+    flog.warn("Replacing them with missing values")
+    data[data > 1 | data < 0] <- NA
+  }
+
+  ## checking if there are columns containing only missing values
+  naIndices <- apply(data, 2, function(x) all(is.na(x)))
+  if (any(naIndices, na.rm = TRUE)) {
+    flog.warn("There are columns, that contain only missing values")
+    flog.warn(paste(sum(naIndices), "columns get dropped"))
+    data <- data[, !naIndices]
+  }
+
+  ## checking if there are rows containing only missing values
+  naIndices <- apply(data, 1, function(x) all(is.na(x)))
+  if (any(naIndices, na.rm = TRUE)) {
+    flog.warn("There are rows, that contain only missing values")
+    flog.warn(paste(sum(naIndices), "rows get dropped"))
+    data <- data[!naIndices, ]
+  }
+
+  ## checking if there are samples that are not present in the samples matrix
+  if (any(!colnames(data) %in% samples$sample_id)) {
+    ids <- paste(colnames(data)[!colnames(data) %in% samples$sample_id],
+      collapse = ", "
+    )
+    flog.warn(paste(
+      "The following samples are in the data, but not annotated",
+      "in the samples matrix:", ids
+    ))
+    flog.warn("Dropping those samples now")
+    data <- data[, colnames(data) %in% samples$sample_id]
+  }
+
+  if (any(!samples$sample_id %in% colnames(data))) {
+    ids <- paste(samples$sample_id[!samples$sample_id %in% colnames(data)],
+      collapse = ", "
+    )
+    flog.warn(
+      "The following samples are annotated in the sample matrix,",
+      "but aren't contained in data matrix:", ids
+    )
+    flog.warn("Dropping those samples now")
+    samples <- samples[sample_id %in% colnames(data)]
+  }
+
+  samples <- data.table(samples)
+  uniqueIDsToSamples <- NULL
+
+  ## checking if there are duplicated sample names
+  if (any(duplicated(colnames(data)))) {
+    flog.warn("Sample names aren't unique")
+    flog.warn(paste(
+      "Transforming them to unique IDs. List with annotations will",
+      "be added to the results"
+    ))
+    uniqueIDsToSamples <- data.table(
+      sample_id = colnames(data),
+      unique_id =
+        as.character(seq_along(colnames(data)))
+    )
+    colnames(data) <- uniqueIDsToSamples$unique_id
+    samples <- samples[uniqueIDsToSamples, ,
+      on = .(sample_id = sample_id)
+    ][
+      ,
+      .(
+        sample_id = unique_id,
+        batch_id = batch_id
+      )
+    ]
+  }
+  setkey(samples, "batch_id", "sample_id")
+
+  batcheffects <- calcBatchEffects(
+    data = data, samples = samples, adjusted = adjusted,
+    method = method, BPPARAM = BPPARAM
+  )
+  med <- batcheffects$med
+  pval <- batcheffects$pval
+  rm(batcheffects)
+
+  sum <- calcSummary(med, pval)
+
+  # flog.info("Transforming data.table back to matrix")
+  # data <- dcast(data, feature ~ sample, value.var = "beta.value")
+  # data <- as.matrix(data, rownames = "feature")
+
+  if (is.null(sum)) {
+    flog.info("There were no batch effects detected")
+    score <- NULL
+    cleared <- data
+  } else {
+    score <- calcScore(data, samples, sum)
+    cleared <- clearBEgenes(data, samples, sum)
+  }
+
+  predicted <-
+    imputeMissingData(
+      data = cleared, rowBlockSize = rowBlockSize,
+      colBlockSize = colBlockSize, epochs = epochs,
+      lambda = lambda, gamma = gamma, r = r,
+      outputFormat = outputFormat, dir = dir, BPPARAM = BPPARAM,
+      fixedSeed = fixedSeed
+    )
+  corrected <- replaceWrongValues(predicted)
+
+  return(list(
+    medians = med, pvals = pval, summary = sum,
+    scoreTable = score, clearedData = cleared,
+    predictedData = predicted, correctedPredictedData =
+      corrected, uniqueIDsToSamples = uniqueIDsToSamples
+  ))
 }

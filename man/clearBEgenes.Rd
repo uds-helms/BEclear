@@ -7,12 +7,12 @@
 clearBEgenes(data, samples, summary)
 }
 \arguments{
-\item{data}{any matrix filled with beta values, column names have to be 
+\item{data}{any matrix filled with beta values, column names have to be
 sample_ids corresponding to the ids listed in "samples", row names have to be
 gene names.}
 
 \item{samples}{data frame with two columns, the first column has to contain
-the sample numbers, the second column has to contain the corresponding batch 
+the sample numbers, the second column has to contain the corresponding batch
 number. Colnames have to be named as "sample_id" and "batch_id".}
 
 \item{summary}{a summary data.frame containing the columns "gene", "batch",
@@ -21,50 +21,52 @@ median and p-value calculations, see \code{\link{calcSummary}} function for
 more details.}
 }
 \value{
-A data matrix with the same dimensions as well as the same column 
-and row names as the input data matrix is returned, all entries which are 
+A data matrix with the same dimensions as well as the same column
+and row names as the input data matrix is returned, all entries which are
 defined in the summary are now set to NA.
 }
 \description{
-A function that simply sets all values to NA which were 
-previously found by median value comparison and p-value calculation and are 
-stored in a summary. The summary defines which values in the data matrix are 
+A function that simply sets all values to NA which were
+previously found by median value comparison and p-value calculation and are
+stored in a summary. The summary defines which values in the data matrix are
 set to NA.
 }
 \details{
 clearBEgenes
 
-All entries belonging to genes stated in the summary are set to NA 
-for the corresponding batches in the data matrix. Please look at the 
-descriptions of \code{\link{calcMedians}} and \code{\link{calcPvalues}} for 
-more detailed information about the data which should be contained in the 
+All entries belonging to genes stated in the summary are set to NA
+for the corresponding batches in the data matrix. Please look at the
+descriptions of \code{\link{calcMedians}} and \code{\link{calcPvalues}} for
+more detailed information about the data which should be contained in the
 summary data.frame.
 }
 \examples{
 ## Shortly running example. For a more realistic example that takes
 ## some more time, run the same procedure with the full BEclearData
 ## dataset.
- 
+
 ## Whole procedure that has to be done to use this function.
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26]
-ex.samples <- ex.samples[7:26,]
- 
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
+
 # Calculate median difference values and p-values
 library(data.table)
 samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-            value.name = "beta.value")
+data <- data.table(feature = rownames(ex.data), ex.data)
+data <- melt(
+  data = data, id.vars = "feature", variable.name = "sample",
+  value.name = "beta.value"
+)
 setkey(data, "feature", "sample")
-meds <- calcMedians(data=data, samples=samples)
-pvals <- calcPvalues(data=data, samples=samples)
- 
+meds <- calcMedians(data = data, samples = samples)
+pvals <- calcPvalues(data = data, samples = samples)
+
 # Summarize p-values and median differences for batch affected genes
-sum <- calcSummary(medians=meds, pvalues=pvals)
- 
+sum <- calcSummary(medians = meds, pvalues = pvals)
+
 # Set values for summarized BEgenes to NA
-clearedMatrix <- clearBEgenes(data=ex.data, samples=ex.samples, summary=sum)
+clearedMatrix <- clearBEgenes(data = ex.data, samples = ex.samples, summary = sum)
 }
 \seealso{
 \code{\link{calcMedians}}

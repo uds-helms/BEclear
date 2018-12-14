@@ -4,16 +4,16 @@
 \alias{makeBoxplot}
 \title{produce simple predefined boxplot for methylation data}
 \usage{
-makeBoxplot(data, samples, score, bySamples=FALSE, col="standard", 
+makeBoxplot(data, samples, score, bySamples=FALSE, col="standard",
 main="", xlab="Batch", ylab="Beta value", scoreCol=TRUE)
 }
 \arguments{
-\item{data}{any matrix filled with beta values, column names have to be 
+\item{data}{any matrix filled with beta values, column names have to be
 sample_ids corresponding to the ids listed in "samples", row names have to
 be gene names.}
 
 \item{samples}{data frame with two columns, the first column has to contain
-the sample numbers, the second column has to contain the corresponding batch 
+the sample numbers, the second column has to contain the corresponding batch
 number. Colnames have to be named as "sample_id" and "batch_id".}
 
 \item{score}{data frame produced by the \code{\link{calcScore}} function.
@@ -24,8 +24,8 @@ is needed for the coloring of the batch_ids.}
 boxes are separated by the batch_ids.}
 
 \item{col}{colors for the boxes, refers to the standard \code{\link{boxplot}}
-R-function. If it is set to "standard", boxes are colored batch-wise (if 
-separated by samples) or the standard color "yellow" is used (if separated 
+R-function. If it is set to "standard", boxes are colored batch-wise (if
+separated by samples) or the standard color "yellow" is used (if separated
 by batches).}
 
 \item{main}{main title for the box plot. Default is an empty string.}
@@ -34,30 +34,30 @@ by batches).}
 
 \item{ylab}{label for the y-axis of the box plot. Default is "Beta value".}
 
-\item{scoreCol}{should the batch_ids on the a-axis be colored according to 
+\item{scoreCol}{should the batch_ids on the a-axis be colored according to
 the BEscore or not? If not, black is used as color for all batch_ids.}
 }
 \value{
-Returns a boxplot on the graphic device with the features explained 
+Returns a boxplot on the graphic device with the features explained
 above.
 }
 \description{
-A simple \code{\link{boxplot}} is done with boxes either 
-separated by batches or by samples and describe the five number summary of 
-all beta values corresponding to a batch or a sample, respectively. The 
-batch_ids are shown on the x-axis with a coloring corresponding to the 
+A simple \code{\link{boxplot}} is done with boxes either
+separated by batches or by samples and describe the five number summary of
+all beta values corresponding to a batch or a sample, respectively. The
+batch_ids are shown on the x-axis with a coloring corresponding to the
 BEscore.
 }
 \details{
 makeBoxplot
 
-The color code for the batch_ids on the x-axis provides a simple 
-"traffic light" the user can use to decide if he wants to correct for an 
-assumed batch effect or not. Green means no batch effect, yellow a possibly 
-existing not severe batch effect and red stands for an obviously existing 
-batch effect that should be corrected. The traffic light colors are set 
-according to the BEscore from the \code{\link{calcScore}} function, values 
-from 0 to 0.02 are colored in green, from 0.02 to 0.1 in yellow and values 
+The color code for the batch_ids on the x-axis provides a simple
+"traffic light" the user can use to decide if he wants to correct for an
+assumed batch effect or not. Green means no batch effect, yellow a possibly
+existing not severe batch effect and red stands for an obviously existing
+batch effect that should be corrected. The traffic light colors are set
+according to the BEscore from the \code{\link{calcScore}} function, values
+from 0 to 0.02 are colored in green, from 0.02 to 0.1 in yellow and values
 over 0.1 are colored in red.
 }
 \examples{
@@ -67,33 +67,39 @@ over 0.1 are colored in red.
 
 ## Whole procedure that has to be done to use this function.
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26]
-ex.samples <- ex.samples[7:26,] 
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
 
 ## Prepare the data for the box plots
 ## Calculate median difference values and p-values
 library(data.table)
 samples <- data.table(ex.samples)
-data <- data.table(feature=rownames(ex.data), ex.data)
-data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-            value.name = "beta.value")
+data <- data.table(feature = rownames(ex.data), ex.data)
+data <- melt(
+  data = data, id.vars = "feature", variable.name = "sample",
+  value.name = "beta.value"
+)
 setkey(data, "feature", "sample")
-meds <- calcMedians(data=data, samples=samples)
-pvals <- calcPvalues(data=data, samples=samples) 
+meds <- calcMedians(data = data, samples = samples)
+pvals <- calcPvalues(data = data, samples = samples)
 
 ## Summarize p-values and median differences for batch affected genes
-sum <- calcSummary(medians=meds, pvalues=pvals)
+sum <- calcSummary(medians = meds, pvalues = pvals)
 
 # Calculate the BEscore for the batch_id colorings of the x-axis
-score <- calcScore(data=ex.data, samples=ex.samples, summary=sum)
+score <- calcScore(data = ex.data, samples = ex.samples, summary = sum)
 
 ## Simple boxplot for the example data separated by batch
-makeBoxplot(data=ex.data, samples=ex.samples, score=score, bySamples=FALSE, 
-main="Some box plot")
+makeBoxplot(
+  data = ex.data, samples = ex.samples, score = score, bySamples = FALSE,
+  main = "Some box plot"
+)
 
 ## Simple boxplot for the example data separated by samples
-makeBoxplot(data=ex.data, samples=ex.samples, score=score, bySamples=TRUE,
-main="Some box plot")
+makeBoxplot(
+  data = ex.data, samples = ex.samples, score = score, bySamples = TRUE,
+  main = "Some box plot"
+)
 }
 \seealso{
 \code{\link{calcScore}}

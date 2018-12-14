@@ -12,7 +12,7 @@ options(width=65)
 \SweaveOpts{concordance=TRUE}
 \title{BEclear - Correct for batch effects in DNA methylation data}
 \author{Markus Merl, David Rasp*\\
-*email: \texttt{Davod.j.Rasp@gmail.com}}
+*email: \texttt{David.j.Rasp@gmail.com}}
 \date{Modified: September 28, 2018  Compiled: \today}
 \maketitle
 This example guides to the BEclear package to correct for batch effects in DNA

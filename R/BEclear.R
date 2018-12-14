@@ -1,190 +1,200 @@
 #' BEclear-package
+#'
+#' @useDynLib BEclear
+#'
+#' @aliases BEclear-package
+#' @aliases BEclearCorrected
+#'
+#' @docType package
+#'
+#' @title Correction of batch effects in DNA methylation data
+#'
+#'
+#' @description Provides some functions to detect and correct for batch effects
+#' in DNA methylation data. The core function \code{\link{BEclear}} is based on
+#' Latent Factor Models and can also be used to predict missing values in any
+#' other matrix containing real numbers.
+#'
+#' @details \code{\link{correctBatchEffect}}:
+#' The function combines most functions of the \code{\link{BEclear-package}} to
+#' one. This function performs the whole process of searching for batch effects
+#' and automatically correct them for a matrix of beta values stemming from DNA
+#' methylation data.\cr
+#' \code{\link{BEclear}}:
+#' This function predicts the missing entries of an input matrix (NA values)
+#' through the use of a Latent Factor Model.\cr
+#' \code{\link{calcMedians}}:
+#' Compares the median value of all beta values belonging to one batch with the
+#' median value of all beta values belonging to all other batches. Returns a
+#' matrix containing this median difference value for every gene in every batch,
+#' columns define the batch numbers, rows the gene names.\cr
+#' \code{\link{calcPvalues}}:
+#' Compares the distribution of all beta values corresponding to one batch with
+#' the distribution of all beta values corresponding to all other batches and
+#' returns a p-value which defines if the distributions are the same or not.\cr
+#' \code{\link{calcSummary}}:
+#' Summarizes the results of the median comparison function
+#' \code{\link{calcMedians}} and the p-value calculation function
+#' \code{\link{calcPvalues}}. Should be used with the matrices originating from
+#' these two functions.\cr
+#' \code{\link{calcScore}}:
+#' Returns a table with the number of found genes with found p-values less or
+#' equal to 0.01 and median values greater or equal to 0.05. A score is
+#' calculated depending on the number of found genes as well as the magnitude of
+#' the median difference values, this score is divided by the overall number of
+#' genes in the data and returned as "BEscore". See the methods details for
+#' further information and details about the score calculation.\cr
+#' \code{\link{makeBoxplot}}:
+#' A simple \code{\link{boxplot}} is done with boxes either separated by batches
+#' or by samples and describe the five number summary of all beta values
+#' corresponding to a batch or a sample, respectively. The batch_ids are shown on
+#' the x-axis with a coloring corresponding to the BEscore.\cr
+#' \code{\link{clearBEgenes}}:
+#' A function that simply sets all values to NA which were previously found by
+#' median value comparison and p-value calculation and are stored in a summary.
+#' The summary defines which values in the data matrix are set to NA.\cr
+#' \code{\link{countValuesToPredict}}:
+#' Simple function that counts all values in a matrix which are NA\cr
+#' \code{\link{findWrongValues}}:
+#' A method which lists values below 0 or beyond 1 contained in the input matrix.
+#' The wrong entries are stored in a data.frame together with the corresponding
+#' row and column position of the matrix.\cr
+#' \code{\link{replaceWrongValues}}:
+#' A method which replaces values below 0 or beyond 1 contained in the input
+#' matrix. These wrong entries are replaced by 0 or 1, respectively.
+#'
+#' @examples
+#' data(BEclearData)
+#' ## Calculate median comparison values
+#' library(data.table)
+#' samples <- data.table(ex.samples)
+#' data <- data.table(feature = rownames(ex.data), ex.data)
+#' data <- melt(
+#'   data = data, id.vars = "feature", variable.name = "sample",
+#'   value.name = "beta.value"
+#' )
+#' setkey(data, "feature", "sample")
+#' med <- calcMedians(data = data, samples = samples)
 #' 
-#'@useDynLib BEclear
-#'
-#'@aliases BEclear-package
-#'@aliases BEclearCorrected
-#'
-#'@docType package
-#'
-#'@title Correction of batch effects in DNA methylation data
-#'
-#'
-#'@description Provides some functions to detect and correct for batch effects 
-#'in DNA methylation data. The core function \code{\link{BEclear}} is based on 
-#'Latent Factor Models and can also be used to predict missing values in any 
-#'other matrix containing real numbers.
-#'
-#'@details \code{\link{correctBatchEffect}}:
-#'The function combines most functions of the \code{\link{BEclear-package}} to
-#'one. This function performs the whole process of searching for batch effects
-#'and automatically correct them for a matrix of beta values stemming from DNA
-#'methylation data.\cr
-#'\code{\link{BEclear}}:
-#'This function predicts the missing entries of an input matrix (NA values)
-#'through the use of a Latent Factor Model.\cr
-#'\code{\link{calcMedians}}:
-#'Compares the median value of all beta values belonging to one batch with the
-#'median value of all beta values belonging to all other batches. Returns a 
-#'matrix containing this median difference value for every gene in every batch,
-#'columns define the batch numbers, rows the gene names.\cr
-#'\code{\link{calcPvalues}}:
-#'Compares the distribution of all beta values corresponding to one batch with
-#'the distribution of all beta values corresponding to all other batches and
-#'returns a p-value which defines if the distributions are the same or not.\cr
-#'\code{\link{calcSummary}}:
-#'Summarizes the results of the median comparison function
-#'\code{\link{calcMedians}} and the p-value calculation function
-#'\code{\link{calcPvalues}}. Should be used with the matrices originating from
-#'these two functions.\cr
-#'\code{\link{calcScore}}:
-#'Returns a table with the number of found genes with found p-values less or
-#'equal to 0.01 and median values greater or equal to 0.05. A score is 
-#'calculated depending on the number of found genes as well as the magnitude of
-#'the median difference values, this score is divided by the overall number of 
-#'genes in the data and returned as "BEscore". See the methods details for 
-#'further information and details about the score calculation.\cr
-#'\code{\link{makeBoxplot}}:
-#'A simple \code{\link{boxplot}} is done with boxes either separated by batches
-#'or by samples and describe the five number summary of all beta values
-#'corresponding to a batch or a sample, respectively. The batch_ids are shown on
-#'the x-axis with a coloring corresponding to the BEscore.\cr
-#'\code{\link{clearBEgenes}}:
-#'A function that simply sets all values to NA which were previously found by
-#'median value comparison and p-value calculation and are stored in a summary.
-#'The summary defines which values in the data matrix are set to NA.\cr
-#'\code{\link{countValuesToPredict}}:
-#'Simple function that counts all values in a matrix which are NA\cr
-#'\code{\link{findWrongValues}}:
-#'A method which lists values below 0 or beyond 1 contained in the input matrix.
-#'The wrong entries are stored in a data.frame together with the corresponding
-#'row and column position of the matrix.\cr
-#'\code{\link{replaceWrongValues}}:
-#'A method which replaces values below 0 or beyond 1 contained in the input
-#'matrix. These wrong entries are replaced by 0 or 1, respectively.
-#'
-#'@examples 
-#'data(BEclearData)
-#'## Calculate median comparison values 
-#'library(data.table)
-#'samples <- data.table(ex.samples)
-#'data <- data.table(feature=rownames(ex.data), ex.data)
-#'data <- melt(data = data, id.vars = "feature", variable.name = "sample", 
-#'             value.name = "beta.value")
-#'setkey(data, "feature", "sample")
-#'med <- calcMedians(data=data, samples=samples)
-#'
-#'## Calculate fdr-adjusted p-values in non-parallel mode
-#'pvals <- calcPvalues(data=data, samples=samples, adjusted=TRUE, 
-#'method="fdr")
-#'
-#'## Summarize p-values and median differences for batch affected genes
-#'sum <- calcSummary(medians=med, pvalues=pvals)
-#'
-#'## Calculates the score table
-#'score.table <- calcScore(data=ex.data, samples=ex.samples, summary=sum)
-#'
-#'## Simple boxplot for the example data separated by batch
-#'makeBoxplot(data=ex.data, samples=ex.samples, score=score.table,
-#'bySamples=FALSE, main="Some box plot")
-#'
-#'## Simple boxplot for the example data separated by samples
-#'makeBoxplot(data=ex.data, samples=ex.samples, score=score.table,
-#'bySamples=TRUE, main="Some box plot")
-#'
-#'## Sets assumed batch affected entries to NA
-#'cleared <- clearBEgenes(data=ex.data, samples=ex.samples, summary=sum)
-#'## Counts and stores number of entries to predict
-#'numberOfEntries <- countValuesToPredict(data=cleared)
-#'
-#'\dontrun{
-#'## Predicts the missing entries
-#'predicted <- imputeMissingData(data=cleared)
-#'
-#'## Find wrongly predicted entries
-#'wrongEntries <- findWrongValues(data=predicted)
-#'
-#'## Replace wrongly predicted entries
-#'corrected <- replaceWrongValues(data=predicted)
-#'}
-#'
-#'@author Ruslan Akulenko, Markus Merl
+#' ## Calculate fdr-adjusted p-values in non-parallel mode
+#' pvals <- calcPvalues(
+#'   data = data, samples = samples, adjusted = TRUE,
+#'   method = "fdr"
+#' )
+#' 
+#' ## Summarize p-values and median differences for batch affected genes
+#' sum <- calcSummary(medians = med, pvalues = pvals)
+#' 
+#' ## Calculates the score table
+#' score.table <- calcScore(data = ex.data, samples = ex.samples, summary = sum)
+#' 
+#' ## Simple boxplot for the example data separated by batch
+#' makeBoxplot(
+#'   data = ex.data, samples = ex.samples, score = score.table,
+#'   bySamples = FALSE, main = "Some box plot"
+#' )
+#' 
+#' ## Simple boxplot for the example data separated by samples
+#' makeBoxplot(
+#'   data = ex.data, samples = ex.samples, score = score.table,
+#'   bySamples = TRUE, main = "Some box plot"
+#' )
+#' 
+#' ## Sets assumed batch affected entries to NA
+#' cleared <- clearBEgenes(data = ex.data, samples = ex.samples, summary = sum)
+#' ## Counts and stores number of entries to predict
+#' numberOfEntries <- countValuesToPredict(data = cleared)
+#' \dontrun{
+#' ## Predicts the missing entries
+#' predicted <- imputeMissingData(data = cleared)
+#' 
+#' ## Find wrongly predicted entries
+#' wrongEntries <- findWrongValues(data = predicted)
+#' 
+#' ## Replace wrongly predicted entries
+#' corrected <- replaceWrongValues(data = predicted)
+#' }
+#' 
+#' @author Ruslan Akulenko, Markus Merl
 #'
 #' @references \insertRef{Akulenko2016}{BEclear}
 #' @import Rdpack
 "_PACKAGE"
-utils::globalVariables(c("batch_id", "beta.value", "feature", "sample_id", ".",
-                         "unique_id"),
-                       package = "BEclear", add=FALSE)
+utils::globalVariables(c(
+  "batch_id", "beta.value", "feature", "sample_id", ".",
+  "unique_id"
+),
+package = "BEclear", add = FALSE
+)
 
-#'@name BEclear example methylation data
+#' @name BEclear example methylation data
 #'
-#'@aliases BEclearData
-#'@aliases BEclear example data
-#'@aliases BEclear example methylation data
-#'@aliases ex.data
+#' @aliases BEclearData
+#' @aliases BEclear example data
+#' @aliases BEclear example methylation data
+#' @aliases ex.data
 #'
-#'@docType data
+#' @docType data
 #'
-#'@title Example data set for the BEclear-package
+#' @title Example data set for the BEclear-package
 #'
-#'@usage data(BEclearData)
+#' @usage data(BEclearData)
 #'
-#'@description Example data set for the BEclear-package
+#' @description Example data set for the BEclear-package
 #'
-#'@format An example data matrix that is filled with beta values originally 
-#'stemming from breast cancer data from the TCGA portal [1], colnames are 
-#'sample ids, rownames are gene names. Generally, beta values are calculated by 
-#'dividing the methylated signal by the sum of the unmethylated and methylated 
-#'signals from a DNA methylation microrarray. The sample data used here 
-#'contains averaged beta values of probes that belong to promoter regions of 
-#'single genes. Another possibility would be to use beta values of single 
-#'probes, whereby the probe names should then be used instead of the gene names 
-#'as rownames of the matrix.
+#' @format An example data matrix that is filled with beta values originally
+#' stemming from breast cancer data from the TCGA portal [1], colnames are
+#' sample ids, rownames are gene names. Generally, beta values are calculated by
+#' dividing the methylated signal by the sum of the unmethylated and methylated
+#' signals from a DNA methylation microrarray. The sample data used here
+#' contains averaged beta values of probes that belong to promoter regions of
+#' single genes. Another possibility would be to use beta values of single
+#' probes, whereby the probe names should then be used instead of the gene names
+#' as rownames of the matrix.
 #'
-#'@references [1] \url{http://cancergenome.nih.gov/}
+#' @references [1] \url{http://cancergenome.nih.gov/}
 #'
 "ex.data"
 
-#'@name BEclear example sample data
+#' @name BEclear example sample data
 #'
-#'@aliases BEclear example methylation data
-#'@aliases ex.samples
+#' @aliases BEclear example methylation data
+#' @aliases ex.samples
 #'
-#'@docType data
+#' @docType data
 #'
-#'@title Example data set for the BEclear-package
+#' @title Example data set for the BEclear-package
 #'
-#'@usage data(BEclearData)
+#' @usage data(BEclearData)
 #'
 #'
 #'
-#'@format An example data frame containing a column for the sample id and a 
-#'column for the corresponding batch id, stemming from breast cancer data 
-#'from the TCGA portal [1]
+#' @format An example data frame containing a column for the sample id and a
+#' column for the corresponding batch id, stemming from breast cancer data
+#' from the TCGA portal [1]
 #'
-#'@references [1] \url{http://cancergenome.nih.gov/}
+#' @references [1] \url{http://cancergenome.nih.gov/}
 "ex.samples"
 
-#'@name ex.corrected.data
+#' @name ex.corrected.data
 #'
-#'@aliases ex.corrected.data
+#' @aliases ex.corrected.data
 #'
-#'@docType data
+#' @docType data
 #'
-#'@title Example matrix of corrected data for the BEclear-package
+#' @title Example matrix of corrected data for the BEclear-package
 #'
-#'@description Example matrix containing a already batch effect corrected sample
-#'matrix of beta values from breast invasive carcinoma TCGA methylation 
-#'data.[1] The matrix contains a small amount of wrongly predicted beta values 
-#'to show the operating principles of some of the methods from the BEclear 
-#'package.
+#' @description Example matrix containing a already batch effect corrected sample
+#' matrix of beta values from breast invasive carcinoma TCGA methylation
+#' data.[1] The matrix contains a small amount of wrongly predicted beta values
+#' to show the operating principles of some of the methods from the BEclear
+#' package.
 #'
-#'@usage data(BEclearCorrected)
+#' @usage data(BEclearCorrected)
 #'
-#'@format A matrix containing already corrected beta values of some samples from
-#'the breast invasive carcinoma TCGA methylation data. The colnames denote
-#'samples, rownames denote gene names.
+#' @format A matrix containing already corrected beta values of some samples from
+#' the breast invasive carcinoma TCGA methylation data. The colnames denote
+#' samples, rownames denote gene names.
 #'
 #' @references [1] \url{http://cancergenome.nih.gov/}
 "ex.corrected.data"

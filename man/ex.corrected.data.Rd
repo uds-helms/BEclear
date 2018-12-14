@@ -12,9 +12,9 @@ data(BEclearCorrected)
 }
 \description{
 Example matrix containing a already batch effect corrected sample
-matrix of beta values from breast invasive carcinoma TCGA methylation 
-data.[1] The matrix contains a small amount of wrongly predicted beta values 
-to show the operating principles of some of the methods from the BEclear 
+matrix of beta values from breast invasive carcinoma TCGA methylation
+data.[1] The matrix contains a small amount of wrongly predicted beta values
+to show the operating principles of some of the methods from the BEclear
 package.
 }
 \references{

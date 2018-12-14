@@ -4,7 +4,7 @@
 \alias{calcBatchEffects}
 \title{Calculate the Batch Effects in a given data set}
 \usage{
-calcBatchEffects(data, samples, adjusted=TRUE, method="fdr", 
+calcBatchEffects(data, samples, adjusted=TRUE, method="fdr",
 BPPARAM=bpparam())
 }
 \arguments{
@@ -12,18 +12,18 @@ BPPARAM=bpparam())
 the sample, one the features and a value column indicating the beta value
 or a matrix with rows as features and columns as samples}
 
-\item{samples}{data frame with two columns, the first column has to contain 
+\item{samples}{data frame with two columns, the first column has to contain
 the sample numbers, the second column has to contain the corresponding batch
 number. Colnames have to be named as "sample_id" and "batch_id".}
 
-\item{adjusted}{should the p-values be adjusted or not, see "method" for 
+\item{adjusted}{should the p-values be adjusted or not, see "method" for
 available adjustment methods.}
 
-\item{method}{adjustment method for p-value adjustment (if TRUE), default 
-method is "false discovery rate adjustment", for other available methods 
+\item{method}{adjustment method for p-value adjustment (if TRUE), default
+method is "false discovery rate adjustment", for other available methods
 see the description of the used standard R package \code{\link{p.adjust}}.}
 
-\item{BPPARAM}{An instance of the 
+\item{BPPARAM}{An instance of the
 \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 parallelisation of the functions will be evaluated.}
 }
@@ -40,30 +40,30 @@ calcBatchEffects
 
 \enumerate{
 \item{medians}
-Compares the median value of all beta values belonging to one 
-batch with the median value of all beta values belonging to all other 
-batches. Returns a matrix containing this median difference value for every 
+Compares the median value of all beta values belonging to one
+batch with the median value of all beta values belonging to all other
+batches. Returns a matrix containing this median difference value for every
 gene in every batch, columns define the batch numbers, rows the gene names.
 \item{p-values}
-Compares the distribution of all beta values corresponding to 
-one batch with the distribution of all beta values corresponding to all 
-other batches and returns a p-value which defines if the distributions are 
-the same or not. Standard two sided Kolmogorov-Smirnov test is used to 
+Compares the distribution of all beta values corresponding to
+one batch with the distribution of all beta values corresponding to all
+other batches and returns a p-value which defines if the distributions are
+the same or not. Standard two sided Kolmogorov-Smirnov test is used to
 calculate the (adjusted) p-values.
 }
 }
 \examples{
-## Shortly running example. For a more realistic example that takes 
+## Shortly running example. For a more realistic example that takes
 ## some more time, run the same procedure with the full BEclearData
 ## dataset.
 
 ## Calculate fdr-adjusted p-values in non-parallel mode
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26]
-ex.samples <- ex.samples[7:26,]
- 
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
 
-res <- calcBatchEffects(data=ex.data, samples=ex.samples,method="fdr")
+
+res <- calcBatchEffects(data = ex.data, samples = ex.samples, method = "fdr")
 }
 \seealso{
 \code{\link{ks.test}}

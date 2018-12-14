@@ -9,8 +9,8 @@
 \alias{methylation}
 \alias{data}
 \title{Example data set for the BEclear-package}
-\format{An example data frame containing a column for the sample id and a 
-column for the corresponding batch id, stemming from breast cancer data 
+\format{An example data frame containing a column for the sample id and a
+column for the corresponding batch id, stemming from breast cancer data
 from the TCGA portal [1]}
 \usage{
 data(BEclearData)

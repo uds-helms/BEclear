@@ -8,7 +8,7 @@ imputeMissingDataForBlock(block, dir, epochs, lambda = 1, gamma = 0.01,
   r = 10, fixedSeed = TRUE)
 }
 \arguments{
-\item{fixedSeed}{determines if they seed should be fixed, which is important 
+\item{fixedSeed}{determines if they seed should be fixed, which is important
 for testing}
 }
 \value{

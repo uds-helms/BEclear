@@ -40,13 +40,13 @@ details section of See \code{\link{imputeMissingData}} for more information
 about this feature.}
 
 \item{epochs}{the number of iterations used in the gradient descent algorithm
-to predict the missing entries in the data matrix. See 
+to predict the missing entries in the data matrix. See
 \code{\link{imputeMissingData}} for more information.}
 
-\item{lambda}{constant that controls the extent of regularization during the 
+\item{lambda}{constant that controls the extent of regularization during the
 gradient descent}
 
-\item{gamma}{constant that controls the extent of the shift of parameters 
+\item{gamma}{constant that controls the extent of the shift of parameters
 during the gradient descent}
 
 \item{r}{length of the second dimension of variable matrices R and L}
@@ -64,7 +64,7 @@ The current working directory is defined as default parameter.}
 \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 parallelisation of the functions will be evaluated.}
 
-\item{fixedSeed}{determines if they seed should be fixed, which is important 
+\item{fixedSeed}{determines if they seed should be fixed, which is important
 for testing}
 }
 \value{
@@ -120,15 +120,17 @@ missing values and at the end, possibly existing wrongly predicted entries
 ## Whole procedure that has to be done to use this function.
 ## Correct the example data for a batch effect
 data(BEclearData)
-ex.data <- ex.data[31:90,7:26]
-ex.samples <- ex.samples[7:26,]
+ex.data <- ex.data[31:90, 7:26]
+ex.samples <- ex.samples[7:26, ]
 
 # Note that row- and block sizes are just set to 10 to get a short runtime.
 # To use these parameters, either use the default values or please note the
 # description in the details section of \\code{\\link{imputeMissingData}}
-result <- correctBatchEffect(data=ex.data, samples=ex.samples,
-adjusted=TRUE, method="fdr", rowBlockSize=10, colBlockSize=10,
-epochs=50, outputFormat="RData", dir=getwd())
+result <- correctBatchEffect(
+  data = ex.data, samples = ex.samples,
+  adjusted = TRUE, method = "fdr", rowBlockSize = 10, colBlockSize = 10,
+  epochs = 50, outputFormat = "RData", dir = getwd()
+)
 
 # Unlist variables
 medians <- result$medians
