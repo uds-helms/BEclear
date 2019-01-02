@@ -44,9 +44,9 @@
 #' number. Colnames have to be named as "sample_id" and "batch_id".
 #' @param adjusted should the p-values be adjusted or not, see "method" for
 #' available adjustment methods.
-#' @param method adjustment method for p-value adjustment (if TRUE), default
+#' @param method adjustment method for p-value adjustment, default
 #' method is "false discovery rate adjustment", for other available methods see
-#'  the description of the used standard R package \code{\link{p.adjust}}. See
+#' the description of the used standard R package \code{\link{p.adjust}}. See
 #' \code{\link{calcBatchEffects}} for more information
 #' @param rowBlockSize the number of rows that is used in a block if the
 #' function is run in parallel mode and/or not on the whole matrix. Set this,

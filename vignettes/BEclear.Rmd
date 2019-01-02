@@ -5,6 +5,7 @@ author:
       affiliation:
         Center for Bioinformatics, Saarland University, Saarbruecken, Germany
       email: David.J.Rasp@gmail.com
+    - name: Markus Merl
 package: BEclear
 abstract: >
     We show in this tutorial how to use the BEclear [@Akulenko2016] package to detect and correct
@@ -37,7 +38,7 @@ example of correcting some batch affected DNA methylation data.
 This article should only give a small tutorial,
 more details about the individual methods can always be found in the help
 sections of the `r BiocStyle::Biocpkg("BEclear")` package, e.g. through typing
-`?calcBatchEffects` in the R environment with the package loaded.
+`calcBatchEffects` in the R environment with the package loaded.
 To work with the methods contained in the BEclear package, a matrix or
 data.frame with genes as row-names and samples as column names as well as a
 samples data.frame with the first column named "sample\_id" and the second
@@ -107,9 +108,20 @@ ex.samples[1:10,]
 
 # Detecting of batch effects
 
-## Theoretical background
+For the detection of the batch effects we calculate the median difference from
+a gene in a batch from the value of this gene in all other batches. Furthermore 
+we use a non-parametric Kolmogorov-Smirnov test (`ks.test`) to  compare the
+distribution of the gene in the batch and the other batches.
+
+If one gene in a batch has a p-value determined by the `ks.test` of less or equal
+0.01 and a median difference of greater or equal 0.05 it is considered batch effected.
 
 ## Detection
+
+For the calculation of the batch effects you just use the `calcBatchEffects` function.
+It calculates both median difference and p-value. By default we correct the p-values
+by the false discovery rate developed by @BH, but you can use all adjustment
+methods covered by `p.adjust.methods`.
 
 ```{r detection, cache=TRUE}
 batchEffect <- calcBatchEffects(
@@ -125,12 +137,18 @@ pvals <- batchEffect$pval
 
 ## Summary
 
+To see which genes in which batches are effected you use the `calcSummary` function 
+as follows:
+
 ```{r summary, cache=TRUE}
 summary <- calcSummary(medians = mdifs, pvalues = pvals)
 head(summary)
 ```
 
 ## Scoring 
+
+Furthermore you can calculate a batch score for a whole batch to determine the
+severeness how it is affected.
 
 ```{r score, cache=TRUE}
 score <- calcScore(ex.data, ex.samples, summary, dir = getwd())
@@ -144,7 +162,6 @@ stochastic gradient descent method described by @Koren2009.
 In this section we will describe our implementation of this method and how to 
 use it.
 
-## Theoretical background
 
 We assume that our complete data matrix \(D_{ij}\) can be described by the effects of
 a matrix \(L_i\), which represents the effect of the features (genes in our case)
