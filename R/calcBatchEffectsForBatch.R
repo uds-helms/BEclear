@@ -9,7 +9,7 @@
 #' @import futile.logger
 #'
 #' @return the medians p-values for genes in a batch
-calcBatchEffectsForBatch <- function(batch, samples, data, BPPARAM = bpparam()) {
+calcBatchEffectsForBatch <- function(batch, samples, data, BPPARAM) {
   flog.debug(paste("Calculating the batch effect for batch", batch))
 
   flog.debug("Subsetting data.table for batch")
@@ -37,7 +37,7 @@ calcBatchEffectsForBatch <- function(batch, samples, data, BPPARAM = bpparam()) 
     } else {
       return(c(ks.test(X, Y)$p.value, medianDiff))
     }
-  }, X = features_batch, Y = features_other)
+  }, X = features_batch, Y = features_other, BPPARAM = BPPARAM)
 
   result <- t(result)
   colnames(result) <- c("p_values", "medians")

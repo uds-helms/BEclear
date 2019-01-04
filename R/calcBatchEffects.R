@@ -84,10 +84,9 @@ calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
   ))
 
   batchEffects <- lapply(samples[, unique(batch_id)], calcBatchEffectsForBatch,
-    samples = samples, data = data, BPPARAM = BPPARAM
-  )
+    samples = samples, data = data, BPPARAM = BPPARAM)
 
-  flog.debug(paste("Binding", length(pvalues), "columns of batch_effects together"))
+  flog.debug(paste("Binding", length(batchEffects), "columns of batch_effects together"))
   batchEffects <- do.call(cbind, batchEffects)
 
   med <- batchEffects[colnames(batchEffects) == "medians"]
