@@ -20,9 +20,9 @@ number. Colnames have to be named as "sample_id" and "batch_id".}
 \item{adjusted}{should the p-values be adjusted or not, see "method" for
 available adjustment methods.}
 
-\item{method}{adjustment method for p-value adjustment (if TRUE), default
+\item{method}{adjustment method for p-value adjustment, default
 method is "false discovery rate adjustment", for other available methods see
- the description of the used standard R package \code{\link{p.adjust}}. See
+the description of the used standard R package \code{\link{p.adjust}}. See
 \code{\link{calcBatchEffects}} for more information}
 
 \item{rowBlockSize}{the number of rows that is used in a block if the

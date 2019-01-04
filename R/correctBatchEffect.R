@@ -142,84 +142,12 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                outputFormat = "RData",
                                dir = getwd(), BPPARAM = bpparam(), fixedSeed = TRUE) {
 
-  ## checking if they're are values above 1 or below 0
-  if (any(data > 1 | data < 0, na.rm = TRUE)) {
-    flog.warn(paste(
-      sum(data > 1 | data < 0, na.rm = TRUE),
-      "values are above 1 or below 0. Check your data"
-    ))
-    flog.warn("Replacing them with missing values")
-    data[data > 1 | data < 0] <- NA
-  }
-
-  ## checking if there are columns containing only missing values
-  naIndices <- apply(data, 2, function(x) all(is.na(x)))
-  if (any(naIndices, na.rm = TRUE)) {
-    flog.warn("There are columns, that contain only missing values")
-    flog.warn(paste(sum(naIndices), "columns get dropped"))
-    data <- data[, !naIndices]
-  }
-
-  ## checking if there are rows containing only missing values
-  naIndices <- apply(data, 1, function(x) all(is.na(x)))
-  if (any(naIndices, na.rm = TRUE)) {
-    flog.warn("There are rows, that contain only missing values")
-    flog.warn(paste(sum(naIndices), "rows get dropped"))
-    data <- data[!naIndices, ]
-  }
-
-  ## checking if there are samples that are not present in the samples matrix
-  if (any(!colnames(data) %in% samples$sample_id)) {
-    ids <- paste(colnames(data)[!colnames(data) %in% samples$sample_id],
-      collapse = ", "
-    )
-    flog.warn(paste(
-      "The following samples are in the data, but not annotated",
-      "in the samples matrix:", ids
-    ))
-    flog.warn("Dropping those samples now")
-    data <- data[, colnames(data) %in% samples$sample_id]
-  }
-
-  if (any(!samples$sample_id %in% colnames(data))) {
-    ids <- paste(samples$sample_id[!samples$sample_id %in% colnames(data)],
-      collapse = ", "
-    )
-    flog.warn(
-      "The following samples are annotated in the sample matrix,",
-      "but aren't contained in data matrix:", ids
-    )
-    flog.warn("Dropping those samples now")
-    samples <- samples[sample_id %in% colnames(data)]
-  }
-
-  samples <- data.table(samples)
-  uniqueIDsToSamples <- NULL
-
-  ## checking if there are duplicated sample names
-  if (any(duplicated(colnames(data)))) {
-    flog.warn("Sample names aren't unique")
-    flog.warn(paste(
-      "Transforming them to unique IDs. List with annotations will",
-      "be added to the results"
-    ))
-    uniqueIDsToSamples <- data.table(
-      sample_id = colnames(data),
-      unique_id =
-        as.character(seq_along(colnames(data)))
-    )
-    colnames(data) <- uniqueIDsToSamples$unique_id
-    samples <- samples[uniqueIDsToSamples, ,
-      on = .(sample_id = sample_id)
-    ][
-      ,
-      .(
-        sample_id = unique_id,
-        batch_id = batch_id
-      )
-    ]
-  }
-  setkey(samples, "batch_id", "sample_id")
+  
+  tmp<-preprocessBEclear(data, samples)
+  data <- tmp$data
+  samples <- tmp$samples
+  uniqueIDsToSamples <- tmp$uniqueIDsToSamples
+  rm(tmp)
 
   batcheffects <- calcBatchEffects(
     data = data, samples = samples, adjusted = adjusted,
@@ -230,10 +158,6 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
   rm(batcheffects)
 
   sum <- calcSummary(med, pval)
-
-  # flog.info("Transforming data.table back to matrix")
-  # data <- dcast(data, feature ~ sample, value.var = "beta.value")
-  # data <- as.matrix(data, rownames = "feature")
 
   if (is.null(sum)) {
     flog.info("There were no batch effects detected")
