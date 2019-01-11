@@ -16,7 +16,7 @@ abstract: >
     theory be used on every matrix containing real numbers to predict missing values.
 date: "`r Sys.Date()`"
 output: BiocStyle::html_document
-bibliography: ../inst/REFERENCES.bib
+bibliography: "`r system.file('REFERENCES.bib', package = 'BEclear')`"
 vignette: >
   %\VignetteIndexEntry{BEclear tutorial}
   %\VignetteEngine{knitr::rmarkdown}
