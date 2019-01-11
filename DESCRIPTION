@@ -9,7 +9,7 @@ Description: Provides some functions to detect and correct for batch effects in
     DNA methylation data. The core function  is based on latent factor
     models and can also be used to predict missing values in any other matrix
     containing real numbers.
-License: GPL-2
+License: GPL-3
 SystemRequirements: C++11
 Depends: BiocParallel (>= 1.14.2)
 Imports: futile.logger, Rdpack, Matrix, data.table (>= 1.11.8), Rcpp, 
