@@ -19,10 +19,11 @@ List localLoss(const NumericMatrix& L,const NumericMatrix& R,
         int row = is[n] - 1;
         int column  = js[n] - 1;
         double x = error_matrix(row, column);
-        for(int lIndex = 0; lIndex < dL.row(row).size(); lIndex++){
-            dL.row(row)[lIndex] = dL.row(row)[lIndex] + x * R.column(column)[lIndex];
-            dR.column(column)[lIndex] = dR.column(column)[lIndex] + x * L.row(row)[lIndex];
-        }
+        
+        dL.row(row) = dL.row(row) + x * R.column(column);
+        dR.column(column) = dR.column(column) + x * L.row(row);
+        
+        
 
     }
     return List::create(  _["dL"]  = dL, _["dR"]  = dR );

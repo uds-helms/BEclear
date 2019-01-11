@@ -1,14 +1,14 @@
 ---
 title: "Detecting and correcting batch effects with BEclear"
 author: 
-    - name: David Johann-Nepomuk Peter Rasp
+    - name: David Rasp
       affiliation:
         Center for Bioinformatics, Saarland University, Saarbruecken, Germany
       email: David.J.Rasp@gmail.com
     - name: Markus Merl
 package: BEclear
 abstract: >
-    We show in this tutorial how to use the BEclear [@Akulenko2016] package to detect and correct
+    We show in this tutorial how to use the BEclear package [@Akulenko2016] to detect and correct
     batch effects in methylation data. package. Even though BEclear was developed for
     the use on methylation data, it can also be used to find and correct batch 
     effects in other kinds of data.
