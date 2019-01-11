@@ -35,7 +35,8 @@ calcBatchEffectsForBatch <- function(batch, samples, data, BPPARAM) {
     if (all(is.na(X))) {
       return(c(0.0, medianDiff))
     } else {
-      return(c(ks.test(X, Y)$p.value, medianDiff))
+      suppressWarnings(pval <- ks.test(X, Y)$p.value)
+      return(c(pval, medianDiff))
     }
   }, X = features_batch, Y = features_other, BPPARAM = BPPARAM)
 
