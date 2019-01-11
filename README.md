@@ -36,4 +36,4 @@ coming soon...
 
 Akulenko, R., Merl, M., & Helms, V. (2016). BEclear: Batch effect detection and 
 adjustment in DNA methylation data. PLoS ONE, 11(8), 1–17.
-[DOI:10.1371/journal.pone.0159921](https://doi.org/10.1371/journal.pone.0159921)
+https://doi.org/10.1371/journal.pone.0159921
