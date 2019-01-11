@@ -12,8 +12,10 @@ testthat::test_that("2 batches, only available values", {
 
   samples <- data.table(sample_id = c(1, 2, 3), batch_id = c(1, 1, 2))
 
-  res1 <- calcBatchEffectsForBatch(batch = 1, samples = samples, data = data)
-  res2 <- calcBatchEffectsForBatch(batch = 2, samples = samples, data = data)
+  res1 <- calcBatchEffectsForBatch(batch = 1, samples = samples, data = data,
+                                   BPPARAM = SerialParam())
+  res2 <- calcBatchEffectsForBatch(batch = 2, samples = samples, data = data,
+                                   BPPARAM = SerialParam())
 
   testthat::expect_equal(res1[, 1], c(0.667, 1.000, 0.667), tolerance = .001)
   testthat::expect_equal(res2[, 1], c(0.667, 1.000, 0.667), tolerance = .001)
@@ -36,9 +38,12 @@ testthat::test_that("3 batches, NAs", {
 
   samples <- data.table(sample_id = c(1, 2, 3, 4, 5), batch_id = c(1, 1, 2, 3, 3))
 
-  res1 <- calcBatchEffectsForBatch(batch = 1, samples = samples, data = data)
-  res2 <- calcBatchEffectsForBatch(batch = 2, samples = samples, data = data)
-  res3 <- calcBatchEffectsForBatch(batch = 3, samples = samples, data = data)
+  res1 <- calcBatchEffectsForBatch(batch = 1, samples = samples, data = data,
+                                   BPPARAM = SerialParam())
+  res2 <- calcBatchEffectsForBatch(batch = 2, samples = samples, data = data,
+                                   BPPARAM = SerialParam())
+  res3 <- calcBatchEffectsForBatch(batch = 3, samples = samples, data = data,
+                                   BPPARAM = SerialParam())
 
   testthat::expect_equal(res1[, 1], c(1.00, 1.00, 0.50), tolerance = .001)
   testthat::expect_equal(res2[, 1], c(0.50, 1.00, 1.00), tolerance = .001)

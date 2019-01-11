@@ -12,7 +12,8 @@ testthat::test_that("2 batches, only available values", {
 
   samples <- data.table(sample_id = c(1, 2, 3), batch_id = c(1, 1, 2))
 
-  res <- calcBatchEffects(samples = samples, data = data, adjusted = FALSE)
+  res <- calcBatchEffects(samples = samples, data = data, adjusted = FALSE,
+                          BPPARAM = SerialParam())
 
   res1 <- res$pval
   res2 <- res$med
@@ -39,7 +40,8 @@ testthat::test_that("3 batches, NAs", {
 
   samples <- data.table(sample_id = c(1, 2, 3, 4, 5), batch_id = c(1, 1, 2, 3, 3))
 
-  res <- calcBatchEffects(samples = samples, data = data, adjusted = FALSE)
+  res <- calcBatchEffects(samples = samples, data = data, adjusted = FALSE,
+                          BPPARAM = SerialParam())
 
   res1 <- res$pval
   res2 <- res$med
@@ -68,7 +70,8 @@ testthat::test_that("3 batches, NAs with adjustment", {
 
   samples <- data.table(sample_id = c(1, 2, 3, 4, 5), batch_id = c(1, 1, 2, 3, 3))
 
-  res <- calcBatchEffects(samples = samples, data = data, adjusted = TRUE)
+  res <- calcBatchEffects(samples = samples, data = data, adjusted = TRUE,
+                          BPPARAM = SerialParam())
 
   res1 <- res$pval
   res2 <- res$med
