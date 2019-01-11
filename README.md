@@ -31,8 +31,3 @@ devtools::install_github("David-J-R/BEclear", build_vignettes=TRUE)
 ## Usage example
 
 coming soon...
-
-## Overview
-
-coming soon...
-
