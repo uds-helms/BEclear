@@ -87,7 +87,8 @@
 #' @import data.table
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 #' rowBlockSize=60, colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
-#' outputFormat="", dir=getwd(), BPPARAM=bpparam(), fixedSeed= TRUE)
+#' outputFormat="", dir=getwd(), BPPARAM=SerialParam(log = TRUE, progressbar = TRUE),
+#'  fixedSeed= TRUE)
 #'
 #' @return A list containing the following fields (for detailed information look
 #' at the documentations of the corresponding functions):
@@ -140,7 +141,8 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                rowBlockSize = 60, colBlockSize = 60,
                                epochs = 50, lambda = 1, gamma = 0.01, r = 10,
                                outputFormat = "", dir = getwd(), 
-                               BPPARAM = bpparam(), fixedSeed = TRUE) {
+                               BPPARAM = SerialParam(log = TRUE, progressbar = TRUE),
+                               fixedSeed = TRUE) {
 
   
   tmp<-preprocessBEclear(data, samples)

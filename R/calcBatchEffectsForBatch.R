@@ -9,7 +9,8 @@
 #' @import futile.logger
 #'
 #' @return the medians p-values for genes in a batch
-calcBatchEffectsForBatch <- function(batch, samples, data, BPPARAM) {
+calcBatchEffectsForBatch <- function(batch, samples, data, 
+                                     BPPARAM = SerialParam(log = TRUE, progressbar = TRUE)) {
   flog.debug(paste("Calculating the batch effect for batch", batch))
 
   flog.debug("Subsetting data.table for batch")

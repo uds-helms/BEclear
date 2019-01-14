@@ -122,7 +122,7 @@
 #' @import futile.logger
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50,
 #' lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir=getwd(),
-#' BPPARAM=bpparam(), fixedSeed = TRUE)
+#' BPPARAM=SerialParam(log = TRUE, progressbar = TRUE), fixedSeed = TRUE)
 #'
 #' @examples
 #' ## Shortly running example. For a more realistic example that takes
@@ -157,7 +157,8 @@
 imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs = 50,
                               lambda = 1, gamma = 0.01, r = 10,
                               outputFormat = "", dir = getwd(),
-                              BPPARAM = bpparam(), fixedSeed = TRUE) {
+                              BPPARAM = SerialParam(log = TRUE, progressbar = TRUE),
+                              fixedSeed = TRUE) {
   flog.info("Starting the imputation of missing values.")
   flog.info("This might take a while.")
   D1 <- NULL

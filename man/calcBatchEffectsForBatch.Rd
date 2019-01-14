@@ -4,7 +4,8 @@
 \alias{calcBatchEffectsForBatch}
 \title{calcBatchEffectsForBatch}
 \usage{
-calcBatchEffectsForBatch(batch, samples, data, BPPARAM)
+calcBatchEffectsForBatch(batch, samples, data, BPPARAM = SerialParam(log
+  = TRUE, progressbar = TRUE))
 }
 \value{
 the medians p-values for genes in a batch

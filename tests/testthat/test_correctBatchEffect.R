@@ -30,7 +30,7 @@ testthat::test_that("3 batches, NAs", {
   colnames(DT_expected) <- c("1", "2", "3", "4", "5")
   row.names(DT_expected) <- c("1", "2", "3")
 
-  res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "")
+  res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "", fixedSeed = TRUE)
   testthat::expect_equal(res$correctedPredictedData, DT_expected, tolerance = .001)
 })
 

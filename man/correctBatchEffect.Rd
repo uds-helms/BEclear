@@ -6,7 +6,8 @@
 \usage{
 correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 rowBlockSize=60, colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
-outputFormat="", dir=getwd(), BPPARAM=bpparam(), fixedSeed= TRUE)
+outputFormat="", dir=getwd(), BPPARAM=SerialParam(log = TRUE, progressbar = TRUE),
+ fixedSeed= TRUE)
 }
 \arguments{
 \item{data}{any matrix filled with beta values, column names have to be

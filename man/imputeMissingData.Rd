@@ -6,7 +6,7 @@
 \usage{
 imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50,
 lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir=getwd(),
-BPPARAM=bpparam(), fixedSeed = TRUE)
+BPPARAM=SerialParam(log = TRUE, progressbar = TRUE), fixedSeed = TRUE)
 }
 \arguments{
 \item{data}{any matrix filled e.g. with beta values. The missing entries you
