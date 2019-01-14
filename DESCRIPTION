@@ -1,8 +1,8 @@
 Package: BEclear
 Type: Package
 Title: Correction of batch effects in DNA methylation data
-Version: 1.15.3
-Date: 2018-01-11
+Version: 1.15.4
+Date: 2018-01-14
 Author: David Rasp, Markus Merl, Ruslan Akulenko
 Maintainer: David Rasp <david.j.rasp@gmail.com>
 Description: Provides functions to detect and correct for batch effects in

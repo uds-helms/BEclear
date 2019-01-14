@@ -1,3 +1,6 @@
+Changes in version 1.15.4 (2018-01-14)
+    * serial execution of the method is now the default
+
 Changes in version 1.15.3 (2018-01-11)
     * performance improvment
     * change to GPL-3 license
