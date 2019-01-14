@@ -208,15 +208,15 @@ Then for each epoch the following is done:
 * \(L_i\) and \(R_j\) are modified proportional to \(\gamma\) by the following 
 calculation:
 
-\begin{equation}
-L_i = L_i + 2 \times \gamma \times  (errorMatrix_{ij} \times R_j - \lambda \times L_i)
-(\#eq:Lmod)
-\end{equation}
+    + \begin{equation}
+      L_i = L_i + 2 \times \gamma \times  (errorMatrix_{ij} \times R_j - \lambda \times L_i)
+      (\#eq:Lmod)
+      \end{equation}
 
-\begin{equation}
-R_j = R_j + 2 \times \gamma \times (errorMatrix_{ij} \times L_i - \lambda \times R_j)
-(\#eq:Rmod)
-\end{equation}
+    + \begin{equation}
+      R_j = R_j + 2 \times \gamma \times (errorMatrix_{ij} \times L_i - \lambda \times R_j)
+      (\#eq:Rmod)
+      \end{equation}
 
 * Then the new error matrix and loss are calculated.
 * If the old loss is smaller than the new one: 
