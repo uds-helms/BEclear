@@ -30,7 +30,12 @@ devtools::install_github("David-J-R/BEclear", build_vignettes=TRUE)
 
 ## Usage example
 
-coming soon...
+For example code you can either read the [vignette](https://bioconductor.org/packages/devel/bioc/vignettes/BEclear/inst/doc/BEclear.html) on Bioconductor. Or you can open it local, after you installed the BEclear package with following command:
+
+```r
+browseVignettes("BEclear")
+```
+
 
 ## Citation
 
