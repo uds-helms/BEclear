@@ -5,7 +5,7 @@
 \title{Calculate the Batch Effects in a given data set}
 \usage{
 calcBatchEffects(data, samples, adjusted=TRUE, method="fdr",
-BPPARAM=SerialParam(log = TRUE, progressbar = TRUE))
+BPPARAM=SerialParam())
 }
 \arguments{
 \item{data}{a \code{\link[data.table]{data.table}} with one column indicating
