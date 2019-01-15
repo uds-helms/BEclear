@@ -47,7 +47,7 @@
 #' @importFrom stats p.adjust
 #' @importFrom methods is
 #' @usage calcBatchEffects(data, samples, adjusted=TRUE, method="fdr",
-#' BPPARAM=SerialParam(log = TRUE, progressbar = TRUE))
+#' BPPARAM=SerialParam())
 #'
 #' @return a matrix containing medians and p-values for all genes in all batches
 #' @examples
@@ -63,7 +63,7 @@
 #' 
 #' res <- calcBatchEffects(data = ex.data, samples = ex.samples, method = "fdr")
 calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
-                             BPPARAM = SerialParam(log = TRUE, progressbar = TRUE)) {
+                             BPPARAM = SerialParam()) {
   if (!is(data, "data.table")) {
     flog.info("Transforming matrix to data.table")
     data <- data.table(feature = as.character(rownames(data)), data)
