@@ -1,65 +1,90 @@
 Changes in version 1.15.4 (2018-01-14)
-    * serial execution of the method is now the default
+    + Serial execution of the methods is now the default
 
 Changes in version 1.15.3 (2018-01-11)
-    * performance improvment
-    * change to GPL-3 license
-    * update of the README
-    * update of the vignette
+    + Performance improvments
+    + Change from GPL-2 to GPL-3 license
+    + Documentation
+        o Update of the README
+        o Update of the vignette
 
 Changes in version 1.15.2 (2018-01-04)
-    * new Vignette
-    * removing of deprecated functions
-    * extraction of the preprocessing function
+    + Documentation
+        o New Vignette
+    + Removing of deprecated functions
+    + Code refactoring
+        o Extraction of the preprocessing function
 
 Changes in version 1.15.1 (2018-12-07)
-    * changes to the API
-    * simplifications of some functions
-    * performance improvements
-    * usage of RCPP for further performance improvements
-    * addition of tests
-    * combination of calcPvals and calcMedians methods into one
+    + Code refactoring
+        o Simplification of the source code
+        o Changes to the API
+    + Performance improvements
+        o Usage of RCPP for further performance improvements
+    + Tests
+        o Implementation of further tests
+    + Combination of calcPvals and calcMedians methods into one
 
 Changes in version 1.13.11 (2018-10-25)
-    * implementation of further tests
+    + Tests
+        o Implementation of further tests
 
 Changes in version 1.13.10 (2018-10-24)
-    * test for the gdepoch function
-    * simplification of code
-    * performance improvements
+    + Tests
+        o Test for the gdepoch function
+    + Code refactoring
+        o Simplification of the source code
+    + Performance improvements
 
 Changes in version 1.13.9 (2018-10-23)
-    * test for the loss function
-    * some simplifications
+    + Tests
+        o Test for the loss function
+    + Code refactoring
+        o Simplification of the source code
 
 Changes in version 1.13.8 (2018-10-22)
-    * first implementation of tests with testthat
-    * simplifications of the code
+    + New feature
+        o First implementation of tests with testthat
+    + Code refactoring
+        o Simplification of the source code
 
 Changes in version 1.13.7 (2018-10-10)
-    * small bugfix
+    + Bug fixes
 
 Changes in version 1.13.6 (2018-10-05)
-    * some minor issues with the calculation of p-values are fixed
+    + Bug fixes
+        o Some minor issues with the calculation of p-values are fixed
 
 Changes in version 1.13.5 (2018-10-04)
-    * checks for the validity of inputs added
-    * some performance improvements
+    + New feature
+        o Checks for the validity of inputs added
+    + Performance improvements
 
 Changes in version 1.13.4 (2018-10-02)
-    * major performance improvement
+    + Performance improvements
 
 Changes in version 1.13.3 (2018-09-28)
-    * usage of data.table for various functions for performance improvement
-    * simplification of the source code
+    + Change of dependencies
+        o Usage of data.table for various functions for performance improvement
+    + Code refactoring
+        o Simplification of the source code
 
 Changes in version 1.13.2 (2018-09-27)
-    * bug fixed that, where p-values couldn't be calculated for a gene with only
-    missing values in a batch (#1)
+    + Bug fixes
+        o p-values couldn't be calculated for a gene with only missing values in a batch (#1)
 
 Changes in version 1.13.1 (2018-09-25)
-    * BEclear uses now BiocParallel instead of snowfall for parallelisation
-    * roxygen2 is now used for the generating the documentation
-    * major code refactoring
-    * some minor bug fixes 
-    * performance improvements
+    + Change of dependencies
+        o BEclear uses now BiocParallel instead of snowfall for parallelisation
+        o roxygen2 is now used for the generating the documentation
+    + Code refactoring
+        o Internal functions got extracted
+        o Methods have now all their own files
+    + Bug fixes 
+    + Performance improvements
+    
+Changes in version 1.0.0 (2015-4-16)
+    + Release with Bioconductor version 3.1
+    
+Changes in version 0.99.0 (2015-2-18)
+    + Sibmitted to Bioconductor
