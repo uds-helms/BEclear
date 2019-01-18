@@ -35,6 +35,12 @@ For example code you can either read the [vignette](https://bioconductor.org/pac
 browseVignettes("BEclear")
 ```
 
+## Planed features
+
+There are no new planned feature as of this moment. If you have a suggestion
+you could either open an [issue](https://github.com/David-J-R/BEclear/issues) or 
+write an email under the following address: [David.J.Rasp at gmail.com](mailto:David.J.Rasp@gmail.com)
+
 
 ## Citation
 
