@@ -97,13 +97,13 @@ data("BEclearData")
 It contains one matrix with the beta values:
 
 ```{r}
-ex.data[1:10,1:5]
+knitr::kable(ex.data[1:10,1:5])
 ```
 
 And one data.frame containing the assignment of samples to batches:
 
 ```{r}
-ex.samples[1:10,]
+knitr::kable(ex.samples[1:10,])
 ```
 
 # Detecting of batch effects
@@ -142,7 +142,7 @@ as follows:
 
 ```{r summary, cache=TRUE}
 summary <- calcSummary(medians = mdifs, pvalues = pvals)
-head(summary)
+knitr::kable(head(summary))
 ```
 
 ## Scoring 
@@ -152,7 +152,7 @@ severeness how it is affected.
 
 ```{r score, cache=TRUE}
 score <- calcScore(ex.data, ex.samples, summary, dir = getwd())
-score
+knitr::kable(score)
 ```
 
 # Imputation of missing values
@@ -282,6 +282,18 @@ result <- correctBatchEffect(data = ex.data, samples = ex.samples)
 
 Returned is a list containing all results from the executed functions.
 
+# Parallelization
+
+For parallelization we use the `r BiocStyle::Biocpkg("BiocParellel")` package.
+However by default all methods are executed in serial mode.
+The methods `CalcBatchEffect`, `imputeMissingData` and `correctBatchEffect` 
+support parallelization through there parameter `BPPARAM`, which takes a `BiocParallel::BiocParallelParam` class as an argument. 
+
+Type the following to get an overview over the supported evaluation environments:
+
+```{r}
+?BiocParallel::BiocParallelParam
+```
 # Plotting
 
 Additionally `r BiocStyle::Biocpkg("BEclear")` also includes a method for 

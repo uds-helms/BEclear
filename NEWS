@@ -1,3 +1,8 @@
+Changes in version 1.15.5 (2018-01-18)
+    + Documentation
+        o Added section for parallelization to the vignette
+        o Some cosmetic changes to the vignette
+
 Changes in version 1.15.4 (2018-01-14)
     + Serial execution of the methods is now the default
 
@@ -87,4 +92,4 @@ Changes in version 1.0.0 (2015-4-16)
     + Release with Bioconductor version 3.1
     
 Changes in version 0.99.0 (2015-2-18)
-    + Sibmitted to Bioconductor
+    + Submitted to Bioconductor
