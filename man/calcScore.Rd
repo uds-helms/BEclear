@@ -4,7 +4,7 @@
 \alias{calcScore}
 \title{calculate batch effect score}
 \usage{
-calcScore(data, samples, summary, saveAsFile=TRUE, dir=getwd())
+calcScore(data, samples, summary, saveAsFile=FALSE, dir=getwd())
 }
 \arguments{
 \item{data}{any matrix filled with beta values, column names have to be

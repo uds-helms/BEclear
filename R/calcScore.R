@@ -51,7 +51,7 @@
 #'
 #' @export calcScore
 #' @import futile.logger
-#' @usage calcScore(data, samples, summary, saveAsFile=TRUE, dir=getwd())
+#' @usage calcScore(data, samples, summary, saveAsFile=FALSE, dir=getwd())
 #'
 #' @return A data.frame is returned containing the number of found genes assumed
 #' to be batch affected separated by batch and a BEscore for every batch. The
@@ -80,7 +80,7 @@
 #'   data = ex.data, samples = ex.samples, summary = sum,
 #'   dir = getwd()
 #' )
-calcScore <- function(data, samples, summary, saveAsFile = TRUE, dir = getwd()) {
+calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd()) {
   ## take batch numbers
   batches <- unique(samples$batch_id)
   flog.info(paste("Calculating the scores for", length(batches), "batches"))

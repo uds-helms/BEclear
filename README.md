@@ -35,7 +35,7 @@ For example code you can either read the [vignette](https://bioconductor.org/pac
 browseVignettes("BEclear")
 ```
 
-## Planed features
+## Planned features
 
 There are no new planned feature as of this moment. If you have a suggestion
 you could either open an [issue](https://github.com/David-J-R/BEclear/issues) or 

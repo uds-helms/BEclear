@@ -15,7 +15,9 @@ abstract: >
     The central method of BEclear is based on Latent Factor Models [@Candes2009], which can in 
     theory be used on every matrix containing real numbers to predict missing values.
 date: "`r Sys.Date()`"
-output: BiocStyle::html_document
+output: 
+    BiocStyle::html_document:
+            toc_float: true
 bibliography: "`r system.file('REFERENCES.bib', package = 'BEclear')`"
 vignette: >
   %\VignetteIndexEntry{BEclear tutorial}
@@ -97,13 +99,13 @@ data("BEclearData")
 It contains one matrix with the beta values:
 
 ```{r}
-knitr::kable(ex.data[1:10,1:5])
+knitr::kable(ex.data[1:10,1:5], caption = 'Some entries from the example data-set')
 ```
 
 And one data.frame containing the assignment of samples to batches:
 
 ```{r}
-knitr::kable(ex.samples[1:10,])
+knitr::kable(ex.samples[1:10,], caption = 'Some entries from the example sample annotation')
 ```
 
 # Detecting of batch effects
@@ -142,7 +144,7 @@ as follows:
 
 ```{r summary, cache=TRUE}
 summary <- calcSummary(medians = mdifs, pvalues = pvals)
-knitr::kable(head(summary))
+knitr::kable(head(summary), caption = 'Summary over the batch affected gene-sample combination of the example data set')
 ```
 
 ## Scoring 
@@ -152,7 +154,7 @@ severeness how it is affected.
 
 ```{r score, cache=TRUE}
 score <- calcScore(ex.data, ex.samples, summary, dir = getwd())
-knitr::kable(score)
+knitr::kable(score, caption = 'Batch scores of the example data-set')
 ```
 
 # Imputation of missing values
