@@ -1,3 +1,7 @@
+Changes in version 1.15.5
+    + Code refactoring
+        o loss function is now exported
+
 Changes in version 1.15.5 (2018-01-21)
     + Documentation
         o Added section for parallelization to the vignette

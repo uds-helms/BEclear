@@ -1,7 +1,6 @@
 #' runGradientDescent
 #'
 #' @keywords internal
-#' @import futile.logger
 #'
 #' @description Runner for gradient descent (or stochastic gradient descent) for
 #' the specified number of epoch

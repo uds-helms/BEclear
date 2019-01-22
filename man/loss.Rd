@@ -6,10 +6,19 @@
 \usage{
 loss(L, R, lambda, D)
 }
+\arguments{
+\item{L}{a matrix describing the effects of the features}
+
+\item{R}{a matrix describing the effects of the samples}
+
+\item{lambda}{constant that controls the extent of regularization during the
+gradient descent}
+
+\item{D}{a matrix containing the measured values}
+}
 \value{
-The loss calculated
+a list containing the loss calculated and the error matrix
 }
 \description{
 computation of the loss of factorization LR
 }
-\keyword{internal}
