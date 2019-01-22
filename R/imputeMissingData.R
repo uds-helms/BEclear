@@ -166,7 +166,7 @@ imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs
   }
 
   ## run BEclear
-  flog.info("BEclear is startet in parallel mode:")
+  flog.info("BEclear imputation is started:")
   flog.info(paste("block size:", rowBlockSize, " x ", colBlockSize))
   ## calculate start - and stop position for every block
   if (nrow(data) < rowBlockSize | rowBlockSize == 0) {

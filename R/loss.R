@@ -8,6 +8,7 @@
 #' @description  computation of the loss of factorization LR
 #'
 #' @importFrom Matrix norm
+#' @export loss
 #'
 #' @return a list containing the loss calculated and the error matrix
 loss <- function(L, R, lambda, D) {

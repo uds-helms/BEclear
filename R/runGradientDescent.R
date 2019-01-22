@@ -30,6 +30,7 @@ runGradientDescent <- function(L, R, lambda, epochs, gamma = 0.01, blockNr,
     loss_result <- loss(LR$L, LR$R, lambda, D = D)
 
     curLoss <- loss_result$loss
+    
     error_matrix <- loss_result$error_matrix
     if (oldLoss < curLoss) {
       gamma <- gamma / 2
