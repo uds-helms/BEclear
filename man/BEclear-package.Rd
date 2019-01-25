@@ -50,13 +50,13 @@ median value comparison and p-value calculation and are stored in a summary.
 The summary defines which values in the data matrix are set to NA.\cr
 \code{\link{countValuesToPredict}}:
 Simple function that counts all values in a matrix which are NA\cr
-\code{\link{findWrongValues}}:
+\code{\link{findOutsideValues}}:
 A method which lists values below 0 or beyond 1 contained in the input matrix.
-The wrong entries are stored in a data.frame together with the corresponding
+These entries are stored in a data.frame together with the corresponding
 row and column position of the matrix.\cr
-\code{\link{replaceWrongValues}}:
+\code{\link{replaceOutsideValues}}:
 A method which replaces values below 0 or beyond 1 contained in the input
-matrix. These wrong entries are replaced by 0 or 1, respectively.
+matrix. These entries outside the boundaries are replaced by 0 or 1, respectively.
 }
 \examples{
 data(BEclearData)
@@ -92,11 +92,11 @@ numberOfEntries <- countValuesToPredict(data = cleared)
 ## Predicts the missing entries
 predicted <- imputeMissingData(data = cleared)
 
-## Find wrongly predicted entries
-wrongEntries <- findWrongValues(data = predicted)
+## Find predicted entries outside the boundaries
+outsideEntries <- findOutsideValues(data = predicted)
 
-## Replace wrongly predicted entries
-corrected <- replaceWrongValues(data = predicted)
+## Replace predicted entries outside the boundaries
+corrected <- replaceOutsideValues(data = predicted)
 }
 
 }

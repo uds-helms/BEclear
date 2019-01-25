@@ -1,6 +1,8 @@
-Changes in version 1.15.5
+Changes in version 1.15.6
     + Code refactoring
         o loss function is now exported
+        o renaming of some functions
+    + Documentation
 
 Changes in version 1.15.5 (2018-01-21)
     + Documentation

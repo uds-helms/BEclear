@@ -79,7 +79,7 @@ calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
   }
 
   flog.info(paste(
-    "Calculating the batch effects for",
+    "Calculate the batch effects for",
     samples[, uniqueN(batch_id)], "batches"
   ))
 

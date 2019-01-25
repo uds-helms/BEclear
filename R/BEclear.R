@@ -51,13 +51,13 @@
 #' The summary defines which values in the data matrix are set to NA.\cr
 #' \code{\link{countValuesToPredict}}:
 #' Simple function that counts all values in a matrix which are NA\cr
-#' \code{\link{findWrongValues}}:
+#' \code{\link{findOutsideValues}}:
 #' A method which lists values below 0 or beyond 1 contained in the input matrix.
-#' The wrong entries are stored in a data.frame together with the corresponding
+#' These entries are stored in a data.frame together with the corresponding
 #' row and column position of the matrix.\cr
-#' \code{\link{replaceWrongValues}}:
+#' \code{\link{replaceOutsideValues}}:
 #' A method which replaces values below 0 or beyond 1 contained in the input
-#' matrix. These wrong entries are replaced by 0 or 1, respectively.
+#' matrix. These entries outside the boundaries are replaced by 0 or 1, respectively.
 #'
 #' @examples
 #' data(BEclearData)
@@ -93,11 +93,11 @@
 #' ## Predicts the missing entries
 #' predicted <- imputeMissingData(data = cleared)
 #' 
-#' ## Find wrongly predicted entries
-#' wrongEntries <- findWrongValues(data = predicted)
+#' ## Find predicted entries outside the boundaries
+#' outsideEntries <- findOutsideValues(data = predicted)
 #' 
-#' ## Replace wrongly predicted entries
-#' corrected <- replaceWrongValues(data = predicted)
+#' ## Replace predicted entries outside the boundaries
+#' corrected <- replaceOutsideValues(data = predicted)
 #' }
 #' 
 #' @author Ruslan Akulenko, Markus Merl, David Rasp
@@ -171,9 +171,9 @@ package = "BEclear", add = FALSE
 #'
 #' @description Example matrix containing a already batch effect corrected sample
 #' matrix of beta values from breast invasive carcinoma TCGA methylation
-#' data.[1] The matrix contains a small amount of wrongly predicted beta values
-#' to show the operating principles of some of the methods from the BEclear
-#' package.
+#' data.[1] The matrix contains a small amount of predicted beta values outside of
+#' the boundaries to show the operating principles of some of the methods from 
+#' the BEclear package.
 #'
 #' @usage data(BEclearCorrected)
 #'

@@ -84,7 +84,7 @@ set to NA.}
 \item{predicted.data}{the input matrix after all previously NA values have
 been predicted.}
 \item{corrected.predicted.data}{the predicted matrix after the correction for
-wrongly predicted values.}
+ predicted values outside the boundaries.}
 }
 }
 \description{
@@ -108,9 +108,9 @@ comparison and p-value calculation, a summary data frame is build using the
 the \code{\link{calcScore}} function. Now, found entries from the summary are
 set to NA in the input matrix using the \code{\link{clearBEgenes}} function,
 then the \code{\link{imputeMissingData}} function is used to predict the
-missing values and at the end, possibly existing wrongly predicted entries
-(values lower than 0 or greater than 1) are corrected using the
-\code{\link{replaceWrongValues}} function.
+missing values and at the end, predicted entries outside the
+boundaries (values lower than 0 or greater than 1) are corrected using the
+\code{\link{replaceOutsideValues}} function.
 }
 \examples{
 ## Shortly running example. For a more realistic example that takes
@@ -159,5 +159,5 @@ corrected <- result$correctedPredictedData
 
 \code{\link{imputeMissingData}}
 
-\code{\link{replaceWrongValues}}
+\code{\link{replaceOutsideValues}}
 }

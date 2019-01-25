@@ -7,7 +7,7 @@
 #' @seealso \code{\link{calcScore}}
 #' @seealso \code{\link{clearBEgenes}}
 #' @seealso \code{\link{imputeMissingData}}
-#' @seealso \code{\link{replaceWrongValues}}
+#' @seealso \code{\link{replaceOutsideValues}}
 #'
 #' @title Correct a batch effect in DNA methylation data
 #'
@@ -28,9 +28,9 @@
 #' the \code{\link{calcScore}} function. Now, found entries from the summary are
 #' set to NA in the input matrix using the \code{\link{clearBEgenes}} function,
 #' then the \code{\link{imputeMissingData}} function is used to predict the
-#' missing values and at the end, possibly existing wrongly predicted entries
-#' (values lower than 0 or greater than 1) are corrected using the
-#' \code{\link{replaceWrongValues}} function.
+#' missing values and at the end, predicted entries outside the
+#' boundaries (values lower than 0 or greater than 1) are corrected using the
+#' \code{\link{replaceOutsideValues}} function.
 #'
 #' @references \insertRef{Akulenko2016}{BEclear}
 #' @references \insertRef{Koren2009}{BEclear}
@@ -105,7 +105,7 @@
 #' \item{predicted.data}{the input matrix after all previously NA values have
 #' been predicted.}
 #' \item{corrected.predicted.data}{the predicted matrix after the correction for
-#' wrongly predicted values.}
+#'  predicted values outside the boundaries.}
 #' }
 #'
 #' @examples
@@ -176,7 +176,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
       outputFormat = outputFormat, dir = dir, BPPARAM = BPPARAM,
       fixedSeed = fixedSeed
     )
-  corrected <- replaceWrongValues(predicted)
+  corrected <- replaceOutsideValues(predicted)
 
   return(list(
     medians = med, pvals = pval, summary = sum,

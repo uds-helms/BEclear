@@ -1,10 +1,10 @@
-#' replaceWrongValues
+#' replaceOutsideValues
 #'
-#' @aliases replaceWrongValues
+#' @aliases replaceOutsideValues
 #'
 #' @title Replace DNA methylation values out of the boundaries
 #'
-#' @seealso \code{\link{findWrongValues}}
+#' @seealso \code{\link{findOutsideValues}}
 #' @seealso \code{\link{correctBatchEffect}}
 #'
 #' @description A method which replaces values below 0 or beyond 1 contained in
@@ -16,17 +16,17 @@
 #' \code{\link{imputeMissingData}} method. It can happen, that the predicted
 #' values are lying slightly below the lower bound of 0 or beyond the upper
 #' bound of 1. This method finds these inaccurately predicted entries. Another
-#' method called \code{\link{replaceWrongValues}} replaces these values either
-#' by 0 or 1, respectively. Another method called \code{\link{findWrongValues}}
+#' method called \code{\link{replaceOutsideValues}} replaces these values either
+#' by 0 or 1, respectively. Another method called \code{\link{findOutsideValues}}
 #' returns a list of existing wrong values and can be run before the
 #' replacement.
 #'
 #' @param data any matrix filled with values that normally should be bounded
 #' between 0 and 1.
 #'
-#' @export replaceWrongValues
+#' @export replaceOutsideValues
 #' @import futile.logger
-#' @usage replaceWrongValues(data)
+#' @usage replaceOutsideValues(data)
 #'
 #' @return Returns the input matrix with every value previously below 0 changed
 #' to 0 and every value previously beyond 1 changed to 1.
@@ -34,8 +34,8 @@
 #' @examples
 #' data(BEclearCorrected)
 #' # Replace wrongly predicted values
-#' corrected <- replaceWrongValues(data = ex.corrected.data)
-replaceWrongValues <- function(data) {
+#' corrected <- replaceOutsideValues(data = ex.corrected.data)
+replaceOutsideValues <- function(data) {
   flog.info("Replacing values below 0 or above 1:")
   counter <- sum(data > 1) + sum(data < 0)
 
