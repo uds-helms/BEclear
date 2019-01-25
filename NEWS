@@ -3,6 +3,8 @@ Changes in version 1.15.6
         o loss function is now exported
         o renaming of some functions
     + Documentation
+        o some additions
+        o some corrections
 
 Changes in version 1.15.5 (2018-01-21)
     + Documentation
