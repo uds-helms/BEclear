@@ -1,4 +1,4 @@
-Changes in version 1.15.6
+Changes in version 1.15.6 (2019-01-25)
     + Code refactoring
         o loss function is now exported
         o renaming of some functions
@@ -6,22 +6,22 @@ Changes in version 1.15.6
         o some additions
         o some corrections
 
-Changes in version 1.15.5 (2018-01-21)
+Changes in version 1.15.5 (2019-01-21)
     + Documentation
         o Added section for parallelization to the vignette
         o Some cosmetic changes to the vignette
 
-Changes in version 1.15.4 (2018-01-14)
+Changes in version 1.15.4 (2019-01-14)
     + Serial execution of the methods is now the default
 
-Changes in version 1.15.3 (2018-01-11)
+Changes in version 1.15.3 (2019-01-11)
     + Performance improvments
     + Change from GPL-2 to GPL-3 license
     + Documentation
         o Update of the README
         o Update of the vignette
 
-Changes in version 1.15.2 (2018-01-04)
+Changes in version 1.15.2 (2019-01-04)
     + Documentation
         o New Vignette
     + Removing of deprecated functions

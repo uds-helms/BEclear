@@ -301,7 +301,7 @@ plotting the batch effects.
 Let us now use the `makeBoxplot` to compare the distributions of the values
 in the different samples before and after the batch effect correction:
 
-```{r boxplot1, fig.align="left"}
+```{r boxplot1, fig.wide = TRUE, fig.cap = "Distribution of the example beta values grouped by sample"}
 makeBoxplot(ex.data, ex.samples, score,
   bySamples = TRUE,
   col = "standard", main = "Example data", xlab = "Batch",
@@ -309,7 +309,7 @@ makeBoxplot(ex.data, ex.samples, score,
 )
 ```
 
-```{r boxplot2, fig.align="left"}
+```{r boxplot2, fig.wide = TRUE, fig.cap = "Distribution of the corrected beta values grouped by sample"}
 makeBoxplot(corrected.data, ex.samples, score,
   bySamples = TRUE,
   col = "standard", main = "Corrected example data",
