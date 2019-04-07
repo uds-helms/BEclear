@@ -1,42 +1,21 @@
-Changes in version 1.15.6 (2019-01-25)
-    + Code refactoring
-        o loss function is now exported
-        o renaming of some functions
-    + Documentation
-        o some additions
-        o some corrections
-
-Changes in version 1.15.5 (2019-01-21)
-    + Documentation
-        o Added section for parallelization to the vignette
-        o Some cosmetic changes to the vignette
-
-Changes in version 1.15.4 (2019-01-14)
-    + Serial execution of the methods is now the default
-
-Changes in version 1.15.3 (2019-01-11)
-    + Performance improvments
-    + Change from GPL-2 to GPL-3 license
-    + Documentation
-        o Update of the README
-        o Update of the vignette
-
-Changes in version 1.15.2 (2019-01-04)
-    + Documentation
-        o New Vignette
-    + Removing of deprecated functions
-    + Code refactoring
-        o Extraction of the preprocessing function
-
-Changes in version 1.15.1 (2018-12-07)
+Changes in version 2.0.0 (2019-04-30)
     + Code refactoring
         o Simplification of the source code
         o Changes to the API
-    + Performance improvements
+        o Extraction of the preprocessing function
+        o loss function is now exported
+        o renaming of functions
+        o Combination of calcPvals and calcMedians methods into one
+    + Documentation
+        o Update of the README
+        o New Vignette
+    + Serial execution of the methods is now the default
+    + Performance improvments
         o Usage of RCPP for further performance improvements
+    + Change from GPL-2 to GPL-3 license
+    + Removing of deprecated functions
     + Tests
         o Implementation of further tests
-    + Combination of calcPvals and calcMedians methods into one
 
 Changes in version 1.13.11 (2018-10-25)
     + Tests

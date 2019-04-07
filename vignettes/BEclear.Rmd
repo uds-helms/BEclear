@@ -25,6 +25,12 @@ vignette: |
   %\VignetteEncoding{UTF-8}  
 ---
 
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(pander)
+panderOptions('knitr.auto.asis', TRUE)
+panderOptions('plain.ascii', TRUE)
+```
 
 # Introduction
 
@@ -131,8 +137,6 @@ batchEffect <- calcBatchEffects(
 mdifs <- batchEffect$med
 pvals <- batchEffect$pval
 ```
-
-
 
 
 ## Summary
@@ -305,16 +309,14 @@ in the different samples before and after the batch effect correction:
 makeBoxplot(ex.data, ex.samples, score,
   bySamples = TRUE,
   col = "standard", main = "Example data", xlab = "Batch",
-  ylab = "Beta value", scoreCol = TRUE
-)
+  ylab = "Beta value", scoreCol = TRUE)
 ```
 
 ```{r boxplot2, fig.wide = TRUE, fig.cap = "Distribution of the corrected beta values grouped by sample"}
 makeBoxplot(corrected.data, ex.samples, score,
   bySamples = TRUE,
   col = "standard", main = "Corrected example data",
-  xlab = "Batch", ylab = "Beta value", scoreCol = FALSE
-)
+  xlab = "Batch", ylab = "Beta value", scoreCol = FALSE)
 ```
 
 # Session info {.unnumbered}
@@ -323,7 +325,7 @@ Here is the output of `sessionInfo()` on the system on which this document
 was compiled running pandoc `r rmarkdown::pandoc_version()`:
 
 ```{r sessionInfo, echo=FALSE}
-sessionInfo()
+pander(sessionInfo(), compact=TRUE)
 ```
 
 # References {.unnumbered}
