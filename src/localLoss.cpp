@@ -1,15 +1,18 @@
-#include <Rcpp.h>
+//#include <Rcpp.h>
+#include <RcppArmadillo.h>
 using namespace Rcpp;
-// localLoss
-// 
-// @keywords internal
-// 
-// @description Calculates the local loss
-// 
-// @return a list containing two matrices containing the local loss
+//' localLoss
+//' 
+//' @keywords internal
+//' 
+//' @description Calculates the local loss
+//' 
+//' @return a list containing two matrices containing the local loss
+//'
 //' @import Rcpp
+//' @export localLoss
 // [[Rcpp::export]]
-List localLoss(const NumericMatrix& L,const NumericMatrix& R, 
+SEXP localLoss(const NumericMatrix& L,const NumericMatrix& R, 
                const NumericVector& is, const NumericVector& js, 
                const NumericMatrix& error_matrix) {
     
