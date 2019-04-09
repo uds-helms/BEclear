@@ -1,5 +1,4 @@
-//#include <Rcpp.h>
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 using namespace Rcpp;
 //' localLoss
 //' 
@@ -23,8 +22,8 @@ SEXP localLoss(const NumericMatrix& L,const NumericMatrix& R,
         int column  = js[n] - 1;
         double x = error_matrix(row, column);
         
-        dL.row(row) = dL.row(row) + x * R.column(column);
-        dR.column(column) = dR.column(column) + x * L.row(row);
+        dL(row, _) = dL(row, _) + x * R(_ , column);
+        dR(_ , column) = dR(_ , column) + x * L(row, _);
         
         
 
