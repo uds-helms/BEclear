@@ -1,6 +1,9 @@
 language: r
-r: bioc-devel
+
 sudo: true
+cache: packages
+r: bioc-devel
+os: linux
 r_packages:
   - covr
   - devtools
