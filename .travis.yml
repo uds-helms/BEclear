@@ -1,7 +1,5 @@
 language: r
-r:
-  - bioc-devel
-cache: packages
+r: bioc-devel
 sudo: true
 r_packages:
   - covr
