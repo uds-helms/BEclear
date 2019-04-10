@@ -3,6 +3,7 @@ sudo: true
 cache: packages
 r: bioc-devel
 os: linux
+warnings_are_errors: false
 r_packages:
     - covr
     - devtools
