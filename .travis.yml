@@ -4,7 +4,10 @@ cache: packages
 r: bioc-devel
 os: linux
 r_packages:
-  - covr
-  - devtools
+    - covr
+    - devtools
+bioc_packages:
+    - BiocStyle
+    - BiocParallel
 after_success:
   - Rscript -e 'library(covr);codecov()'
