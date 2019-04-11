@@ -1,10 +1,10 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-//' localLoss
+//' Calculating the Local Loss
 //' 
 //' @keywords internal
 //' 
-//' @description Calculates the local loss
+//' @description Calculates the gradient dR and dL for the current epoch.
 //' 
 //' @return a list containing two matrices containing the local loss
 //'
