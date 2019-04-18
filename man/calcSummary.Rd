@@ -4,7 +4,7 @@
 \alias{calcSummary}
 \title{Summarize median comparison and p-value calculation results}
 \usage{
-calcSummary(medians, pvalues)
+calcSummary(medians, pvalues, mediansTreshold, pvaluesTreshold)
 }
 \arguments{
 \item{medians}{a matrix containing median difference values calculated by
@@ -14,6 +14,12 @@ documentation of this function.}
 \item{pvalues}{a matrix containing p-values calculated by the
 \code{\link{calcBatchEffects}} function. For further details look at the
 documentation of this function.}
+
+\item{mediansTreshold}{the threshold above or equal median values are regarded 
+as batch effected, when the criteria for p-values is also met.}
+
+\item{pvaluesTreshold}{the threshold below or equal p-values are regarded as 
+batch effected, when the criteria for medians is also met.}
 }
 \value{
 Null if there are no batch effects detected, else

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{localLoss}
 \alias{localLoss}
-\title{localLoss}
+\title{Calculating the Local Loss}
 \usage{
 localLoss(L, R, is, js, error_matrix)
 }
@@ -10,6 +10,6 @@ localLoss(L, R, is, js, error_matrix)
 a list containing two matrices containing the local loss
 }
 \description{
-Calculates the local loss
+Calculates the gradient dR and dL for the current epoch.
 }
 \keyword{internal}

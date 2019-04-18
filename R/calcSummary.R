@@ -20,10 +20,14 @@
 #' @param pvalues a matrix containing p-values calculated by the
 #' \code{\link{calcBatchEffects}} function. For further details look at the
 #' documentation of this function.
+#' @param mediansTreshold the threshold above or equal median values are regarded 
+#' as batch effected, when the criteria for p-values is also met.
+#' @param pvaluesTreshold the threshold below or equal p-values are regarded as 
+#' batch effected, when the criteria for medians is also met.
 #'
 #' @export calcSummary
 #' @import futile.logger
-#' @usage calcSummary(medians, pvalues)
+#' @usage calcSummary(medians, pvalues, mediansTreshold, pvaluesTreshold)
 #'
 #' @return Null if there are no batch effects detected, else
 #'  A data frame with the columns "gene" containing the gene name,
@@ -49,7 +53,8 @@
 #' 
 #' ## Summarize p-values and median differences for batch affected genes
 #' sum <- calcSummary(medians = med, pvalues = pvals)
-calcSummary <- function(medians, pvalues) {
+calcSummary <- function(medians, pvalues, mediansTreshold = 0.05, 
+                        pvaluesTreshold = 0.01) {
   ## build summary table of found genes
   flog.info("Generating a summary table")
   summaryTable <- as.data.frame(matrix(ncol = 4))
@@ -57,8 +62,8 @@ calcSummary <- function(medians, pvalues) {
   counter <- 1
   for (i in seq_len(nrow(medians))) {
     for (j in seq_len(ncol(medians))) {
-      if ((is.na(medians[i, j]) | (medians[i, j] >= 0.05))
-      & (pvalues[i, j] <= 0.01)) {
+      if ((is.na(medians[i, j]) | (medians[i, j] >= mediansTreshold))
+      & (pvalues[i, j] <= pvaluesTreshold)) {
         summaryTable[counter, "gene"] <- rownames(medians)[i]
         summaryTable[counter, "batch"] <- colnames(medians)[j]
         summaryTable[counter, "median"] <- medians[i, j]

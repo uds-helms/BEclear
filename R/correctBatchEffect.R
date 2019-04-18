@@ -47,7 +47,11 @@
 #' @param method adjustment method for p-value adjustment, default
 #' method is "false discovery rate adjustment", for other available methods see
 #' the description of the used standard R package \code{\link{p.adjust}}. See
-#' \code{\link{calcBatchEffects}} for more information
+#' \code{\link{calcBatchEffects}} for more information.
+#' @param mediansTreshold the threshold above or equal median values are regarded 
+#' as batch effected, when the criteria for p-values is also met.
+#' @param pvaluesTreshold the threshold below or equal p-values are regarded as 
+#' batch effected, when the criteria for medians is also met.
 #' @param rowBlockSize the number of rows that is used in a block if the
 #' function is run in parallel mode and/or not on the whole matrix. Set this,
 #' and the "colBlockSize" parameter to 0 if you want to run the function on the
@@ -86,7 +90,8 @@
 #' @import futile.logger
 #' @import data.table
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
-#' rowBlockSize=60, colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
+#' mediansTreshold = 0.05, pvaluesTreshold = 0.01, rowBlockSize=60, 
+#' colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
 #' outputFormat="", dir=getwd(), BPPARAM=SerialParam(), fixedSeed= TRUE)
 #'
 #' @return A list containing the following fields (for detailed information look
@@ -136,7 +141,8 @@
 #' cleared <- result$clearedData
 #' predicted <- result$predictedData
 #' corrected <- result$correctedPredictedData
-correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
+correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr", 
+                               mediansTreshold = 0.05, pvaluesTreshold = 0.01,
                                rowBlockSize = 60, colBlockSize = 60,
                                epochs = 50, lambda = 1, gamma = 0.01, r = 10,
                                outputFormat = "", dir = getwd(), 

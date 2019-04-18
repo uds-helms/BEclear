@@ -5,7 +5,8 @@
 \title{Correct a batch effect in DNA methylation data}
 \usage{
 correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
-rowBlockSize=60, colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
+mediansTreshold = 0.05, pvaluesTreshold = 0.01, rowBlockSize=60, 
+colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
 outputFormat="", dir=getwd(), BPPARAM=SerialParam(), fixedSeed= TRUE)
 }
 \arguments{
@@ -23,7 +24,13 @@ available adjustment methods.}
 \item{method}{adjustment method for p-value adjustment, default
 method is "false discovery rate adjustment", for other available methods see
 the description of the used standard R package \code{\link{p.adjust}}. See
-\code{\link{calcBatchEffects}} for more information}
+\code{\link{calcBatchEffects}} for more information.}
+
+\item{mediansTreshold}{the threshold above or equal median values are regarded 
+as batch effected, when the criteria for p-values is also met.}
+
+\item{pvaluesTreshold}{the threshold below or equal p-values are regarded as 
+batch effected, when the criteria for medians is also met.}
 
 \item{rowBlockSize}{the number of rows that is used in a block if the
 function is run in parallel mode and/or not on the whole matrix. Set this,
