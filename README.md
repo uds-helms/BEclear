@@ -37,7 +37,16 @@ browseVignettes("BEclear")
 
 ## Planned features
 
-There are no new planned feature as of this moment. If you have a suggestion
+- [Treating Data-Sets Without Batches](https://github.com/David-J-R/BEclear/issues/22)
+- [Dixon Test for Outlier Detection](https://github.com/David-J-R/BEclear/issues/20)
+- [Make Saving Temporary Data Optional](https://github.com/David-J-R/BEclear/issues/21)
+- [Bias Modelling](https://github.com/David-J-R/BEclear/issues/18)
+- [ALS](https://github.com/David-J-R/BEclear/issues/19)
+- [Test For Convergence Durin Epochs](https://github.com/David-J-R/BEclear/issues/23)
+- [Testing BEclear on other data-sets](https://github.com/David-J-R/BEclear/issues/24)
+- [After Merging Blocks Continue GD](https://github.com/David-J-R/BEclear/issues/25)
+
+If you have a suggestion
 you could either open an [issue](https://github.com/David-J-R/BEclear/issues) or 
 write an email under the following address: [David.J.Rasp at gmail.com](mailto:David.J.Rasp@gmail.com)
 
