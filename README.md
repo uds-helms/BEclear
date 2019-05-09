@@ -38,7 +38,6 @@ browseVignettes("BEclear")
 ## Planned features
 
 - [Treating Data-Sets Without Batches](https://github.com/David-J-R/BEclear/issues/22)
-- [Dixon Test for Outlier Detection](https://github.com/David-J-R/BEclear/issues/20)
 - [Make Saving Temporary Data Optional](https://github.com/David-J-R/BEclear/issues/21)
 - [Bias Modelling](https://github.com/David-J-R/BEclear/issues/18)
 - [ALS](https://github.com/David-J-R/BEclear/issues/19)
