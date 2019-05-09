@@ -1,3 +1,7 @@
+Changes in version 2.1.1 (2019-05-09)
+    + New feature
+        o Implementation of outlier detection
+
 Changes in version 2.0.0 (2019-04-30)
     + Code refactoring
         o Simplification of the source code

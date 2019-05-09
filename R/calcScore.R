@@ -51,11 +51,20 @@
 #'
 #' @export calcScore
 #' @import futile.logger
+#' @import data.table
+#' @importFrom outliers dixon.test
 #' @usage calcScore(data, samples, summary, saveAsFile=FALSE, dir=getwd())
+#' 
+#' @references \insertRef{Dixon1950}{BEclear}
+#' @references \insertRef{Dixon1951}{BEclear}
+#' @references \insertRef{Rorabacher1991}{BEclear}
 #'
 #' @return A data.frame is returned containing the number of found genes assumed
-#' to be batch affected separated by batch and a BEscore for every batch. The
-#' data.frame is also stored in the specified directory as .RData file.
+#' to be batch affected separated by batch and a BEscore for every batch. Furthermore
+#' there's a column dixonPval giving you a p-value regarding each BEscore according 
+#' to a Dixon test.
+#' The data.frame is also stored in the specified directory as .RData file, if 
+#' saveAsFile is \code{TRUE}.
 #'
 #' @examples
 #' ## Shortly running example. For a more realistic example that takes
@@ -76,10 +85,7 @@
 #' sum <- calcSummary(medians = med, pvalues = pvals)
 #' 
 #' # Calculates the score table
-#' score.table <- calcScore(
-#'   data = ex.data, samples = ex.samples, summary = sum,
-#'   dir = getwd()
-#' )
+#' score.table <- calcScore(data = ex.data, samples = ex.samples, summary = sum)
 calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd()) {
   ## take batch numbers
   batches <- unique(samples$batch_id)
@@ -152,9 +158,23 @@ calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd())
   )
   scoreTable <- geneTableMedians
   remove(geneTableMedians)
-  if (saveAsFile) {
-    filename <- "score.table.Rdata"
-    save(scoreTable, file = paste(dir, filename, sep = "/"))
+
+  
+  DT <- data.table(scoreTable)
+  
+  # calculate outlier according to the dixon test
+  DT[, dixonPval := 1.0]
+  while(any(scoreTable$BEscore > 0)){
+      print(scoreTable$BEscore)
+      pval <- dixon.test(scoreTable$BEscore, two.sided = FALSE)
+      DT[BEscore == max(scoreTable$BEscore), dixonPval := pval$p.value]
+      scoreTable <- scoreTable[-which.max(scoreTable$BEscore),]
   }
-  return(scoreTable)
+  
+  if (saveAsFile) {
+      filename <- "score.table.Rdata"
+      save(DT, file = paste(dir, filename, sep = "/"))
+  }
+  
+  return(DT)
 }

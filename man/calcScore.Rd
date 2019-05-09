@@ -27,8 +27,11 @@ stored. The current working directory is defined as default parameter.}
 }
 \value{
 A data.frame is returned containing the number of found genes assumed
-to be batch affected separated by batch and a BEscore for every batch. The
-data.frame is also stored in the specified directory as .RData file.
+to be batch affected separated by batch and a BEscore for every batch. Furthermore
+there's a column dixonPval giving you a p-value regarding each BEscore according 
+to a Dixon test.
+The data.frame is also stored in the specified directory as .RData file, if 
+saveAsFile is \code{TRUE}.
 }
 \description{
 Returns a table with the number of found genes with found
@@ -80,10 +83,14 @@ pvals <- batchEffects$pval
 sum <- calcSummary(medians = med, pvalues = pvals)
 
 # Calculates the score table
-score.table <- calcScore(
-  data = ex.data, samples = ex.samples, summary = sum,
-  dir = getwd()
-)
+score.table <- calcScore(data = ex.data, samples = ex.samples, summary = sum)
+}
+\references{
+\insertRef{Dixon1950}{BEclear}
+
+\insertRef{Dixon1951}{BEclear}
+
+\insertRef{Rorabacher1991}{BEclear}
 }
 \seealso{
 \code{\link{calcBatchEffects}}
