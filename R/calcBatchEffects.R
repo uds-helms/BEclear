@@ -62,6 +62,19 @@
 #' 
 #' 
 #' res <- calcBatchEffects(data = ex.data, samples = ex.samples, method = "fdr")
+#' 
+#' ## How to handle data-sets without defined batches
+#' ## https://github.com/David-J-R/BEclear/issues/22
+#' library(data.table)
+#' data(BEclearData)
+#'
+#' DT <- data.table(ex.samples)[, .(sample_id)]
+#' 
+#' ## set the batch_id equal to the sample_id
+#' ## this way samples are treated as batches
+#' DT[, batch_id := sample_id]
+#' 
+#' res <- calcBatchEffects(data = ex.data, samples = DT)
 calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
                              BPPARAM = SerialParam()) {
   if (!is(data, "data.table")) {

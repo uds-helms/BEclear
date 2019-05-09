@@ -64,6 +64,19 @@ ex.samples <- ex.samples[7:26, ]
 
 
 res <- calcBatchEffects(data = ex.data, samples = ex.samples, method = "fdr")
+
+## How to handle data-sets without defined batches
+## https://github.com/David-J-R/BEclear/issues/22
+library(data.table)
+data(BEclearData)
+
+DT <- data.table(ex.samples)[, .(sample_id)]
+
+## set the batch_id equal to the sample_id
+## this way samples are treated as batches
+DT[, batch_id := sample_id]
+
+res <- calcBatchEffects(data = ex.data, samples = DT)
 }
 \seealso{
 \code{\link{ks.test}}
