@@ -36,6 +36,8 @@ by batches).}
 
 \item{scoreCol}{should the batch_ids on the a-axis be colored according to
 the BEscore or not? If not, black is used as color for all batch_ids.}
+
+\item{log}{TRUE, if the y-axis should be on a logarithmic scale.}
 }
 \value{
 Returns a boxplot on the graphic device with the features explained

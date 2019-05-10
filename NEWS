@@ -1,3 +1,7 @@
+Changes in version 2.1.1 (2019-05-10)
+    + New feature
+        o y-axis in boxplot function can now be logged
+
 Changes in version 2.1.1 (2019-05-09)
     + New feature
         o Implementation of outlier detection

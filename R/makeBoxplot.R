@@ -45,6 +45,7 @@
 #' @param ylab label for the y-axis of the box plot. Default is "Beta value".
 #' @param scoreCol should the batch_ids on the a-axis be colored according to
 #' the BEscore or not? If not, black is used as color for all batch_ids.
+#' @param log TRUE, if the y-axis should be on a logarithmic scale. 
 #'
 #' @export makeBoxplot
 #' @importFrom graphics boxplot mtext par
@@ -93,7 +94,12 @@
 #' )
 makeBoxplot <- function(data, samples, score, bySamples = FALSE, col = "standard",
                         main = "", xlab = "Batch", ylab = "Beta value",
-                        scoreCol = TRUE) {
+                        scoreCol = TRUE, log = FALSE) {
+    logPar <- ""
+    if(log){
+        logPar <- "y"
+    }
+    
   if (bySamples == FALSE) {
     ## get batch numbers
     batches <- sort(unique(samples$batch_id))
@@ -122,7 +128,7 @@ makeBoxplot <- function(data, samples, score, bySamples = FALSE, col = "standard
     ## make boxplot
     boxplot(boxplotData,
       col = coloring, main = main, xlab = xlab, ylab = ylab,
-      names = annotation, cex.axis = 1, xaxt = "n"
+      names = annotation, cex.axis = 1, xaxt = "n", log = logPar
     )
 
     if (scoreCol == TRUE) {
@@ -215,7 +221,7 @@ makeBoxplot <- function(data, samples, score, bySamples = FALSE, col = "standard
     ## make the boxplot
     boxplot(boxplotData,
       main = main, xlab = xlab, ylab = ylab,
-      names = annotation, col = coloring, cex.axis = 0.8, xaxt = "n"
+      names = annotation, col = coloring, cex.axis = 0.8, xaxt = "n", log = logPar
     )
 
     ## get scoring colors for the x-axis labels

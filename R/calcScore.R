@@ -165,7 +165,6 @@ calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd())
   # calculate outlier according to the dixon test
   DT[, dixonPval := 1.0]
   while(any(scoreTable$BEscore > 0)){
-      print(scoreTable$BEscore)
       pval <- dixon.test(scoreTable$BEscore, two.sided = FALSE)
       DT[BEscore == max(scoreTable$BEscore), dixonPval := pval$p.value]
       scoreTable <- scoreTable[-which.max(scoreTable$BEscore),]
