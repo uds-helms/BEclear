@@ -53,7 +53,7 @@
 #' @importFrom stats ks.test median rnorm
 #' @importFrom utils write.table
 #' @usage makeBoxplot(data, samples, score, bySamples=FALSE, col="standard",
-#' main="", xlab="Batch", ylab="Beta value", scoreCol=TRUE)
+#' main="", xlab="Batch", ylab="Beta value", scoreCol=TRUE, log = FALSE)
 #'
 #' @return Returns a boxplot on the graphic device with the features explained
 #' above.

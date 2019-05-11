@@ -5,7 +5,7 @@
 \title{produce simple predefined boxplot for methylation data}
 \usage{
 makeBoxplot(data, samples, score, bySamples=FALSE, col="standard",
-main="", xlab="Batch", ylab="Beta value", scoreCol=TRUE)
+main="", xlab="Batch", ylab="Beta value", scoreCol=TRUE, log = FALSE)
 }
 \arguments{
 \item{data}{any matrix filled with beta values, column names have to be

@@ -107,8 +107,7 @@
 "_PACKAGE"
 utils::globalVariables(c(
   "batch_id", "beta.value", "feature", "sample_id", ".",
-  "unique_id"
-),
+  "unique_id", "dixonPval", "BEscore"),
 package = "BEclear", add = FALSE
 )
 
