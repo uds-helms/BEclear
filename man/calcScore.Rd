@@ -15,10 +15,10 @@ be gene names.}
 the sample numbers, the second column has to contain the corresponding batch
 number. Colnames have to be named as "sample_id" and "batch_id".}
 
-\item{summary}{a summary data.frame containing the columns "gene", "batch",
-"median" and "p-value" and consists of all genes which were found in the
-median and p-value calculations, see \code{\link{calcSummary}} function for
-more details.}
+\item{summary}{a summary \code{\link[data.table]{data.table}} containing the 
+columns "gene", "batch", median" and "p-value" and consists of all genes which 
+were found in the median and p-value calculations, see 
+\code{\link{calcSummary}} function for more details.}
 
 \item{saveAsFile}{determining if the data.frame should also be saved as a file}
 

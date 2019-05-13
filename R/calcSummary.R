@@ -26,11 +26,13 @@
 #' batch effected, when the criteria for medians is also met.
 #'
 #' @export calcSummary
-#' @import futile.logger
+#' @importFrom abind abind
+#' @importFrom futile.logger flog.info
+#' @import data.table
 #' @usage calcSummary(medians, pvalues, mediansTreshold, pvaluesTreshold)
 #'
 #' @return Null if there are no batch effects detected, else
-#'  A data frame with the columns "gene" containing the gene name,
+#' a \code{\link[data.table]{data.table}} with the columns "gene" containing the gene name,
 #' "batch" containing the batch number from which the gene was found, "median"
 #' and "p-value" containing the calculated median difference values and the
 #' p-values, respectively.
@@ -55,26 +57,23 @@
 #' sum <- calcSummary(medians = med, pvalues = pvals)
 calcSummary <- function(medians, pvalues, mediansTreshold = 0.05, 
                         pvaluesTreshold = 0.01) {
-  ## build summary table of found genes
-  flog.info("Generating a summary table")
-  summaryTable <- as.data.frame(matrix(ncol = 4))
-  colnames(summaryTable) <- c("gene", "batch", "median", "pvalue")
-  counter <- 1
-  for (i in seq_len(nrow(medians))) {
-    for (j in seq_len(ncol(medians))) {
-      if ((is.na(medians[i, j]) | (medians[i, j] >= mediansTreshold))
-      & (pvalues[i, j] <= pvaluesTreshold)) {
-        summaryTable[counter, "gene"] <- rownames(medians)[i]
-        summaryTable[counter, "batch"] <- colnames(medians)[j]
-        summaryTable[counter, "median"] <- medians[i, j]
-        summaryTable[counter, "pvalue"] <- pvalues[i, j]
-        counter <- counter + 1
-      }
+    
+    library(abind)
+    flog.info("Generating a summary table")
+    x <- abind(medians, pvalues, along = 3)
+    ## find affected genes
+    affected <- apply(x, c(1,2), FUN = 
+                          function(X){ return((is.na(X[1]) |  X[1] >= mediansTreshold) 
+                                   & X[2] <= pvaluesTreshold)})
+    
+    if(sum(affected) == 0){
+        return(NULL)
+    }else{
+        tmp <- arrayInd(which(affected), dim(affected))
+        
+        return(data.table(gene = rownames(medians)[tmp[,1]],
+                          batch = colnames(medians)[tmp[,2]],
+                          median = medians[affected], 
+                          pvalue = pvalues[affected]))
     }
-  }
-  if (counter == 1) {
-    return(NULL)
-  } else {
-    return(summaryTable)
-  }
 }

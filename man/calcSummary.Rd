@@ -23,7 +23,7 @@ batch effected, when the criteria for medians is also met.}
 }
 \value{
 Null if there are no batch effects detected, else
- A data frame with the columns "gene" containing the gene name,
+a \code{\link[data.table]{data.table}} with the columns "gene" containing the gene name,
 "batch" containing the batch number from which the gene was found, "median"
 and "p-value" containing the calculated median difference values and the
 p-values, respectively.

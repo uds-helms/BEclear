@@ -41,10 +41,10 @@
 #' @param samples data frame with two columns, the first column has to contain
 #' the sample numbers, the second column has to contain the corresponding batch
 #' number. Colnames have to be named as "sample_id" and "batch_id".
-#' @param summary a summary data.frame containing the columns "gene", "batch",
-#' "median" and "p-value" and consists of all genes which were found in the
-#' median and p-value calculations, see \code{\link{calcSummary}} function for
-#' more details.
+#' @param summary a summary \code{\link[data.table]{data.table}} containing the 
+#' columns "gene", "batch", median" and "p-value" and consists of all genes which 
+#' were found in the median and p-value calculations, see 
+#' \code{\link{calcSummary}} function for more details.
 #' @param saveAsFile determining if the data.frame should also be saved as a file
 #' @param dir set the path to a directory the returned data.frame should be
 #' stored. The current working directory is defined as default parameter.
@@ -87,82 +87,37 @@
 #' # Calculates the score table
 #' score.table <- calcScore(data = ex.data, samples = ex.samples, summary = sum)
 calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd()) {
-  ## take batch numbers
+  ## take batch ids
   batches <- unique(samples$batch_id)
   flog.info(paste("Calculating the scores for", length(batches), "batches"))
+  
   ## take number of genes
   numGenes <- nrow(data)
-  ## table with number of found genes & score for every batch
-  geneTableMedians <- as.data.frame(matrix(ncol = 12))
-  colnames(geneTableMedians) <- c(
-    "batch", "0.05", "0.1", "0.2", "0.3",
-    "0.4", "0.5", "0.6", "0.7", "0.8", "0.9",
-    "BEscore"
-  )
-  counter <- count005 <- count01 <- count02 <- count03 <- count04 <-
-    count05 <- count06 <- count07 <- count08 <- count09 <- 0
-  for (s in batches) {
-    counter <- counter + 1
-    for (i in seq_len(nrow(summary))) {
-      ## values belong to batch s
-      if (summary[i, "batch"] == s & summary[i, "pvalue"] <= 0.01) {
-        if ((is.na(summary[i, "median"])
-        | summary[i, "median"] >= 0.9)) {
-          count09 <- count09 + 1
-        } else if (summary[i, "median"] >= 0.8) {
-          count08 <- count08 + 1
-        } else if (summary[i, "median"] >= 0.7) {
-          count07 <- count07 + 1
-        } else if (summary[i, "median"] >= 0.6) {
-          count06 <- count06 + 1
-        } else if (summary[i, "median"] >= 0.5) {
-          count05 <- count05 + 1
-        } else if (summary[i, "median"] >= 0.4) {
-          count04 <- count04 + 1
-        } else if (summary[i, "median"] >= 0.3) {
-          count03 <- count03 + 1
-        } else if (summary[i, "median"] >= 0.2) {
-          count02 <- count02 + 1
-        } else if (summary[i, "median"] >= 0.1) {
-          count01 <- count01 + 1
-        } else if (summary[i, "median"] >= 0.05) {
-          count005 <- count005 + 1
-        }
-      }
-    }
-    geneTableMedians[counter, "batch"] <- s
-    geneTableMedians[counter, "0.05"] <- count005
-    geneTableMedians[counter, "0.1"] <- count01
-    geneTableMedians[counter, "0.2"] <- count02
-    geneTableMedians[counter, "0.3"] <- count03
-    geneTableMedians[counter, "0.4"] <- count04
-    geneTableMedians[counter, "0.5"] <- count05
-    geneTableMedians[counter, "0.6"] <- count06
-    geneTableMedians[counter, "0.7"] <- count07
-    geneTableMedians[counter, "0.8"] <- count08
-    geneTableMedians[counter, "0.9"] <- count09
-    beScore <- count005 * 1 + count01 * 2 + count02 * 4 + count03 * 6 +
-      count04 * 8 + count05 * 10 + count06 * 12 + count07 * 14 + count08 * 16 +
-      count09 * 18
-    if (numGenes > 0) {
-      beScore <- beScore / numGenes
-    }
-    geneTableMedians[counter, "BEscore"] <- beScore
-    count005 <- count01 <- count02 <- count03 <- count04 <- count05 <-
-      count06 <- count07 <- count08 <- count09 <- 0
-  }
-
-  remove(
-    counter, count005, count01, count02, count03, count04, count05,
-    count06, count07, count08, count09, beScore, i, s
-  )
-  scoreTable <- geneTableMedians
-  remove(geneTableMedians)
-
   
-  DT <- data.table(scoreTable)
+  ## count the medians
+  DT <- lapply(batches, FUN = function(x, y){
+      data.table(batch = x, 
+                 count05 = y[batch == x & median >= 0.05 & median < 0.1, .N], 
+                 count1 = y[batch == x & median  >= 0.1  & median < 0.2,  .N], 
+                 count2 = y[batch == x & median  >= 0.2  & median < 0.3,  .N], 
+                 count3 = y[batch == x & median  >= 0.3  & median < 0.4,  .N],
+                 count4 = y[batch == x & median  >= 0.4  & median < 0.5,  .N], 
+                 count5 = y[batch == x & median  >= 0.5  & median < 0.6,  .N], 
+                 count6 = y[batch == x & median  >= 0.6  & median < 0.7,  .N], 
+                 count7 = y[batch == x & median  >= 0.7  & median < 0.8,  .N], 
+                 count8 = y[batch == x & median  >= 0.8  & median < 0.9,  .N], 
+                 count9 = y[batch == x & median  >= 0.9,  .N])}, summary)
   
-  # calculate outlier according to the dixon test
+  DT <- do.call(rbind, DT)
+  
+  ## calculate BEscores
+  DT[, BEscore := (count05 * 1 + count1* 2 + count2 * 4 + count3 * 6 + count4 * 8 
+                   + count5 * 10 + count6 * 12 + count7 * 14 + count8 * 16 
+                   + count9 * 18)/numGenes ]
+  
+  scoreTable <- DT
+  
+  ## calculate outlier according to the dixon test
   DT[, dixonPval := 1.0]
   while(any(scoreTable$BEscore > 0)){
       pval <- dixon.test(scoreTable$BEscore, two.sided = FALSE)
