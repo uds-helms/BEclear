@@ -96,7 +96,7 @@ calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd())
   
   ## count the medians
   DT <- lapply(batches, FUN = function(x, y){
-      data.table(batch = x, 
+      data.table(batch_id = x, 
                  count05 = y[batch == x & median >= 0.05 & median < 0.1, .N], 
                  count1 = y[batch == x & median  >= 0.1  & median < 0.2,  .N], 
                  count2 = y[batch == x & median  >= 0.2  & median < 0.3,  .N], 

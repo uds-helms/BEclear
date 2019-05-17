@@ -54,5 +54,7 @@ calcPositions <- function(num, blockSize) {
       }
     }
   }
-  return <- c(blocks, startPos1, startPos2, stopPos1, stopPos2)
+  positions <- c(blocks, startPos1, startPos2, stopPos1, stopPos2)
+  names(positions) <- c("numBlocks", "startN-1", "startN", "stopN-1", "stopN")
+  return(positions)
 }
