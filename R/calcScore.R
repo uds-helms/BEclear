@@ -97,16 +97,16 @@ calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd())
   ## count the medians
   DT <- lapply(batches, FUN = function(x, y){
       data.table(batch_id = x, 
-                 count05 = y[batch == x & median >= 0.05 & median < 0.1, .N], 
-                 count1 = y[batch == x & median  >= 0.1  & median < 0.2,  .N], 
-                 count2 = y[batch == x & median  >= 0.2  & median < 0.3,  .N], 
-                 count3 = y[batch == x & median  >= 0.3  & median < 0.4,  .N],
-                 count4 = y[batch == x & median  >= 0.4  & median < 0.5,  .N], 
-                 count5 = y[batch == x & median  >= 0.5  & median < 0.6,  .N], 
-                 count6 = y[batch == x & median  >= 0.6  & median < 0.7,  .N], 
-                 count7 = y[batch == x & median  >= 0.7  & median < 0.8,  .N], 
-                 count8 = y[batch == x & median  >= 0.8  & median < 0.9,  .N], 
-                 count9 = y[batch == x & median  >= 0.9,  .N])}, summary)
+                 count05 = y[batch_id == x & median >= 0.05 & median < 0.1, .N], 
+                 count1 = y[batch_id == x & median  >= 0.1  & median < 0.2,  .N], 
+                 count2 = y[batch_id == x & median  >= 0.2  & median < 0.3,  .N], 
+                 count3 = y[batch_id == x & median  >= 0.3  & median < 0.4,  .N],
+                 count4 = y[batch_id == x & median  >= 0.4  & median < 0.5,  .N], 
+                 count5 = y[batch_id == x & median  >= 0.5  & median < 0.6,  .N], 
+                 count6 = y[batch_id == x & median  >= 0.6  & median < 0.7,  .N], 
+                 count7 = y[batch_id == x & median  >= 0.7  & median < 0.8,  .N], 
+                 count8 = y[batch_id == x & median  >= 0.8  & median < 0.9,  .N], 
+                 count9 = y[batch_id == x & median  >= 0.9,  .N])}, summary)
   
   DT <- do.call(rbind, DT)
   

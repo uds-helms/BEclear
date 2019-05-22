@@ -58,7 +58,6 @@
 calcSummary <- function(medians, pvalues, mediansTreshold = 0.05, 
                         pvaluesTreshold = 0.01) {
     
-    library(abind)
     flog.info("Generating a summary table")
     x <- abind(medians, pvalues, along = 3)
     ## find affected genes
@@ -72,7 +71,7 @@ calcSummary <- function(medians, pvalues, mediansTreshold = 0.05,
         tmp <- arrayInd(which(affected), dim(affected))
         
         return(data.table(gene = rownames(medians)[tmp[,1]],
-                          batch = colnames(medians)[tmp[,2]],
+                          batch_id = colnames(medians)[tmp[,2]],
                           median = medians[affected], 
                           pvalue = pvalues[affected]))
     }

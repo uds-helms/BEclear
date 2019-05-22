@@ -64,7 +64,7 @@ clearBEgenes <- function(data, samples, summary) {
   for (i in seq_len(nrow(summary)))
   {
     data[summary$gene[i], as.character(
-      samples$sample_id[samples$batch_id == summary$batch[i]]
+      samples$sample_id[samples$batch_id == summary$batch_id[i]]
     )] <- NA
   }
   amount <- sum(is.na(data)) / (nrow(data) * ncol(data))
