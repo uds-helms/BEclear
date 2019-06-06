@@ -189,7 +189,7 @@ The error for each block is calculated in the following way:
   (\#eq:errormatrix)
 \end{equation}
 
-We try to minimalise the following loss function through a gradient descent:
+We try to minimize the following loss function through a gradient descent:
 
 \begin{equation}
   min_{L, R}  \sum_{ij \in K}(errorMatrix_{ij}^2) + \lambda \times
