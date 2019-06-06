@@ -115,15 +115,13 @@ calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd())
                    + count5 * 10 + count6 * 12 + count7 * 14 + count8 * 16 
                    + count9 * 18)/numGenes ]
   
-  scoreTable <- DT
+  
   
   ## calculate outlier according to the dixon test
-  DT[, dixonPval := 1.0]
-  while(any(scoreTable$BEscore > 0)){
-      pval <- dixon.test(scoreTable$BEscore, two.sided = FALSE)
-      DT[BEscore == max(scoreTable$BEscore), dixonPval := pval$p.value]
-      scoreTable <- scoreTable[-which.max(scoreTable$BEscore),]
-  }
+  DT[, dixonPval := NA]
+  pval <- dixon.test(scoreTable$BEscore, two.sided = FALSE)
+  DT[BEscore == max(scoreTable$BEscore), dixonPval := pval$p.value]
+  
   
   if (saveAsFile) {
       filename <- "score.table.Rdata"
