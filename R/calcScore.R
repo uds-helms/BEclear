@@ -118,9 +118,12 @@ calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd())
   
   
   ## calculate outlier according to the dixon test
-  DT[, dixonPval := NA]
-  pval <- dixon.test(scoreTable$BEscore, two.sided = FALSE)
-  DT[BEscore == max(scoreTable$BEscore), dixonPval := pval$p.value]
+  DT[, dixonPval := as.numeric(NA)]
+  if(sum(!is.na(DT$BEscore)) >= 3 && max(DT$BEscore) != min(DT$BEscore)){
+    pval <- dixon.test(DT$BEscore, two.sided = FALSE)
+    DT[BEscore == max(DT$BEscore), dixonPval := as.numeric(pval$p.value)]
+  }
+  
   
   
   if (saveAsFile) {
