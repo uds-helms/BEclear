@@ -32,6 +32,14 @@ runGradientDescent <- function(L, R, lambda, epochs, gamma = 0.01, blockNr,
     curLoss <- loss_result$loss
     
     error_matrix <- loss_result$error_matrix
+    
+    if(is.infinite(curLoss)){
+      flog.error("The Gradient Descent diverged.")
+      flog.error("This indicates that the step size is to big.")
+      flog.error("Try lowering gamma to fix this.")
+      stop("The Gradient Descent diverged")
+    }
+    
     if (oldLoss < curLoss) {
       gamma <- gamma / 2
     } else {

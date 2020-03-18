@@ -18,6 +18,5 @@ loss <- function(L, R, lambda, D) {
 
   cost <- lambda * ((norm(L, type = "F")^2) + (norm(R, type = "F")^2))
 
-
   return(list(loss = squared_error + cost, error_matrix = error_matrix))
 }
