@@ -21,6 +21,6 @@ biocViews: BatchEffect, DNAMethylation, Software, Preprocessing, StatisticalMeth
 RoxygenNote: 6.1.1
 RdMacros: Rdpack
 Encoding: UTF-8
-URL: https://github.com/David-J-R/BEclear
-BugReports: https://github.com/David-J-R/BEclear/issues
+URL: https://github.com/uds-helms/BEclear
+BugReports: https://github.com/uds-helms/BEclear/issues
 LinkingTo: Rcpp
