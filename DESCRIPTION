@@ -1,7 +1,7 @@
 Package: BEclear
 Type: Package
 Title: Correction of batch effects in DNA methylation data
-Version: 2.7.1
+Version: 2.7.2
 Date: 2020-11-03
 Authors@R: c(person("David", "Rasp", email = "david.j.rasp@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0164-2163")),
              person("Markus", "Merl", role = "aut"),
@@ -18,7 +18,7 @@ Imports: futile.logger, Rdpack, Matrix, data.table (>= 1.11.8), Rcpp, outliers,
 Suggests: testthat, BiocStyle, knitr, rmarkdown, pander
 VignetteBuilder: knitr
 biocViews: BatchEffect, DNAMethylation, Software, Preprocessing, StatisticalMethod
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 RdMacros: Rdpack
 Encoding: UTF-8
 URL: https://github.com/uds-helms/BEclear
