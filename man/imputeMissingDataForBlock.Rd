@@ -4,8 +4,7 @@
 \alias{imputeMissingDataForBlock}
 \title{imputeMissingDataForBlock}
 \usage{
-imputeMissingDataForBlock(block, dir, epochs, lambda = 1, gamma = 0.01,
-  r = 10, fixedSeed = TRUE)
+imputeMissingDataForBlock(block, dir, epochs, lambda = 1, gamma = 0.01, r = 10)
 }
 \arguments{
 \item{fixedSeed}{determines if they seed should be fixed, which is important

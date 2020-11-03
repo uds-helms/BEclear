@@ -3,7 +3,7 @@
 #' @aliases countValuesToPredict
 #'
 #' @seealso \code{\link{clearBEgenes}}
-#' @seealso \code{\link{BEclear}}
+#' @seealso \code{\link{correctBatchEffect}}
 #' @seealso \code{\link{correctBatchEffect}}
 #'
 #' @title Count NA entries in a matrix

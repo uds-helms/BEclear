@@ -4,9 +4,11 @@
 \name{ex.corrected.data}
 \alias{ex.corrected.data}
 \title{Example matrix of corrected data for the BEclear-package}
-\format{A matrix containing already corrected beta values of some samples from
+\format{
+A matrix containing already corrected beta values of some samples from
 the breast invasive carcinoma TCGA methylation data. The colnames denote
-samples, rownames denote gene names.}
+samples, rownames denote gene names.
+}
 \usage{
 data(BEclearCorrected)
 }

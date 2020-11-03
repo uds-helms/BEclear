@@ -11,7 +11,7 @@
 #'
 #'
 #' @description Provides some functions to detect and correct for batch effects
-#' in DNA methylation data. The core function \code{\link{BEclear}} is based on
+#' in DNA methylation data. The core function \code{\link{correctBatchEffect}} is based on
 #' Latent Factor Models and can also be used to predict missing values in any
 #' other matrix containing real numbers.
 #'
@@ -20,7 +20,7 @@
 #' one. This function performs the whole process of searching for batch effects
 #' and automatically correct them for a matrix of beta values stemming from DNA
 #' methylation data.\cr
-#' \code{\link{BEclear}}:
+#' \code{\link{correctBatchEffect}}:
 #' This function predicts the missing entries of an input matrix (NA values)
 #' through the use of a Latent Factor Model.\cr
 #' \code{\link{calcBatchEffects}}:
@@ -104,6 +104,7 @@
 #'
 #' @references \insertRef{Akulenko2016}{BEclear}
 #' @import Rdpack
+#' @importFrom Rdpack reprompt
 "_PACKAGE"
 utils::globalVariables(c(
   "batch_id", "beta.value", "feature", "sample_id", ".",
@@ -115,9 +116,6 @@ package = "BEclear", add = FALSE
 
 #' @name BEclear example methylation data
 #'
-#' @aliases BEclearData
-#' @aliases BEclear example data
-#' @aliases BEclear example methylation data
 #' @aliases ex.data
 #'
 #' @docType data
@@ -144,7 +142,6 @@ package = "BEclear", add = FALSE
 
 #' @name BEclear example sample data
 #'
-#' @aliases BEclear example methylation data
 #' @aliases ex.samples
 #'
 #' @docType data
@@ -164,7 +161,6 @@ package = "BEclear", add = FALSE
 
 #' @name ex.corrected.data
 #'
-#' @aliases ex.corrected.data
 #'
 #' @docType data
 #'

@@ -1,3 +1,6 @@
+Changes in version 2.7.1 (2020-11-03)
+    + fixed some warnings from R Check and BiocCheck
+
 Changes in version 2.3.1 (2020-03-18)
     + added helpful output in case the gradient descent diverges
 

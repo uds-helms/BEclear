@@ -114,15 +114,13 @@
 #' @param BPPARAM An instance of the
 #' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 #' parallelisation of the functions will be evaluated.
-#' @param fixedSeed determines if they seed should be fixed, which is important
-#' for testing
 #'
 #' @export imputeMissingData
 #' @import BiocParallel
 #' @import futile.logger
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50,
 #' lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir=getwd(),
-#' BPPARAM=SerialParam(), fixedSeed = TRUE)
+#' BPPARAM=SerialParam())
 #'
 #' @examples
 #' ## Shortly running example. For a more realistic example that takes
@@ -157,7 +155,7 @@
 imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs = 50,
                               lambda = 1, gamma = 0.01, r = 10,
                               outputFormat = "", dir = getwd(),
-                              BPPARAM = SerialParam(), fixedSeed = TRUE) {
+                              BPPARAM = SerialParam()) {
   flog.info("Starting the imputation of missing values.")
   flog.info("This might take a while.")
   D1 <- NULL
@@ -192,8 +190,7 @@ imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs
   blocksDone <- unlist(bplapply(blocks, imputeMissingDataForBlock,
     dir = dir,
     epochs = epochs, BPPARAM = BPPARAM, lambda = lambda,
-    gamma = gamma, r = r, fixedSeed = fixedSeed
-  ))
+    gamma = gamma, r = r))
 
   ## combine the blocks to the predictedGenes data.frame
   predictedGenes <- combineBlocks(blockFrame, rowPos, colPos, dir)

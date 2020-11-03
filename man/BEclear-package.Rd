@@ -4,10 +4,11 @@
 \name{BEclear-package}
 \alias{BEclear-package}
 \alias{_PACKAGE}
+\alias{BEclearCorrected}
 \title{Correction of batch effects in DNA methylation data}
 \description{
 Provides some functions to detect and correct for batch effects
-in DNA methylation data. The core function \code{\link{BEclear}} is based on
+in DNA methylation data. The core function \code{\link{correctBatchEffect}} is based on
 Latent Factor Models and can also be used to predict missing values in any
 other matrix containing real numbers.
 }
@@ -19,7 +20,7 @@ The function combines most functions of the \code{\link{BEclear-package}} to
 one. This function performs the whole process of searching for batch effects
 and automatically correct them for a matrix of beta values stemming from DNA
 methylation data.\cr
-\code{\link{BEclear}}:
+\code{\link{correctBatchEffect}}:
 This function predicts the missing entries of an input matrix (NA values)
 through the use of a Latent Factor Model.\cr
 \code{\link{calcBatchEffects}}:
@@ -106,8 +107,8 @@ corrected <- replaceOutsideValues(data = predicted)
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/David-J-R/BEclear}
-  \item Report bugs at \url{https://github.com/David-J-R/BEclear/issues}
+  \item \url{https://github.com/uds-helms/BEclear}
+  \item Report bugs at \url{https://github.com/uds-helms/BEclear/issues}
 }
 
 }

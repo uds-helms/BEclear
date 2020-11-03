@@ -11,7 +11,7 @@
 #'
 #' @return number of the block processed
 imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
-                                      gamma = 0.01, r = 10, fixedSeed = TRUE) {
+                                      gamma = 0.01, r = 10) {
   blockNr <- block$blockNr
   D <- block$block
   flog.info(paste("Impute missing data for block", blockNr, "of", block$total))
@@ -36,11 +36,6 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
     js <- Dsummary$j # column of each revealed entry
     xs <- Dsummary$x # value of each revealed entry
     N <- length(is) # number of revealed entries
-
-
-    if (fixedSeed) {
-      set.seed(1, kind = "Mersenne-Twister")
-    }
 
     L <- matrix(rnorm(m * r), m, r) / sqrt(r)
     R <- matrix(rnorm(r * n), r, n) / sqrt(r)

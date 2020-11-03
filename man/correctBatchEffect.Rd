@@ -7,7 +7,7 @@
 correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 mediansTreshold = 0.05, pvaluesTreshold = 0.01, rowBlockSize=60, 
 colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
-outputFormat="", dir=getwd(), BPPARAM=SerialParam(), fixedSeed= TRUE)
+outputFormat="", dir=getwd(), BPPARAM=SerialParam())
 }
 \arguments{
 \item{data}{any matrix filled with beta values, column names have to be
@@ -70,9 +70,6 @@ The current working directory is defined as default parameter.}
 \item{BPPARAM}{An instance of the
 \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 parallelisation of the functions will be evaluated.}
-
-\item{fixedSeed}{determines if they seed should be fixed, which is important
-for testing}
 }
 \value{
 A list containing the following fields (for detailed information look
@@ -132,7 +129,7 @@ ex.samples <- ex.samples[7:26, ]
 
 # Note that row- and block sizes are just set to 10 to get a short runtime.
 # To use these parameters, either use the default values or please note the
-# description in the details section of \\code{\\link{imputeMissingData}}
+# description in the details section of \code{\link{imputeMissingData}}
 result <- correctBatchEffect(
   data = ex.data, samples = ex.samples,
   adjusted = TRUE, method = "fdr", rowBlockSize = 10, colBlockSize = 10,

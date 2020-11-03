@@ -27,7 +27,7 @@ findOutsideValues
 
 Note that this method is especially designed to run after the batch
 effect correction of DNA methylation data, e.g. with the
-\code{\link{BEclear}} method. It can happen, that the predicted values are
+\code{\link{correctBatchEffect}} method. It can happen, that the predicted values are
 lying slightly below the lower bound of 0 or beyond the upper bound of 1.
 This method finds these inaccurately predicted entries. Another method called
 \code{\link{replaceOutsideValues}} replaces these values either by 0 or 1,

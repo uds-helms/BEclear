@@ -82,8 +82,6 @@
 #' @param BPPARAM An instance of the
 #' \code{\link[BiocParallel]{BiocParallelParam-class}} that determines how to
 #' parallelisation of the functions will be evaluated.
-#' @param fixedSeed determines if they seed should be fixed, which is important
-#' for testing
 #'
 #' @export correctBatchEffect
 #' @import BiocParallel
@@ -92,7 +90,7 @@
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 #' mediansTreshold = 0.05, pvaluesTreshold = 0.01, rowBlockSize=60, 
 #' colBlockSize=60, epochs=50, lambda = 1, gamma = 0.01, r = 10,
-#' outputFormat="", dir=getwd(), BPPARAM=SerialParam(), fixedSeed= TRUE)
+#' outputFormat="", dir=getwd(), BPPARAM=SerialParam())
 #'
 #' @return A list containing the following fields (for detailed information look
 #' at the documentations of the corresponding functions):
@@ -146,7 +144,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
                                rowBlockSize = 60, colBlockSize = 60,
                                epochs = 50, lambda = 1, gamma = 0.01, r = 10,
                                outputFormat = "", dir = getwd(), 
-                               BPPARAM = SerialParam(), fixedSeed = TRUE) {
+                               BPPARAM = SerialParam()) {
 
   
   tmp<-preprocessBEclear(data, samples)
@@ -179,9 +177,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
       data = cleared, rowBlockSize = rowBlockSize,
       colBlockSize = colBlockSize, epochs = epochs,
       lambda = lambda, gamma = gamma, r = r,
-      outputFormat = outputFormat, dir = dir, BPPARAM = BPPARAM,
-      fixedSeed = fixedSeed
-    )
+      outputFormat = outputFormat, dir = dir, BPPARAM = BPPARAM)
   corrected <- replaceOutsideValues(predicted)
 
   return(list(

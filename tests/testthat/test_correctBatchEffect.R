@@ -30,7 +30,8 @@ testthat::test_that("3 batches, NAs", {
   colnames(DT_expected) <- c("1", "2", "3", "4", "5")
   row.names(DT_expected) <- c("1", "2", "3")
 
-  res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "", fixedSeed = TRUE)
+  set.seed(1, kind = "Mersenne-Twister")
+  res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "")
   testthat::expect_equal(res$correctedPredictedData, DT_expected, tolerance = .001)
 })
 
@@ -56,6 +57,7 @@ testthat::test_that("3 batches, invalid values", {
   colnames(DT_expected) <- c("1", "2", "3", "4", "5")
   row.names(DT_expected) <- c("1", "2", "3")
 
+  set.seed(1, kind = "Mersenne-Twister")
   res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "")
   testthat::expect_equal(res$correctedPredictedData, DT_expected, tolerance = .001)
 })
@@ -82,6 +84,7 @@ testthat::test_that("3 batches, duplicated colnames ", {
   colnames(DT_expected) <- c("1", "2", "3", "4", "5")
   row.names(DT_expected) <- c("1", "2", "3")
 
+  set.seed(1, kind = "Mersenne-Twister")
   res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "")
   testthat::expect_equal(res$correctedPredictedData, DT_expected, tolerance = .001)
 })
