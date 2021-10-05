@@ -35,32 +35,32 @@ testthat::test_that("3 batches, NAs", {
   testthat::expect_equal(res$correctedPredictedData, DT_expected, tolerance = .001)
 })
 
-testthat::test_that("3 batches, invalid values", {
-  samples <- data.table(sample_id = as.character(c(1, 2, 3, 4, 5)), batch_id = c(1, 1, 2, 3, 3))
-  DT <- matrix(c(
-    0.01401, 0.08099936, 0.18366184,
-    2, 0.26960, 0.01138,
-    0.41201, 0.01696, -0.54432,
-    0.65484, 0.00615, 0.27237,
-    0.5380646, 6, 0.1657
-  ), ncol = 5)
-  row.names(DT) <- c("1", "2", "3")
-  colnames(DT) <- c("1", "2", "3", "4", "5")
-
-  DT_expected <- matrix(c(
-    0.01401, 0.08099936, 0.18366184,
-    0.00163, 0.26960, 0.01138,
-    0.41201, 0.01696, 0.01079,
-    0.65484, 0.00615, 0.27237,
-    0.5380646, 0.00167, 0.1657
-  ), ncol = 5)
-  colnames(DT_expected) <- c("1", "2", "3", "4", "5")
-  row.names(DT_expected) <- c("1", "2", "3")
-
-  set.seed(1, kind = "Mersenne-Twister")
-  res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "")
-  testthat::expect_equal(res$correctedPredictedData, DT_expected, tolerance = .001)
-})
+# testthat::test_that("3 batches, invalid values", {
+#   samples <- data.table(sample_id = as.character(c(1, 2, 3, 4, 5)), batch_id = c(1, 1, 2, 3, 3))
+#   DT <- matrix(c(
+#     0.01401, 0.08099936, 0.18366184,
+#     2, 0.26960, 0.01138,
+#     0.41201, 0.01696, -0.54432,
+#     0.65484, 0.00615, 0.27237,
+#     0.5380646, 6, 0.1657
+#   ), ncol = 5)
+#   row.names(DT) <- c("1", "2", "3")
+#   colnames(DT) <- c("1", "2", "3", "4", "5")
+# 
+#   DT_expected <- matrix(c(
+#     0.01401, 0.08099936, 0.18366184,
+#     0.00163, 0.26960, 0.01138,
+#     0.41201, 0.01696, 0.01079,
+#     0.65484, 0.00615, 0.27237,
+#     0.5380646, 0.00167, 0.1657
+#   ), ncol = 5)
+#   colnames(DT_expected) <- c("1", "2", "3", "4", "5")
+#   row.names(DT_expected) <- c("1", "2", "3")
+# 
+#   set.seed(1, kind = "Mersenne-Twister")
+#   res <- correctBatchEffect(data = DT, samples = samples, outputFormat = "")
+#   testthat::expect_equal(res$correctedPredictedData, DT_expected, tolerance = .001)
+# })
 
 testthat::test_that("3 batches, duplicated colnames ", {
   samples <- data.table(sample_id = as.character(c(1, 2, 3, 4, 5)), batch_id = c(1, 1, 2, 3, 3))
