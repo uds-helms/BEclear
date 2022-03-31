@@ -52,7 +52,7 @@
 #' @export calcScore
 #' @import futile.logger
 #' @import data.table
-#' @importFrom outliers dixon.test
+#' @importFrom dixonTest dixonTest
 #' @usage calcScore(data, samples, summary, saveAsFile=FALSE, dir=getwd())
 #' 
 #' @references \insertRef{Dixon1950}{BEclear}
@@ -120,7 +120,7 @@ calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd())
   ## calculate outlier according to the dixon test
   DT[, dixonPval := as.numeric(NA)]
   if(sum(!is.na(DT$BEscore)) >= 3 && max(DT$BEscore) != min(DT$BEscore)){
-    pval <- dixon.test(DT$BEscore, two.sided = FALSE)
+    pval <- dixonTest(DT$BEscore, alternative = c("two.sided"))
     DT[BEscore == max(DT$BEscore), dixonPval := as.numeric(pval$p.value)]
   }
   

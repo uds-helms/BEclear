@@ -1,3 +1,6 @@
+Changes in version 2.11.1 (2022-03-31)
+    + replaced dependency outliers with dixonTest
+
 Changes in version 2.7.1 (2020-11-03)
     + fixed some warnings from R Check and BiocCheck
 
