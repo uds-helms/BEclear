@@ -65,7 +65,7 @@ from its Github repository by the following command:
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-devtools::install_github("David-J-R/MoDentify")
+devtools::install_github("uds-helms/BEclear")
 ```
 
 We however recommend installing it through Bioconductor, as this takes care of 
