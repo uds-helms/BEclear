@@ -118,6 +118,7 @@
 #' @export imputeMissingData
 #' @import BiocParallel
 #' @import futile.logger
+#' @importFrom ids random_id
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50,
 #' lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir=getwd(),
 #' BPPARAM=SerialParam())
@@ -154,7 +155,7 @@
 #' )
 imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs = 50,
                               lambda = 1, gamma = 0.01, r = 10,
-                              outputFormat = "", dir = getwd(),
+                              outputFormat = "", dir = tempdir(),
                               BPPARAM = SerialParam()) {
   flog.info("Starting the imputation of missing values.")
   flog.info("This might take a while.")
@@ -162,6 +163,10 @@ imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs
   if (epochs <= 0) {
     stop("number of epochs has to be greater than 0")
   }
+  
+  ##create tmpdir
+  dir <- paste0(dir, "/", random_id())
+  dir.create(dir)
 
   ## run BEclear
   flog.info("BEclear imputation is started:")
@@ -197,20 +202,20 @@ imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs
   colnames(predictedGenes) <- colnames(data)
 
   ## remove all stored single block files
-  blockFilenames <- c()
-  for (i in seq_len(nrow(blockFrame))) {
-    row <- paste(
-      "D",
-      blockFrame$number[i],
-      ".RData",
-      sep = ""
-    )
-    blockFilenames <- c(blockFilenames, row)
-  }
-  for (i in seq_len(length(blockFilenames))) {
-    filedir <- paste(dir, blockFilenames[i], sep = "/")
-    file.remove(filedir)
-  }
+  # blockFilenames <- c()
+  # for (i in seq_len(nrow(blockFrame))) {
+  #   row <- paste(
+  #     "D",
+  #     blockFrame$number[i],
+  #     ".RData",
+  #     sep = ""
+  #   )
+  #   blockFilenames <- c(blockFilenames, row)
+  # }
+  # for (i in seq_len(length(blockFilenames))) {
+  #   filedir <- paste(dir, blockFilenames[i], sep = "/")
+  #   file.remove(filedir)
+  # }
 
   remove(blockFrame, blockNumbers, colPos, rowPos)
 

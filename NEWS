@@ -1,3 +1,7 @@
+Changes in version 2.11.2 (2022-09-21)
+    + fixed issue with tests
+    + fixed issue with folders
+
 Changes in version 2.11.1 (2022-03-31)
     + replaced dependency outliers with dixonTest
 

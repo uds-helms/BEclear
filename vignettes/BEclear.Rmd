@@ -152,7 +152,7 @@ knitr::kable(head(summary), caption = 'Summary over the batch affected gene-samp
 ## Scoring 
 
 Furthermore you can calculate a batch score for a whole batch to determine the
-severeness how it is affected.
+severity how it is affected.
 
 ```{r score, cache=TRUE}
 score <- calcScore(ex.data, ex.samples, summary, dir = getwd())

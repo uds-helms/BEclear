@@ -80,7 +80,8 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
   rownames(D1) <- rownames(D)
 
   filename <- paste("D", blockNr, ".RData", sep = "")
-  save(D1, file = paste(dir, filename, sep = "/"))
+  path <- paste(dir, filename, sep = "/")
+  save(D1, file = path)
 
   
   return(list(blockNr = block$blockNr, block = D1, total = block$total))
