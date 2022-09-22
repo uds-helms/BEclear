@@ -248,6 +248,7 @@ want to impute to NA, if they not already are.
 For the data imputation you use the `imputeMissingData` function:
 
 ```{r imputation, cache=TRUE}
+library(ids)
 corrected.data <- imputeMissingData(cleared.data,
   rowBlockSize = 60,
   colBlockSize = 60, epochs = 50,
