@@ -2,10 +2,10 @@
 % Please edit documentation in R/imputeMissingData.R
 \name{imputeMissingData}
 \alias{imputeMissingData}
-\title{Matrix prediction method using a Latent Factor Model}
+\title{Matrix prediction using a Latent Factor Model}
 \usage{
 imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50,
-lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir=getwd(),
+lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir = tempdir(),
 BPPARAM=SerialParam())
 }
 \arguments{

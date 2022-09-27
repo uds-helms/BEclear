@@ -2,7 +2,7 @@
 #'
 #' @aliases imputeMissingData
 #'
-#' @title Matrix prediction method using a Latent Factor Model
+#' @title Matrix prediction using a Latent Factor Model
 #'
 #' @description This function predicts the missing entries of an input matrix
 #' (NA values) through the use of a Latent Factor Model. You can run the
@@ -120,7 +120,7 @@
 #' @import futile.logger
 #' @importFrom ids random_id
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50,
-#' lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir=getwd(),
+#' lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir = tempdir(),
 #' BPPARAM=SerialParam())
 #'
 #' @examples
