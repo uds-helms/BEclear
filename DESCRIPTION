@@ -1,7 +1,7 @@
 Package: BEclear
 Type: Package
 Title: Correction of batch effects in DNA methylation data
-Version: 2.14.0
+Version: 2.15.0
 Date: 2022-09-27
 Authors@R: c(person("David", "Rasp", email = "david.j.rasp@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0164-2163")),
              person("Markus", "Merl", role = "aut"),
