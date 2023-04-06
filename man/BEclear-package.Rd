@@ -113,5 +113,5 @@ Useful links:
 
 }
 \author{
-Ruslan Akulenko, Markus Merl, David Rasp
+Ruslan Akulenko, Markus Merl, Livia Rasp
 }

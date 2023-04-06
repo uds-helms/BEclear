@@ -1,10 +1,10 @@
 ---
 title: "Detecting and correcting batch effects with BEclear"
 author: 
-    - name: David Rasp
+    - name: Livia Rasp
       affiliation:
         Center for Bioinformatics, Saarland University, Saarbruecken, Germany
-      email: David.J.Rasp@gmail.com
+      email: Livia.Rasp@gmail.com
     - name: Markus Merl
 package: BEclear
 abstract: |
@@ -58,7 +58,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 BiocManager::install("BEclear")
 ```
 
-Otherwise you can also install `r BiocStyle::Githubpkg("David-J-R/BEclear")`
+Otherwise you can also install `r BiocStyle::Githubpkg("uds-helms/BEclear")`
 from its Github repository by the following command:
 
 ```{r, eval=FALSE}

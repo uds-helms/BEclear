@@ -100,7 +100,7 @@
 #' corrected <- replaceOutsideValues(data = predicted)
 #' }
 #' 
-#' @author Ruslan Akulenko, Markus Merl, David Rasp
+#' @author Ruslan Akulenko, Markus Merl, Livia Rasp
 #'
 #' @references \insertRef{Akulenko2016}{BEclear}
 #' @import Rdpack
