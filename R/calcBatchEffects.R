@@ -64,7 +64,7 @@
 #' res <- calcBatchEffects(data = ex.data, samples = ex.samples, method = "fdr")
 #' 
 #' ## How to handle data-sets without defined batches
-#' ## https://github.com/David-J-R/BEclear/issues/22
+#' ## https://github.com/Livia-Rasp/BEclear/issues/22
 #' library(data.table)
 #' data(BEclearData)
 #'
