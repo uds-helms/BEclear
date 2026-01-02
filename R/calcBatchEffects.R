@@ -78,7 +78,7 @@
 calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
                              BPPARAM = SerialParam()) {
   if (!is(data, "data.table")) {
-    flog.info("Transforming matrix to data.table")
+    log_info("Transforming matrix to data.table")
     data <- data.table(feature = as.character(rownames(data)), data)
     data <- melt(
       data = data, id.vars = "feature", variable.name = "sample",
@@ -91,7 +91,7 @@ calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
     samples <- data.table(samples)
   }
 
-  flog.info(paste(
+  log_info(paste(
     "Calculate the batch effects for",
     samples[, uniqueN(batch_id)], "batches"
   ))
@@ -99,7 +99,7 @@ calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
   batchEffects <- lapply(samples[, unique(batch_id)], calcBatchEffectsForBatch,
     samples = samples, data = data, BPPARAM = BPPARAM)
 
-  flog.debug(paste("Binding", length(batchEffects), "columns of batch_effects together"))
+  log_debug(paste("Binding", length(batchEffects), "columns of batch_effects together"))
   batchEffects <- do.call(cbind, batchEffects)
 
   med <- batchEffects[colnames(batchEffects) == "medians"]
@@ -110,7 +110,7 @@ calcBatchEffects <- function(data, samples, adjusted = TRUE, method = "fdr",
 
   # pvalue adjustment
   if (adjusted == TRUE) {
-    flog.info("Adjusting p-values")
+    log_info("Adjusting p-values")
     pvalues <- t(apply(pvalues, 1, p.adjust, method = method))
   }
 

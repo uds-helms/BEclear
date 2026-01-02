@@ -157,8 +157,8 @@ imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs
                               lambda = 1, gamma = 0.01, r = 10,
                               outputFormat = "", dir = tempdir(),
                               BPPARAM = SerialParam()) {
-  flog.info("Starting the imputation of missing values.")
-  flog.info("This might take a while.")
+  log_info("Starting the imputation of missing values.")
+  log_info("This might take a while.")
   D1 <- NULL
   if (epochs <= 0) {
     stop("number of epochs has to be greater than 0")
@@ -169,8 +169,8 @@ imputeMissingData <- function(data, rowBlockSize = 60, colBlockSize = 60, epochs
   dir.create(dir)
 
   ## run BEclear
-  flog.info("BEclear imputation is started:")
-  flog.info(paste("block size:", rowBlockSize, " x ", colBlockSize))
+  log_info("BEclear imputation is started:")
+  log_info(paste("block size:", rowBlockSize, " x ", colBlockSize))
   ## calculate start - and stop position for every block
   if (nrow(data) < rowBlockSize | rowBlockSize == 0) {
     rowBlockSize <- nrow(data)

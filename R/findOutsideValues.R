@@ -60,6 +60,6 @@ findOutsideValues <- function(data) {
       }
     }
   }
-  flog.info(paste(counter - 1, " values outside of the boundaries found", sep = ""))
+  log_info(paste(counter - 1, " values outside of the boundaries found", sep = ""))
   return(outsideEntries)
 }

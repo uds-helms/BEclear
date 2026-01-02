@@ -13,7 +13,7 @@ Description: Provides functions to detect and correct for batch effects in
 License: GPL-3
 SystemRequirements: C++11
 Depends: BiocParallel (>= 1.14.2)
-Imports: futile.logger, Rdpack, Matrix, data.table (>= 1.11.8), Rcpp,
+Imports: logger, Rdpack, Matrix, data.table (>= 1.11.8), Rcpp,
          abind, stats, graphics, utils, methods, dixonTest, ids
 Suggests: testthat, BiocStyle, knitr, rmarkdown, pander, seewave
 VignetteBuilder: knitr

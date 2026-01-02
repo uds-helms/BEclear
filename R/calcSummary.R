@@ -27,7 +27,7 @@
 #'
 #' @export calcSummary
 #' @importFrom abind abind
-#' @importFrom futile.logger flog.info
+#' @importFrom logger log_info
 #' @import data.table
 #' @usage calcSummary(medians, pvalues, mediansTreshold, pvaluesTreshold)
 #'
@@ -58,7 +58,7 @@
 calcSummary <- function(medians, pvalues, mediansTreshold = 0.05, 
                         pvaluesTreshold = 0.01) {
     
-    flog.info("Generating a summary table")
+    log_info("Generating a summary table")
     x <- abind(medians, pvalues, along = 3)
     ## find affected genes
     affected <- apply(x, c(1,2), FUN = 

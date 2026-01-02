@@ -14,7 +14,7 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
                                       gamma = 0.01, r = 10) {
   blockNr <- block$blockNr
   D <- block$block
-  flog.info(paste("Impute missing data for block", blockNr, "of", block$total))
+  log_info(paste("Impute missing data for block", blockNr, "of", block$total))
 
 
   ## check if NA values are contained in the block
@@ -68,7 +68,7 @@ imputeMissingDataForBlock <- function(block, dir, epochs, lambda = 1,
 
   ## no NA values contained in the block - keep original values
   else {
-    flog.debug(paste(
+    log_debug(paste(
       "Block", blockNr,
       "has no missing values. Original values are kept"
     ))

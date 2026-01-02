@@ -38,27 +38,27 @@
 preprocessBEclear <- function(data, samples) {
     ## checking if they're are values above 1 or below 0
     if (any(data > 1 | data < 0, na.rm = TRUE)) {
-        flog.warn(paste(
+        log_warn(paste(
             sum(data > 1 | data < 0, na.rm = TRUE),
             "values are above 1 or below 0. Check your data"
         ))
-        flog.warn("Replacing them with missing values")
+        log_warn("Replacing them with missing values")
         data[data > 1 | data < 0] <- NA
     }
     
     ## checking if there are columns containing only missing values
     naIndices <- apply(data, 2, function(x) all(is.na(x)))
     if (any(naIndices, na.rm = TRUE)) {
-        flog.warn("There are columns, that contain only missing values")
-        flog.warn(paste(sum(naIndices), "columns get dropped"))
+        log_warn("There are columns, that contain only missing values")
+        log_warn(paste(sum(naIndices), "columns get dropped"))
         data <- data[, !naIndices]
     }
     
     ## checking if there are rows containing only missing values
     naIndices <- apply(data, 1, function(x) all(is.na(x)))
     if (any(naIndices, na.rm = TRUE)) {
-        flog.warn("There are rows, that contain only missing values")
-        flog.warn(paste(sum(naIndices), "rows get dropped"))
+        log_warn("There are rows, that contain only missing values")
+        log_warn(paste(sum(naIndices), "rows get dropped"))
         data <- data[!naIndices, ]
     }
     
@@ -67,11 +67,11 @@ preprocessBEclear <- function(data, samples) {
         ids <- paste(colnames(data)[!colnames(data) %in% samples$sample_id],
                      collapse = ", "
         )
-        flog.warn(paste(
+        log_warn(paste(
             "The following samples are in the data, but not annotated",
             "in the samples matrix:", ids
         ))
-        flog.warn("Dropping those samples now")
+        log_warn("Dropping those samples now")
         data <- data[, colnames(data) %in% samples$sample_id]
     }
     
@@ -79,11 +79,11 @@ preprocessBEclear <- function(data, samples) {
         ids <- paste(samples$sample_id[!samples$sample_id %in% colnames(data)],
                      collapse = ", "
         )
-        flog.warn(
+        log_warn(
             "The following samples are annotated in the sample matrix,",
             "but aren't contained in data matrix:", ids
         )
-        flog.warn("Dropping those samples now")
+        log_warn("Dropping those samples now")
         samples <- samples[sample_id %in% colnames(data)]
     }
     
@@ -92,8 +92,8 @@ preprocessBEclear <- function(data, samples) {
     
     ## checking if there are duplicated sample names
     if (any(duplicated(colnames(data)))) {
-        flog.warn("Sample names aren't unique")
-        flog.warn(paste(
+        log_warn("Sample names aren't unique")
+        log_warn(paste(
             "Transforming them to unique IDs. List with annotations will",
             "be added to the results"
         ))

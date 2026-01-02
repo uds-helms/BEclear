@@ -164,7 +164,7 @@ correctBatchEffect <- function(data, samples, adjusted = TRUE, method = "fdr",
   sum <- calcSummary(med, pval)
 
   if (is.null(sum)) {
-    flog.info("There were no batch effects detected")
+    log_info("There were no batch effects detected")
     score <- NULL
     cleared <- data
   } else {

@@ -89,7 +89,7 @@
 calcScore <- function(data, samples, summary, saveAsFile = FALSE, dir = getwd()) {
   ## take batch ids
   batches <- unique(samples$batch_id)
-  flog.info(paste("Calculating the scores for", length(batches), "batches"))
+  log_info(paste("Calculating the scores for", length(batches), "batches"))
   
   ## take number of genes
   numGenes <- nrow(data)

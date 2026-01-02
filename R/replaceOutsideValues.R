@@ -36,12 +36,12 @@
 #' # Replace wrongly predicted values
 #' corrected <- replaceOutsideValues(data = ex.corrected.data)
 replaceOutsideValues <- function(data) {
-  flog.info("Replacing values below 0 or above 1:")
+  log_info("Replacing values below 0 or above 1:")
   counter <- sum(data > 1) + sum(data < 0)
 
   data[data > 1] <- 1
   data[data < 0] <- 0
-  flog.info(paste(counter, "values replaced"))
+  log_info(paste(counter, "values replaced"))
 
   return(data)
 }
