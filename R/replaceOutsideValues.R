@@ -25,7 +25,7 @@
 #' between 0 and 1.
 #'
 #' @export replaceOutsideValues
-#' @import futile.logger
+#' @import logger
 #' @usage replaceOutsideValues(data)
 #'
 #' @return Returns the input matrix with every value previously below 0 changed

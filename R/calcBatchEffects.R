@@ -42,7 +42,7 @@
 #' parallelisation of the functions will be evaluated.
 #'
 #' @export calcBatchEffects
-#' @import futile.logger
+#' @import logger
 #' @import data.table
 #' @importFrom stats p.adjust
 #' @importFrom methods is

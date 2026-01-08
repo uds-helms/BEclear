@@ -1,6 +1,6 @@
 #' imputeMissingDataForBlock
 #'
-#' @import futile.logger
+#' @import logger
 #' @import Matrix
 #' @importFrom stats rnorm
 #'

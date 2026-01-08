@@ -117,7 +117,7 @@
 #'
 #' @export imputeMissingData
 #' @import BiocParallel
-#' @import futile.logger
+#' @import logger
 #' @importFrom ids random_id
 #' @usage imputeMissingData(data, rowBlockSize=60,  colBlockSize=60, epochs=50,
 #' lambda = 1, gamma = 0.01, r = 10, outputFormat="", dir = tempdir(),

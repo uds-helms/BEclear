@@ -31,7 +31,7 @@
 #' more details.
 #'
 #' @export clearBEgenes
-#' @import futile.logger
+#' @import logger
 #' @usage clearBEgenes(data, samples, summary)
 #'
 #' @return A data matrix with the same dimensions as well as the same column

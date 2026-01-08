@@ -24,7 +24,7 @@
 #' between 0 and 1.
 #'
 #' @export findOutsideValues
-#' @import futile.logger
+#' @import logger
 #' @usage findOutsideValues(data)
 #'
 #' @return A data frame containing the columns "level", "row", "col" and "value"

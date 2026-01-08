@@ -50,7 +50,7 @@
 #' stored. The current working directory is defined as default parameter.
 #'
 #' @export calcScore
-#' @import futile.logger
+#' @import logger
 #' @import data.table
 #' @importFrom dixonTest dixonTest
 #' @usage calcScore(data, samples, summary, saveAsFile=FALSE, dir=getwd())

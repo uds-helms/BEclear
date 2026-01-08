@@ -6,7 +6,7 @@
 #'
 #' @importFrom stats ks.test
 #' @import BiocParallel
-#' @import futile.logger
+#' @import logger
 #'
 #' @return the medians p-values for genes in a batch
 calcBatchEffectsForBatch <- function(batch, samples, data, 

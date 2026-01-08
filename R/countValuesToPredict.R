@@ -19,7 +19,7 @@
 #' @param data any kind of matrix
 #'
 #' @export countValuesToPredict
-#' @import futile.logger
+#' @import logger
 #' @usage countValuesToPredict(data)
 #'
 #' @examples

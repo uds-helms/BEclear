@@ -85,7 +85,7 @@
 #'
 #' @export correctBatchEffect
 #' @import BiocParallel
-#' @import futile.logger
+#' @import logger
 #' @import data.table
 #' @usage correctBatchEffect(data, samples, adjusted=TRUE, method="fdr",
 #' mediansTreshold = 0.05, pvaluesTreshold = 0.01, rowBlockSize=60, 
