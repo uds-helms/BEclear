@@ -1,7 +1,3 @@
-[![Travis-CI Build Status](https://travis-ci.org/uds-helms/BEclear.svg?branch=master)](https://travis-ci.org/uds-helms/BEclear)
-[![Coverage Status](https://img.shields.io/codecov/c/github/uds-helms/BEclear/master.svg)](https://codecov.io/github/uds-helms/BEclear?branch=master)
-
-
 # BEclear
 
 ## Description
