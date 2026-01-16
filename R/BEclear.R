@@ -8,8 +8,6 @@
 #' @docType package
 #'
 #' @title Correction of batch effects in DNA methylation data
-#'
-#'
 #' @description Provides some functions to detect and correct for batch effects
 #' in DNA methylation data. The core function \code{\link{correctBatchEffect}} is based on
 #' Latent Factor Models and can also be used to predict missing values in any

@@ -2,8 +2,8 @@
 % Please edit documentation in R/BEclear.R
 \docType{package}
 \name{BEclear-package}
+\alias{BEclear}
 \alias{BEclear-package}
-\alias{_PACKAGE}
 \alias{BEclearCorrected}
 \title{Correction of batch effects in DNA methylation data}
 \description{
