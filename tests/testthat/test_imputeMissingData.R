@@ -1,4 +1,3 @@
-testthat::context("Testing the imputation of missing values")
 
 
 testthat::test_that("No NAs, serial", {

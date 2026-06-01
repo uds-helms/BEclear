@@ -1,4 +1,3 @@
-testthat::context("Replacement of values below 0 or above 1")
 
 testthat::test_that("Matrix with values above and below", {
   res1 <- replaceOutsideValues(matrix(c(2, 0.5, 0.4, 0.2, -1, -0.1), ncol = 2))

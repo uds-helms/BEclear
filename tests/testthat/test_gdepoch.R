@@ -1,4 +1,3 @@
-testthat::context("Testing the gradient descent for a single epoch")
 
 testthat::test_that("quadratic D matrix, only integer values given", {
   res1 <- gdepoch(

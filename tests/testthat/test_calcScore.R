@@ -1,4 +1,3 @@
-testthat::context("Testing the calculation of BE scores")
 
 testthat::test_that("matrix with batch effects", {
   data(BEclearData)

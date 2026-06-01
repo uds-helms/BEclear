@@ -1,4 +1,3 @@
-testthat::context("Testing the detection and correction of Batch Effects")
 
 testthat::test_that("3 batches, NAs", {
   data <- data.table(

@@ -1,4 +1,3 @@
-testthat::context("calculating the loss for matrices L and R")
 
 testthat::test_that("matrices with integer results", {
   res1 <- loss(
