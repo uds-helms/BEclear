@@ -11,7 +11,6 @@ Description: Provides functions to detect and correct for batch effects in
              models and can also be used to predict missing values in any other 
              matrix containing real numbers.
 License: GPL-3
-SystemRequirements: C++11
 Depends: BiocParallel (>= 1.14.2)
 Imports: logger, Rdpack, Matrix, data.table (>= 1.11.8), Rcpp,
          abind, stats, graphics, utils, methods, dixonTest, ids
