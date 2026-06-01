@@ -4,9 +4,6 @@
 #' @import Matrix
 #' @importFrom stats rnorm
 #'
-#' @param fixedSeed determines if they seed should be fixed, which is important
-#' for testing
-#'
 #' @keywords internal
 #'
 #' @return number of the block processed
