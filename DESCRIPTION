@@ -11,16 +11,15 @@ Description: Provides functions to detect and correct for batch effects in
              models and can also be used to predict missing values in any other 
              matrix containing real numbers.
 License: GPL-3
-SystemRequirements: C++11
 Depends: BiocParallel (>= 1.14.2)
 Imports: logger, Rdpack, Matrix, data.table (>= 1.11.8), Rcpp,
          abind, stats, graphics, utils, methods, dixonTest, ids
 Suggests: testthat, BiocStyle, knitr, rmarkdown, pander, seewave
 VignetteBuilder: knitr
 biocViews: BatchEffect, DNAMethylation, Software, Preprocessing, StatisticalMethod
-RoxygenNote: 7.3.3
 RdMacros: Rdpack
 Encoding: UTF-8
 URL: https://github.com/uds-helms/BEclear
 BugReports: https://github.com/uds-helms/BEclear/issues
 LinkingTo: Rcpp
+Config/roxygen2/version: 8.0.0

@@ -1,4 +1,3 @@
-testthat::context("Calculation of block positions")
 
 testthat::test_that("Values that add up", {
   testthat::expect_equal(unname(calcPositions(100, 10)), c(10, 81, 91, 90, 100))

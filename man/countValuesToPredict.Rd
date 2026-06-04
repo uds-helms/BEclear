@@ -47,6 +47,4 @@ numberOfEntries <- countValuesToPredict(data = clearedMatrix)
 \code{\link{clearBEgenes}}
 
 \code{\link{correctBatchEffect}}
-
-\code{\link{correctBatchEffect}}
 }

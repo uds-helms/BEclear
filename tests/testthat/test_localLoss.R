@@ -1,4 +1,3 @@
-testthat::context("Testing the local loss")
 
 testthat::test_that("quadratic error matrix, only integer values given", {
   res1 <- localLoss(

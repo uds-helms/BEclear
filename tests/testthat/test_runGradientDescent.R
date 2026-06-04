@@ -1,4 +1,3 @@
-testthat::context("Testing the gradient descent for a multiple epochs")
 
 testthat::test_that("quadratic D matrix, only integer values given", {
   res1 <- runGradientDescent(

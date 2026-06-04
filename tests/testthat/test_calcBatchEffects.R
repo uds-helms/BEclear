@@ -1,4 +1,3 @@
-testthat::context("Testing the caculations of batch effects for batches")
 
 testthat::test_that("2 batches, only available values", {
   data <- data.table(

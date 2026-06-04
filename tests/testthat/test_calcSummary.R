@@ -1,4 +1,3 @@
-testthat::context("Testing the summary calculation")
 
 testthat::test_that("matrix with batch effects", {
   sum <- calcSummary(

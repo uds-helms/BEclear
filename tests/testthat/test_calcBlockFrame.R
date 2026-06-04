@@ -1,4 +1,3 @@
-testthat::context("Calculation of block positions")
 
 testthat::test_that("Values that add up", {
   res1 <- calcBlockFrame(c(2, 1, 11, 10, 20), c(2, 1, 11, 10, 20), 10, 10)
